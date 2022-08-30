@@ -12,6 +12,7 @@
 }
 
 .m-menu .m-option{
+    opacity: .2;
     border-radius: 6px;
     width: 44px;
     height: 40px;

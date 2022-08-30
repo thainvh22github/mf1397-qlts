@@ -1,6 +1,8 @@
 <template>
    <div class="m-content">
-
+        <div class="m-toolbar">
+            
+        </div>
     </div>
 </template>
 

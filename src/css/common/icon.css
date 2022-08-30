@@ -15,6 +15,12 @@
     background-size: 24px 24px;
 
 }
+.m-icon-prorety{
+    background-image: url(../../assets/icon/proprety.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
 .m-icon-report{
     background-image: url(../../assets/icon/report.png);
     background-repeat: no-repeat;
@@ -39,3 +45,38 @@
     background-size: 24px 24px;
 
 }
+
+.m-icon-notification{
+    background-image: url(../../assets/icon/notification.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+
+.m-icon-toggle{
+    background-image: url(../../assets/icon/toggle.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+
+.m-icon-question{
+    background-image: url(../../assets/icon/question.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+
+.m-icon-infomation{
+    background-image: url(../../assets/icon/infomation.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+.m-icon-dropdown{
+    background-image: url(../../assets/icon/dropdown.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+

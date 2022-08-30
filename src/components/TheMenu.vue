@@ -3,7 +3,7 @@
         <div class="m-icon-logo m-logo"></div>
 
         <div class="m-option m-icon-overview"></div>
-        <div class="m-option m-icon- active"></div>
+        <div class="m-option m-icon-prorety active"></div>
         <div class="m-option m-icon-proretyhtdb"></div>
         <div class="m-option m-icon-tool"></div>
         <div class="m-option m-icon-category"></div>
