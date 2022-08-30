@@ -1,0 +1,41 @@
+.m-icon-logo{
+    background-image: url(../../assets/icon/logo.png);
+    background-repeat: no-repeat;
+    background-size: 36px 36px;
+}
+
+.m-icon-overview{
+    background-image: url(../../assets/icon/overview.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+}
+.m-icon-proretyhtdb{
+    background-image: url(../../assets/icon/propretyhtdb.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+.m-icon-report{
+    background-image: url(../../assets/icon/report.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+.m-icon-tool{
+    background-image: url(../../assets/icon/tool.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+.m-icon-search{
+    background-image: url(../../assets/icon/search.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
+.m-icon-category{
+    background-image: url(../../assets/icon/category.png);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+
+}
