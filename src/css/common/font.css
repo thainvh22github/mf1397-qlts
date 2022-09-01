@@ -58,3 +58,8 @@
     src: url(../../assets/font/GoogleSans-ThinItalic.otf);
 }
 
+@font-face {
+    font-family: Roboto;
+    src: url(../../assets/font/Roboto-Regular.ttf);
+}
+

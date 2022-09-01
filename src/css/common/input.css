@@ -2,7 +2,37 @@
     background-color: #ffffff;
     border-radius: 2.5px;
     border: 1px solid #afafaf;
-    width: 179px;
-    height: 35px;
+    min-width: 100px;
+    height: 36px;
     overflow: hidden;
+    outline: none;
+    box-sizing: border-box;
+    padding: 0 14px;
+}
+.input:hover{
+    border: 1px solid #0062CC;
+}
+.input:focus{
+    border: 1px solid #0062CC;
+}
+
+.input__error{
+    border: 1px solid red;
+}
+.input__icon{
+    padding: 0 14px 0 39px;
+}
+
+input::placeholder{
+    font-size: 14px;
+    font-family: Roboto;
+}
+
+input[type=text]{
+    font-size: 13px;
+    font-family: Roboto;
+}
+
+.input__disable{
+    background-color: #F5F5F5;
 }

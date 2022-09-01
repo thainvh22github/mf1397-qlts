@@ -4,13 +4,15 @@
 
         <div class="m-header__rigth">
             <div class="m-text-header">Sở tài chính</div>
-            <div class="m-combobox-year"></div>
-            <div class="m-icon-notification m-notification"></div>
-            <div class="m-icon-toggle m-toggle"></div>
-            <div class="m-icon-question m-question"></div>
-            <div class="m-icon-infomation m-infomation"></div>
+            <div class="ml-20 m-combobox-year"></div>
+            <div class="ml-20 m-icon-notification m-notification"></div>
+            <div class="ml-20 m-icon-toggle m-toggle"></div>
+            <div class="ml-20 m-icon-question m-question"></div>
+            <div class="ml-20 m-icon-infomation m-infomation"></div>
             
-            <button class="m-icon-dropdown btn-dropdown"></button>
+            <button class="ml-8 btn-dropdown">
+                <div class="m-icon-dropdown"></div>
+            </button>
         </div>
 
 

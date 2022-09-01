@@ -1,18 +1,19 @@
 <template>
-   <div class="m-content">
-        <div class="m-toolbar">
-            
-        </div>
+    <div class="m-content-main">
+        <PropertyList />
     </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+import PropertyList from '@/view/property/PropertyList.vue';
+
+export default {
+    components: { PropertyList },
+}
+
+
 </script>
 
 <style scoped>
-    @import url(../css/components/content.css);
-
+@import url(../css/components/content.css);
 </style>

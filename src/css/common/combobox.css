@@ -1,0 +1,34 @@
+.btn_combobox{
+    width: 31px;
+    height: 35px;
+    cursor: pointer;
+    border: 1px solid #afafaf;
+    border-left: none;
+    outline: none;
+    border-bottom-right-radius: 2.5px;
+    border-top-right-radius: 2.5px;
+    background-position: center center;
+    background-color: #ffffff;
+    box-sizing: border-box;
+
+}
+
+.combobox {
+    background-color: #ffffff;
+    border-top-left-radius: 2.5px;
+    border-bottom-left-radius: 2.5px;
+    border: 1px solid #afafaf;
+    border-right: none;
+    min-width: 100px;
+    height: 35px;
+    overflow: hidden;
+    padding: 0 16px;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+}
+
+.combobox__icon {
+    padding: 0 16px;
+}
+

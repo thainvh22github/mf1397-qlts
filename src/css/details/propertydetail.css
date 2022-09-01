@@ -1,0 +1,56 @@
+.m-form-add{
+    position: absolute;
+    top: calc(50% - 45%);
+    left: calc(50% - 35%);
+    width: 70%;
+    height: 90%;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.m-form-add .m-form-add__detail{
+    width:calc(100% - 32px);
+    height: calc(100% - 52px - 32px);
+    margin: 16px;
+    
+}
+.m-form-add .m-form-add__bottom{
+    height: 52px;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: #F5F5F5;
+}
+
+.m-form-add .m-form-add__bottom .btn-close{
+    background-color: #fff;
+    margin-right: 10px;
+}
+.m-form-add .m-form-add__bottom .btn-close:hover{
+    background-color:#0582A2;
+
+}
+.m-form-add .m-form-add__bottom .btn-close:focus{
+    background-color:#1AA4C8;
+
+}
+.m-form-add .m-form-add__bottom .btn-close:active{
+    background-color:#28B7DC;
+
+}
+
+.m-form-add .m-form-add__bottom .btn-save{
+    color: #fff;
+    margin-right: 16px;
+}
+
+.m-form-add .m-form-add__detail .m-form-add__header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.m-form-add .m-propertyname-propertycode{
+    
+}

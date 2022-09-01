@@ -1,6 +1,54 @@
-.m-content{
+.m-content-main{
     width: 100%;
     height: calc(100% - 44px);
     background-color: #f4f7ff;
-    font-weight: 700;
+}
+.m-content{
+    width: 100%;
+    height: 100%;
+}
+.m-toolbar{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+    padding-top: 13px;
+    
+}
+.m-toolbar__search{
+    display: flex;
+}
+
+.m-toolbar__search .input--serch-proprety{
+    width: 179px;
+    background-position: 7px center;
+}
+
+.m-toolbar__search .input--serch-proprety::placeholder{
+    font-size: 13px;
+    font-family: Italic;
+}
+
+.m-combobox__toolbar{
+    display: flex;
+    width: 219px;
+}
+.m-property-type{
+    background-position: 6px center;
+    
+}
+.m-toolbar__btn{
+    display: flex;
+}
+.btn-add{
+    color: #ffffff;
+    background-position: 12px center;
+    
+}
+
+.btn-export{
+    background-position: center center;
+}
+
+.btn-delete{
+    background-position: center center;
 }
