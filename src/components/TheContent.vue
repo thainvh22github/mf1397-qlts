@@ -8,7 +8,7 @@
 import PropertyList from '@/view/property/PropertyList.vue';
 
 export default {
-    components: { PropertyList },
+    components: { PropertyList,  },
 }
 
 

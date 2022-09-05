@@ -4,7 +4,18 @@
 
         <div class="m-header__rigth">
             <div class="m-text-header">Sở tài chính</div>
-            <div class="ml-20 m-combobox-year"></div>
+            <div class="ml-20 m-combobox-year">
+                <span>Năm</span>
+                <input type="text" value="2021">
+                <div class="m-drop">
+                    <button class="btn__up">
+                        <div class="m-icon-dropup"></div>
+                    </button>
+                    <button class="btn__down">
+                        <div class="m-icon-down"></div>
+                    </button>
+                </div>
+            </div>
             <div class="ml-20 m-icon-notification m-notification"></div>
             <div class="ml-20 m-icon-toggle m-toggle"></div>
             <div class="ml-20 m-icon-question m-question"></div>
@@ -21,7 +32,9 @@
 
 <script>
 export default {
-
+    methods: {
+       
+    },
 }
 </script>
 

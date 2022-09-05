@@ -1,0 +1,243 @@
+.m-dialog {
+    .m-form-add {
+        position: absolute;
+        top: calc(50% - 47.5%);
+        left: calc(50% - 35%);
+        width: 70%;
+        height: 95%;
+        background-color: #fff;
+        border-radius: 4px;
+
+        .m-form-add__detail {
+            width: calc(100% - 32px);
+            height: calc(100% - 52px - 32px);
+            margin: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            .m-form-add__header {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                .m-form-add__titel {
+                    .btn-x {
+                        .m-icon-x {}
+                    }
+                }
+            }
+
+            .m-propertycode-propertyname {
+                .m-propertycode {
+                    .m-input-propertycode {}
+                }
+
+                .m-propertyname {
+                    .m-input-propertyname {}
+                }
+
+                .m-positioncode-positionname {
+                    .m-positioncode {
+                        .m-input-positioncode {}
+                    }
+
+                    .m-positionname {
+                        .m-input-positionname {}
+                    }
+                }
+
+            }
+
+
+            .m-propertycodetype-propertynametype {
+                .m-propertycodetype {
+                    .m-propertycodetype-input {}
+                }
+
+                .m-propertynametype {
+                    .m-propertynametype-input {}
+                }
+            }
+
+            .m-amount-cost-longevity {
+                .m-amount {
+
+                    .m-input-amount {
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                    }
+                }
+
+                .m-cost {
+                    .m-input-cost {}
+                }
+
+                .m-longevity {
+                    .m-input-longevity {}
+                }
+            }
+
+            .m-lossrate-lossyear-trackingyear {
+                .m-lossrate {
+                    .m-input-lossrate {
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                    }
+                }
+
+                .m-lossyear {
+
+                    .m-input-lossyear {
+                    }
+                }
+
+                .m-trackingyear {
+                    .m-input-trackingyear {}
+                }
+            }
+
+            .m-buyingdate-usingdate {
+                .m-buyingdate {
+                    .m-input-buyingdate {}
+
+                }
+
+                .m-usingdate {
+                    .m-input-usingdate {}
+                }
+            }
+
+            .m-drop {
+                position: absolute;
+                top: 9px;
+                right: 1px;
+                width: 36px;
+                height: 34px;
+
+                .btn__up {
+                    background-color: rgba(26, 164, 200, 0);
+                    position: absolute;
+                    top: 0;
+                    height: calc(50% - 1.5px);
+                    width: 100%;
+                    border: none;
+                    padding: 0;
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    cursor: pointer;
+                    outline: none;
+
+                    .m-icon-dropup {}
+                }
+
+                .btn__down {
+                    background-color: rgba(26, 164, 200, 0);
+                    position: absolute;
+                    bottom: 0;
+                    height: calc(50% - 1.5px);
+                    width: 100%;
+                    padding: 0;
+                    border: none;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: center;
+                    cursor: pointer;
+                    outline: none;
+                    .m-icon-down {}
+                }
+            }
+
+            .m-combobox {
+                .btn_combobox {}
+
+                .m-icon-dropdown {}
+            }
+
+
+
+            .m-text {}
+
+            input[type="date"]::-webkit-calendar-picker-indicator{
+                opacity: 0;
+                cursor: pointer;
+            }
+            .m-icon-date{
+                background-position: calc(100% - 6px) center;
+            }
+
+            input[type=number]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+             }
+            
+        }
+
+
+        .m-form-add__bottom {
+            height: 52px;
+            width: 100%;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            background-color: #F5F5F5;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+
+            .btn-close {
+                background-color: #fff;
+                margin-right: 10px;
+                color: #000;
+            }
+
+            .btn-close:hover {
+                background-color: #0582A2;
+
+            }
+
+            .btn-close:focus {
+                background-color: #1AA4C8;
+
+            }
+
+            .btn-close:active {
+                background-color: #28B7DC;
+
+            }
+
+            .btn-save {
+                color: #fff;
+                margin-right: 16px;
+            }
+        }
+        .m-btn-date{
+            display: flex;
+            position: relative;
+        }
+        .btn_date{
+            position: absolute;
+            height: 34px;
+            width: 36px;
+            bottom: 1px;
+            right: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    }
+
+    .m-form-add ::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    .m-form-add ::-webkit-scrollbar-thumb {
+        background: #9E9E9E;
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,88 @@
+.m-toast-main {
+    .m-toast-message {
+        position: fixed;
+        bottom: 60px;
+        right: 10px;
+
+        .m-toast {
+            display: flex;
+            width: 450px;
+            height: 56px;
+            align-items: center;
+            border-radius: 4px;
+            filter: drop-shadow(0 4px 40px rgba(0,0,0,0.078));
+            margin-bottom: 2px;
+            background-color: #fff;
+
+
+
+            .m-toast__icon{
+                height: 24px;
+                width: 24px;
+                margin-left: 18px;
+            }
+
+
+
+
+
+            .m__text-toast-message{
+                margin-left: 10px;
+            }
+            .m__icon-warning{
+                height: 24px;
+                width: 24px;
+            }
+
+            .m__icon-done{
+                height: 24px;
+                width: 24px;
+            }
+
+            .m__icon-info{
+                height: 24px;
+                width: 24px;
+            }
+        }
+
+        .m__icon {
+            position: absolute;
+            right: 16px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 24px;
+            background-color: #fff;
+        }
+
+        .m__icon-x{
+            height: 16px;
+            width: 16px;
+            
+        }
+
+        .m-icon-x-toast{
+            position: absolute;
+            right: 3px;
+            top: 3px;
+        }
+
+        // .m-toast-error {
+        //     display: none;
+        // }
+        
+        // .m-toast-warning {
+        //     display: none;
+        // }
+        
+        
+        
+        // .m-toast-info {
+        //     display: none;
+        // }
+
+        .m-toast-done {
+            display: none;
+        }
+    }
+}

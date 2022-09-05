@@ -28,37 +28,90 @@
             overflow: hidden;
             display: flex;
             align-items: center;
-        }
+            padding-left: 12px;
+            box-sizing: border-box;
 
-        .m-notification {
-            width: 24px;
-            height: 24px;
-        }
+            input {
+                background-color: rgba(26, 164, 200, 0);
+                border: none;
+                outline: none;
+                margin-left: 14px;
+                padding: 0;
+                width: 35px;
+                font-weight: 700;
+            }
 
-        .m-toggle {
-            width: 24px;
-            height: 24px;
-        }
+            .m-drop {
+                width: 23px;
+                height: 100%;
+                position: relative;
+                
+                .btn__up {
+                    background-color: rgba(26, 164, 200, 0);
+                    position: absolute;
+                    top: 0;
+                    height: calc(50% - 1.5px);
+                    width: 100%;
+                    border: none;
+                    padding: 0;
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    cursor: pointer;
+                }
 
-        .m-question {
-            width: 24px;
-            height: 24px;
+                .btn__down {
+                    background-color: rgba(26, 164, 200, 0);
+                    position: absolute;
+                    bottom: 0;
+                    height: calc(50% - 1.5px);
+                    width: 100%;
+                    padding: 0;
+                    border: none;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: center;
+                    cursor: pointer;
+                }
+            }
         }
-
-        .m-infomation {
-            width: 24px;
-            height: 24px;
-        }
-
     }
 
-    .btn-dropdown {
-        cursor: pointer;
-        height: 24px;
+    .m-notification {
         width: 24px;
-        border: none;
-        background-color: #fff;
-        background-position: center center;
-        margin-right: 20px;
+        height: 24px;
+    }
+
+    .m-toggle {
+        width: 24px;
+        height: 24px;
+    }
+
+    .m-question {
+        width: 24px;
+        height: 24px;
+    }
+
+    .m-infomation {
+        width: 24px;
+        height: 24px;
+    }
+
+}
+
+.btn-dropdown {
+    position: relative;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    margin-right: 20px;
+
+    .m-icon-dropdown {
+        position: absolute;
+        top: calc(50% - 2.5px);
+        left: calc(50% - 3.5px);
     }
 }

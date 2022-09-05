@@ -1,6 +1,8 @@
 .m-menu {
     position: relative;
     transition: 0.3s linear;
+    box-sizing: border-box;
+
     .m-sidebar {
         .m-logo {
             width: 100%;
@@ -21,10 +23,17 @@
             cursor: pointer;
             margin: 0 11px;
             align-items: center;
+            position: relative;
 
             div {
                 color: #fff;
                 margin-left: 11px;
+            }
+
+            .m-icon-dropdown-menu {
+                position: absolute;
+                top: calc(50% - 3.5px);
+                right: 10px;
             }
         }
 
