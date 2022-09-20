@@ -22,5 +22,7 @@ export default {
 </script>
 
 <style>
-  @import url(./css/common/common.css)
+  @import url(./css/common/common.css);
+  @import url(../node_modules/@syncfusion/ej2-base/styles/material.css);
+  @import url(../node_modules/@syncfusion/ej2-vue-popups/styles/material.css);
 </style>

@@ -4,7 +4,7 @@
 @import url(./combobox.css);
 @import url(./button.css);
 @import url(./dialog.css);
-@import url(./tooltip.css);
+@import url(./loading.css);
 
 .pl-15{
     padding-left: 15px;
@@ -24,6 +24,9 @@
 .ml-12{
     margin-left: 12px;
 
+}
+.ml-18{
+    margin-left: 18px;
 }
 .ml-17{
     margin-left: 17px;
@@ -50,15 +53,22 @@
 }
 .text-center{
     text-align: center;
+    cursor: pointer;
 }
+
 .text-left{
+    cursor: pointer;
     text-align: left;
 }
 .text-rigth{
+    cursor: pointer;
     text-align: right;
 }
 .w-100{
     width: 100%;
+}
+.border{
+    height: 40px !important;
 }
 body{
     margin: 0;

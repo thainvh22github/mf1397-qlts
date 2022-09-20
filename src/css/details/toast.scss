@@ -1,4 +1,36 @@
 .m-toast-main {
+    @-webkit-keyframes fadeinout {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeinout {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    .elementToFadeInAndOut {
+        width: 200px;
+        height: 200px;
+        background: red;
+        -webkit-animation: fadeinout 4s linear forwards;
+        animation: fadeinout 4s linear forwards;
+    }
+
     .m-toast-message {
         position: fixed;
         bottom: 60px;
@@ -6,40 +38,36 @@
 
         .m-toast {
             display: flex;
-            width: 450px;
+            width: 300px;
             height: 56px;
             align-items: center;
             border-radius: 4px;
-            filter: drop-shadow(0 4px 40px rgba(0,0,0,0.078));
+            // filter: drop-shadow(0 4px 40px rgba(0,0,0,0.078));
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.555);
             margin-bottom: 2px;
             background-color: #fff;
 
-
-
-            .m-toast__icon{
+            .m-toast__icon {
                 height: 24px;
                 width: 24px;
                 margin-left: 18px;
             }
 
-
-
-
-
-            .m__text-toast-message{
+            .m__text-toast-message {
                 margin-left: 10px;
             }
-            .m__icon-warning{
+
+            .m__icon-warning {
                 height: 24px;
                 width: 24px;
             }
 
-            .m__icon-done{
+            .m__icon-done {
                 height: 24px;
                 width: 24px;
             }
 
-            .m__icon-info{
+            .m__icon-info {
                 height: 24px;
                 width: 24px;
             }
@@ -55,13 +83,13 @@
             background-color: #fff;
         }
 
-        .m__icon-x{
+        .m__icon-x {
             height: 16px;
             width: 16px;
-            
+
         }
 
-        .m-icon-x-toast{
+        .m-icon-x-toast {
             position: absolute;
             right: 3px;
             top: 3px;
@@ -70,19 +98,17 @@
         // .m-toast-error {
         //     display: none;
         // }
-        
+
         // .m-toast-warning {
         //     display: none;
         // }
-        
-        
-        
+
+
+
         // .m-toast-info {
         //     display: none;
         // }
 
-        .m-toast-done {
-            display: none;
-        }
+        .m-toast-done {}
     }
 }

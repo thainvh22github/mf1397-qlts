@@ -16,12 +16,12 @@
                     </button>
                 </div>
             </div>
-            <div class="ml-20 m-icon-notification m-notification"></div>
-            <div class="ml-20 m-icon-toggle m-toggle"></div>
-            <div class="ml-20 m-icon-question m-question"></div>
-            <div class="ml-20 m-icon-infomation m-infomation"></div>
-            
-            <button class="ml-8 btn-dropdown">
+
+            <div v-tooltip="{text:'Thông báo',theme:{placement: 'bottom',},}" class="ml-18 m-icon-notification m-notification"></div>
+            <div v-tooltip="{text:'Hệ thống',theme:{placement: 'bottom',},}" class="ml-18 m-icon-toggle m-toggle"></div>
+            <div v-tooltip="{text:'Hỗ trợ',theme:{placement: 'bottom',},}" class="ml-18 m-icon-question m-question"></div>
+            <div v-tooltip="{text:'Người dùng',theme:{placement: 'bottom',},}" class="ml-18 m-icon-infomation m-infomation"></div>
+            <button class="btn-dropdown">
                 <div class="m-icon-dropdown"></div>
             </button>
         </div>
@@ -32,9 +32,7 @@
 
 <script>
 export default {
-    methods: {
-       
-    },
+    name: "TheHeader",
 }
 </script>
 

@@ -2,6 +2,9 @@
     width: calc(100% - 40px);
     height: calc(100% - 49px - 30px);
 
+
+
+
     .m-table {
         background-color: #ffffff;
         border-radius: 3.5px;
@@ -14,7 +17,7 @@
         margin-left: 20px;
 
         .m-property-list {
-            height: calc(100% - 40px);
+            height: 100%;
             width: 100%;
             overflow: auto;
 
@@ -30,6 +33,7 @@
                     top: 0;
                     background-color: #f5f5f5;
 
+
                     tr {
 
                         border-bottom: 1px solid #9E9E9E;
@@ -41,14 +45,22 @@
                             padding: 0;
                         }
                     }
+
+
+                }
+
+                thead:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    border-bottom: 1px solid #9E9E9E;
                 }
 
                 tbody {
-                    position: relative;
                     width: 100%;
                     height: calc(100% - 38px);
-
-                    // border: 1px solid black;
                     tr {
                         width: 100%;
                         height: 40px;
@@ -57,12 +69,18 @@
                         cursor: pointer;
                         td {
                             padding: 0;
-
                         }
                     }
-                    // tr:hover{
-                    //     background-color: #D1EDF4;
-                    // }
+
+
+                    tr:hover {
+                        background-color: #D1EDF4;
+                    }
+
+                    .active {
+                        background-color: #D1EDF4;
+                    }
+
                     .btn-edit {
                         height: 18px;
                         width: 24px;
@@ -79,23 +97,27 @@
                         cursor: pointer;
                     }
                 }
+
+
             }
-        }
 
+            tfoot {
+                box-sizing: border-box;
+                height: 40px;
+            }
 
+            tfoot:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border-top: 1px solid #9E9E9E;
+            }
 
-        .m-table__bottom {
-            border-top: 1px solid #9E9E9E;
-            height: 40px;
-            width: 100%;
-            display: flex;
-            box-sizing: border-box;
-            // background-color: antiquewhite;
-
-            .m-table__bottom--left {
-                height: 100%;
-                width: 60%;
+            .m-table__bottom {
                 display: flex;
+                height: 100%;
                 align-items: center;
 
                 .m-total-property {
@@ -105,20 +127,29 @@
                     align-items: center;
                     justify-content: center;
                 }
-                
-                .m-combobox{
-                    .combobox{
+
+                .m-combobox {
+                    position: relative;
+
+                    .combobox {
                         width: 59px;
                         height: 25px;
                         padding-left: 14px;
                     }
-                    .btn_combobox{
-                        height: 23px;
+
+                    input {
+                        font-size: 11px;
+                    }
+
+                    .btn_combobox {
+                        height: 20px;
                         width: 20px;
-                        .m-page{
-                            
-                        }
-                        .m-icon-dropdown{
+                        position: absolute;
+                        top: 2.5px;
+
+                        .m-page {}
+
+                        .m-icon-dropdown {
                             top: calc(50% - 3px);
                             left: 1px;
                         }
@@ -130,15 +161,15 @@
                     height: 100%;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    margin-left: 13px;
                 }
 
-                .btn-pagenavi{
+                .btn-pagenavi {
                     position: relative;
                     height: 20px;
                     width: 20px;
                     cursor: pointer;
-                    margin-left: 12px;
+                    margin-left: 7px;
                     background-color: #fff;
                     font-size: 11px;
                     display: flex;
@@ -146,60 +177,29 @@
                     align-items: center;
                     outline: none;
                     border: none;
-                    .m-icon-prev{
-                        
-                    }
 
-                    .m-icon-next{
-                        
-                    }
-                    span{
-                        
-                    }
+                    .m-icon-prev {}
+
+                    .m-icon-next {}
+
+                    span {}
                 }
-                
+
             }
 
-            .m-table__bottom--rigth {
-                height: 100%;
-                width: 40%;
-                display: flex;
-
-                .m-amount {
-                    width: 22%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: right;
-                    font-weight: 700;
-                }
-
-                .m-cost {
-                    width: 20%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: right;
-                    font-weight: 700;
-                }
-
-                .m-accumulated {
-                    width: 20%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: right;
-                    font-weight: 700;
-                }
-
-                .m-residual-value {
-                    width: 20%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: right;
-                }
+            .btn-pagenavi:hover {
+                background-color: #f5f5f5;
+                border-radius: 3px;
+                overflow: hidden;
             }
+
+            .btnpagenaviactive {
+                background-color: #f5f5f5;
+                border-radius: 3px;
+                overflow: hidden;
+                font-weight: 700;
+            }
+
 
 
 
@@ -244,10 +244,11 @@
     .m-table ::-webkit-scrollbar-thumb {
         background: #9E9E9E;
         border-radius: 4px;
+
     }
 
     .m-table ::-webkit-scrollbar {
-        width: 2px;
+        width: 5px;
     }
 
 }

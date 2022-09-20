@@ -8,6 +8,9 @@
     height: 100%;
     position: relative;
 }
+.m-content .m-toolbar .m-toolbar__search .m-combobox input::placeholder{
+    color: #000;
+}
 .m-toolbar{
     display: flex;
     justify-content: space-between;
@@ -33,9 +36,11 @@
     display: flex;
     width: 219px;
 }
-.m-property-type{
+
+
+.m-property-type .combobox{
     background-position: 6px center;
-    
+
 }
 .m-toolbar__btn{
     display: flex;
@@ -43,15 +48,12 @@
 .btn-add{
     color: #ffffff;
     background-position: 12px center;
-    
 }
 
 .btn-export{
     background-position: center center;
 }
-.btn-export::-ms-tooltip{
-    background-color: aqua;
-}
+
 .btn-delete{
     background-position: center center;
 }

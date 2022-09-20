@@ -1,4 +1,7 @@
 .m-dialog {
+    .borderred{
+        border: 1px solid red !important;
+    }
     .m-form-add {
         position: absolute;
         top: calc(50% - 47.5%);
@@ -14,6 +17,11 @@
             margin: 16px;
             overflow-x: hidden;
             overflow-y: auto;
+
+            input::placeholder{
+                font-size: 13px;
+                font-family: Italic;
+            }
 
             .m-form-add__header {
                 width: 100%;
@@ -74,11 +82,13 @@
                 }
 
                 .m-longevity {
-                    .m-input-longevity {}
+                    .m-input-longevity {
+                        
+                    }
                 }
             }
 
-            .m-lossrate-lossyear-trackingyear {
+            .m-lossrate-lossyear{
                 .m-lossrate {
                     .m-input-lossrate {
                         position: relative;
@@ -93,12 +103,10 @@
                     }
                 }
 
-                .m-trackingyear {
-                    .m-input-trackingyear {}
-                }
+                
             }
 
-            .m-buyingdate-usingdate {
+            .m-buyingdate-usingdate-trackingyear {
                 .m-buyingdate {
                     .m-input-buyingdate {}
 
@@ -106,6 +114,10 @@
 
                 .m-usingdate {
                     .m-input-usingdate {}
+                }
+
+                .m-trackingyear {
+                    .m-input-trackingyear {}
                 }
             }
 
@@ -193,17 +205,18 @@
 
             .btn-close:hover {
                 background-color: #0582A2;
+                color:#fff;
 
             }
 
             .btn-close:focus {
                 background-color: #1AA4C8;
-
+                color:#fff;
             }
 
             .btn-close:active {
                 background-color: #28B7DC;
-
+                color:#fff; 
             }
 
             .btn-save {

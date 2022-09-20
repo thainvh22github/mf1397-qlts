@@ -4,16 +4,29 @@
 	height: 36px;
 }
 
-.m-icon-overview{
-    background: url('../../assets/icon/qlts-icon.png') no-repeat -21px -153px;
+.miconoverview{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -21px -151px;
 	width: 24px;
 	height: 24px;
 }
-.m-icon-proretyhtdb{
+
+.miconoverviewactive{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -21px -195px;
+	width: 24px;
+	height: 24px;
+}
+
+
+.miconproretyhtdb{
     background: url(../../assets/icon/qlts-icon.png) no-repeat -110px -153px;
 	width: 24px;
 	height: 24px;
+}
 
+.miconproretyhtdbactive{
+    background: url(../../assets/icon/qlts-icon.png) no-repeat -110px -197px;
+	width: 24px;
+	height: 24px;
 }
 .m-icon-prorety{
 	background: url('../../assets/icon/qlts-icon.png') no-repeat -65px -197px;
@@ -22,26 +35,49 @@
 
 }
 
-.m-icon-tool{
+.micontool{
     background: url('../../assets/icon/qlts-icon.png') no-repeat -153px -153px;
 	width: 24px;
 	height: 24px;
-
 }
-.m-icon-report{
+
+.micontoolactive{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -153px -197px;
+	width: 24px;
+	height: 24px;
+}
+
+.miconreport{
     background: url('../../assets/icon/qlts-icon.png') no-repeat -329px -153px;
-	width: 22px;
-	height: 22px;
-
-}
-.m-icon-search{
-    background: url('../../assets/icon/qlts-icon.png') no-repeat -241px -153px;
 	width: 24px;
 	height: 24px;
 
 }
-.m-icon-category{
+.miconreportactive{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -330px -196px;
+	width: 24px;
+	height: 24px;
+
+}
+.miconsearch{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -241px -153px;
+	width: 24px;
+	height: 24px;
+}
+.miconsearchactive{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -241px -197px;
+	width: 24px;
+	height: 24px;
+}
+
+.miconcategory{
     background: url('../../assets/icon/qlts-icon.png') no-repeat -196px -152px;
+	width: 24px;
+	height: 24px;
+}
+
+.miconcategoryactive{
+    background: url('../../assets/icon/qlts-icon.png') no-repeat -197px -196px;
 	width: 24px;
 	height: 24px;
 }
@@ -69,8 +105,8 @@
 
 .m-icon-infomation{
     background: url('../../assets/icon/qlts-icon.png') no-repeat -23px -23px;
-	width: 7px;
-	height: 5px;
+	width: 24px;
+	height: 24px;
 
 }
 .m-icon-dropdown{
@@ -142,9 +178,10 @@
 }
 
 .m-icon-sidebar{
-	background: url('../../assets/icon/qlts-icon.png') no-repeat -206px -292px;;
-	width: 7px;
-	height: 9px;
+	background-image: url(../../assets/icon/back.png);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+	background-position: center center;
 	
 }
 
