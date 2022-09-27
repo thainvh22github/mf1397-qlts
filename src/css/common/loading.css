@@ -239,9 +239,9 @@
 
 .loading-container,
 .loading {
-    height: 100px;
+    height: 36px;
     position: relative;
-    width: 100px;
+    width: 36px;
     border-radius: 100%;
 }
 
@@ -259,8 +259,8 @@
 
 .loading-container {
     position: absolute;
-    top: calc(50% - 50px);
-    left: calc(50% - 50px);
+    top: calc(50% - 18px);
+    left: calc(50% - 18px);
 }
 
 .loading {
@@ -290,6 +290,7 @@
 }
 
 #loading-text {
+    position: fixed;
     -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
     -o-animation: loading-text-opacity 2s linear 0s infinite normal;
     -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
@@ -298,11 +299,10 @@
     font-family: "Helvetica Neue, " Helvetica", ""arial";
     font-size: 10px;
     font-weight: bold;
-    margin-top: 45px;
     opacity: 0;
-    position: absolute;
     text-align: center;
     text-transform: uppercase;
-    top: 0;
     width: 100px;
+    top: 55%;
+    left: 46.5%;
 }

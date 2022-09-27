@@ -18,15 +18,19 @@
 </template>
 
 <script>
+import Enum from '../../lib/enum.js'
+
 export default {
-    name:"ToastMessageEdit",
+
+    name: "ToastMessageEdit",
+    props: ['checkTitleForm'],
 
     methods: {
         /**
          * click vào nút hủy bỏ trong toast thì đóng cả form add và toast  
-         *
+         * Author: NVHThai (19/09/2022)
          */
-        btnDetroyToastEdit(){
+        btnDetroyToastEdit() {
             this.$parent.detroyToastAttentionEdit();
         },
 
@@ -34,19 +38,28 @@ export default {
 
         /**
          * click vào nút không lưu trong toast thì đóng toast  
-         *
+         * Author: NVHThai (19/09/2022)
          */
-        btnNotSaveToastEdit(){
+        btnNotSaveToastEdit() {
             this.$parent.closeToastAttentionEdit();
         },
 
 
         /**
-         * 
-         *
+         * Hàm lưu dữ liệu vào db khi sửa dữ liệu từ form
+         * Author: NVHThai (27/09/2022)
          */
-        btnSaveToastEdit(){
-
+        btnSaveToastEdit() {
+            switch (this.checkTitleForm) {
+                case Enum.FormMode.Edit:
+                    this.$parent.handleInsertData();
+                    this.$parent.putApiProperty();
+                    break;
+                case Enum.FormMode.Duplicate:
+                    this.$parent.handleInsertData();
+                    this.$parent.postApiProperty();
+                    break;
+            }
         }
     },
 }

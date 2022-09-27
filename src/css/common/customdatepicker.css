@@ -1,0 +1,56 @@
+
+.el-popper.is-customized {
+    padding: 4px 6px;
+    background: #fff;
+    border: 1px solid #bbb;
+    box-shadow: 0px 2px 2.5px 2px rgba(0, 0, 0, 0.168);
+}
+
+.el-popper.is-customized .el-popper__arrow::before {
+    background: #fff;
+    right: 0;
+    border: 1px solid #bbb;
+}
+
+.el-input__wrapper{
+    background-color: #ffffff;
+    border-radius: 2.5px !important;
+    border: 1px solid #afafaf !important;
+    min-width: 100px;
+    height: 36px;
+    overflow: hidden;
+    outline: none;
+    box-sizing: border-box;
+    padding: 0 14px !important;
+    background-image: url(../../assets/icon/icon-date.png) !important;
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 6px) center;
+    box-shadow: none !important;
+}
+
+.el-input__wrapper:hover{
+    border: 1px solid #0062CC !important;
+}
+.el-input__wrapper:focus{
+    border: 1px solid #0062CC !important;
+}
+
+.el-input__prefix-inner{
+    display: none !important;
+}
+.el-input__suffix-inner{
+    display: none !important;
+}
+.el-date-picker__header-label span{
+    display: none;
+}
+.el-input__inner{
+    color: #000 !important;
+    font-family: Roboto !important;
+}
+.el-date-picker__header-label{
+}
+
+/* /////////////////// */
+

@@ -66,10 +66,10 @@
 
     .m-dialog-toast__attention-edit {
         position: absolute;
-        top: calc(50% - 85px);
-        left: calc(50% - 210px);
+        top: calc(50% - 90px);
+        left: calc(50% - 200px);
         width: 420px;
-        height: 170px;
+        height: 180px;
         background-color: #fff;
         border-radius: 4px;
         box-sizing: border-box;
@@ -85,6 +85,7 @@
             span{
                 padding-left: 50px;
             }
+            
         }
 
 
@@ -156,10 +157,10 @@
     z-index: 3;
     .m-dialog-toast__attention-delete-none {
         position: absolute;
-        top: calc(50% - 95.5px);
+        top: calc(50% - 85px);
         left: calc(50% - 200px);
         width: 400px;
-        height: 191px;
+        height: 170px;
         background-color: #fff;
         border-radius: 4px;
         box-sizing: border-box;

@@ -1,162 +1,146 @@
 <template>
-    <div class="m-dialog" :class="{ isShowDialog: isShowDialog }">
+    <div class="m-dialog" @keyup.esc="btnCloseFormOnclick">
         <div id="formadd" class="m-form-add">
             <div class="m-form-add__detail">
                 <div class="m-form-add__header">
                     <div class="m-form-add__titel" style="font-size: 20px;">{{ titleForm }}</div>
-                    <button class="btn-x" @click="btnCloseFormOnclick">
-                        <div class="m-icon-x"></div>
-                    </button>
+                    <el-tooltip content="Đóng" placement="top" show-after="400" effect="customized">
+                        <button class="btn-x" @click="btnCloseFormOnclick" tabindex="114" @keyup.tab="focus">
+                            <div class="m-icon-x"></div>
+                        </button>
+                    </el-tooltip>
+
                 </div>
 
-                <div  class="mt-20 m-propertycode-propertyname" style="display: flex;">
-
+                <div class="mt-20 m-propertycode-propertyname" style="display: flex;">
                     <div class="m-propertycode" style="width: 32%;">
                         <div class="m-text">Mã tài sản <span style="color: red;">*</span></div>
                         <input ref="propertycode" type="text" class="mt-8 w-100 input m-input-propertycode"
-                            @blur="inputValidateOnblur(1)" 
-                            :class="{borderred: borderRedPropertyCode}"
-                            v-model="property.employeesCode"
-                            tabindex="101">
+                            :class="{borderred: borderRedPropertyCode}" v-model="property.fixed_asset_code"
+                            tabindex="-1">
                     </div>
-
                     <div class="m-propertyname" style="width: calc(68% - 16px); margin-left: 16px;">
                         <div class="m-text">Tên tài sản <span style="color: red;">*</span></div>
-                        <input type="text" class="mt-8 w-100 input m-input-propertyname" placeholder="Nhập tên tài sản"
-                            @blur="inputValidateOnblur(2)" :class="{borderred: borderRedPropertyName}"
-                            v-model="property.employeesName"
-                            tabindex="102">
+                        <m-input type="text" className="mt-8 w-100 m-input-propertyname"
+                            v-model="property.fixed_asset_name" tabindex="102"></m-input>
                     </div>
+
+                    <datepicker v-model="selected" :locale="locale" :upperLimit="to" :lowerLimit="from"
+                        :clearable="true" />
                 </div>
 
                 <div class="mt-15 m-positioncode-positionname" style="display: flex;">
                     <div class="m-positioncode" style="width: 32%;">
                         <div class="m-text">Mã bộ phận sử dụng <span style="color: red;">*</span></div>
-                        <div class="mt-8 m-combobox">
-                            <input type="text" class="w-100 combobox m-property-positioncode"
-                                placeholder="Chọn mã bộ phận sử dụng" @blur="inputValidateOnblur(3)"
-                                :class="{borderred: borderRedDepartmentCode}" :value="departmentName"
-                                @click="btnOpenShowComboboxDepartment"
-                                tabindex="103">
-
-                            <button class="btn_combobox" @click="btnOpenShowComboboxDepartment" @blur="hideContentCbbBlur">
-                                <div class="m-icon-dropdown"></div>
-                            </button>
-                            <div class="m-combobox__content" v-show="isShowmComboboxContentDepartment">
-                                <div class="m-border">
-                                    <div v-for="department in departments" :key="department.departmentsID"
-                                        class="m-option-cbb"
-                                        v-on:click="onClickCbbDepartment(department.departmentsName)">
-                                        {{ department.departmentsName }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <m-combobox css="mt-8" type="text" className="m-property-positioncode w-100"
+                            placeholder="Chọn mã bộ phận sử dụng" :showValue="property.department_code"
+                            v-model:department_id="property.department_id"
+                            v-model:department_code="property.department_code"
+                            v-model:department_name="property.department_name" tabindex="103" :url="urlDepartment"
+                            :itemID="ItemIDDepartment" :itemName="ItemNameDepartment" :itemCode="ItemCodeDepartment"
+                            styleContent="height-150">
+                        </m-combobox>
                     </div>
-
                     <div class="m-positionname" style="width: calc(68% - 16px); margin-left: 16px;">
                         <div class="m-text">Tên bộ phận sử dụng</div>
-                        <input type="text" class="mt-8 w-100 input input__disable m-input-positionname" readonly
-                            v-model="property.identityNumber"
-                            :class="{borderred: borderRedDepartmentCode}">
+                        <el-tooltip :content="property.department_name" placement="top" show-after="400"
+                            effect="customized">
+                            <m-input type="text" className="mt-8 w-100 input__disable m-input-positionname"
+                                v-model="property.department_name" readonly>
+                            </m-input>
+                        </el-tooltip>
                     </div>
                 </div>
 
                 <div class="mt-15 m-propertycodetype-propertynametype" style="display: flex;">
                     <div class="m-propertycodetype" style="width: 32%;">
                         <div class="m-text">Mã loại tài sản <span style="color: red;">*</span></div>
-
-
-                        <div class="mt-8 m-combobox">
-                            <input type="text" class="w-100 combobox m-property-propertycodetype"
-                                placeholder="Chọn mã loại tài sản" v-model="positionsName"
-                                @click="btnOpenShowComboboxAssetType"
-                                @blur="inputValidateOnblur(4)"
-                                :class="{borderred: borderRedPropertyCodeType}"
-                                tabindex="104">
-                            <button class="btn_combobox" @click="btnOpenShowComboboxAssetType" @blur="hideContentCbbBlur">
-                                <div class="m-icon-dropdown"></div>
-                            </button>
-                            <div class="m-combobox__content" v-show="isShowmComboboxContentAssetType">
-                                <div class="m-border">
-                                    <div v-for="position in positions" :key="position.positionsID"
-                                        class="m-option-cbb"
-                                        v-on:click="onClickCbbAssetType(position.positionsName)">
-                                        {{ position.positionsName }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <m-combobox css="mt-8" type="text" className="m-property-propertycodetype w-100"
+                            placeholder="Chọn mã loại tài sản" :showValue="property.fixed_asset_category_code"
+                            v-model:fixed_asset_category_id="property.fixed_asset_category_id"
+                            v-model:fixed_asset_category_code="property.fixed_asset_category_code"
+                            v-model:fixed_asset_category_name="property.fixed_asset_category_name"
+                            v-model:depreciation_rate="property.depreciation_rate"
+                            v-model:life_time="property.life_time" tabindex="103" :url="urlCategoryAsset"
+                            :itemID="ItemIDCategoryAsset" :itemCode="ItemCodeCategoryAsset"
+                            :itemName="ItemNameCategoryAsset" styleContent="height-150">
+                        </m-combobox>
                     </div>
-
                     <div class="m-propertynametype" style="width: calc(68% - 16px); margin-left: 16px;">
                         <div class="m-text">Tên loại tài sản</div>
-                        <input type="text" class="mt-8 w-100 input input__disable m-input-propertynametype" readonly
-                        :class="{borderred: borderRedPropertyCodeType}">
 
+                        <el-tooltip :content="property.fixed_asset_category_name" placement="top" show-after="400"
+                            effect="customized">
+                            <m-input type="text" className="mt-8 w-100 input__disable m-input-propertynametype"
+                                v-model="property.fixed_asset_category_name" readonly>
+                            </m-input>
+                        </el-tooltip>
                     </div>
-
                 </div>
 
                 <div class="mt-15 m-amount-cost-longevity" style="display: flex;">
                     <div class="m-amount" style="width: 32%;">
                         <div class="m-text">Số lượng <span style="color: red;">*</span></div>
-
                         <div class="m-input-amount">
-                            <input type="number" class="mt-8 w-100 input " v-model="valueAmount"
-                            tabindex="105">
+                            <m-input type="number" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
+                                style="text-align: right; padding-right: 40px;">
+                            </m-input>
                             <div class="m-drop">
-                                <button class="btn__up" v-on:click="onclickStepAmount(0)">
+                                <button class="btn__up" @click="onclickStepAmount(0)">
                                     <div class="m-icon-dropup"></div>
                                 </button>
                                 <button class="btn__down">
-                                    <div class="m-icon-down" v-on:click="onclickStepAmount(1)"></div>
+                                    <div class="m-icon-down" @click="onclickStepAmount(1)"></div>
                                 </button>
                             </div>
                         </div>
 
+
                     </div>
                     <div class="m-cost" style="width: 32%; margin-left: 16px;">
                         <div class="m-text">Nguyên giá <span style="color: red;">*</span></div>
-                        <input type="text" class="mt-8 w-100 input m-input-cost"
-                        tabindex="106">
-
+                        <m-input type="text" className="mt-8 w-100 m-input-cost" :value="formartNumber(property.cost)"
+                            v-model="property.cost" tabindex="106" style="text-align: right;" @input="showValueCost">
+                        </m-input>
                     </div>
                     <div class="m-longevity" style="width: calc(36% - 32px); margin-left: 16px;">
                         <div class="m-text">Tỷ lệ hao mòn (%) <span style="color: red;">*</span></div>
-                        <input type="text" class="mt-8 w-100 input m-input-longevity"
-                        tabindex="107">
-
+                        <m-input type="text" className="mt-8 w-100 m-input-longevity"
+                            v-model="property.depreciation_rate" tabindex="107" style="text-align: right;"></m-input>
                     </div>
                 </div>
+
                 <div class="mt-15 m-buyingdate-usingdate-trackingyear" style="display: flex;">
                     <div class="m-buyingdate" style="width: 32%;">
                         <div class="m-text">Ngày mua <span style="color: red;">*</span></div>
-                        <input type="date" class="mt-8 w-100 input m-icon-date m-input-buyingdate" :value="curDate"
-                        tabindex="108">
-
+                        <el-date-picker v-model="property.purchase_date" type="date" popper-class="custom-date-picker"
+                            class="mt-8 w-100 m-input-buyingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD"
+                            tabindex="108">
+                        </el-date-picker>
                     </div>
                     <div class="m-usingdate" style="width: 32%; margin-left: 16px;">
                         <div class="m-text">Ngày bắt đầu sử dụng <span style="color: red;">*</span></div>
-                        <input type="date" class="mt-8 w-100 input m-icon-date m-input-usingdate" v-model="curDate"
-                        tabindex="109">
+                        <el-date-picker v-model="property.production_date" type="date" popper-class="custom-date-picker"
+                            class="mt-8 w-100 m-input-usingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD"
+                            tabindex="109">
+                        </el-date-picker>
 
                     </div>
-
                     <div class="m-trackingyear" style="width: calc(36% - 32px); margin-left: 16px;">
                         <div class="m-text">Năm theo dõi</div>
-                        <input type="text" class="mt-8 w-100 input input__disable m-input-trackingyear" readonly
-                            v-model="curYear">
-
+                        <m-input type="text" className="mt-8 w-100 input__disable m-input-trackingyear"
+                            v-model="property.tracked_year" readonly style="text-align: right;">
+                        </m-input>
                     </div>
                 </div>
-                <div class="mt-15 m-lossrate-lossyear" style="display: flex;">
 
+                <div class="mt-15 m-lossrate-lossyear" style="display: flex;">
                     <div class="m-lossrate" style="width: 32%;">
                         <div class="m-text">Số năm sửa dụng <span style="color: red;">*</span></div>
                         <div class="m-input-lossrate">
-                            <input type="number" class="mt-8 w-100 input" v-model="valueLossRate"
-                            tabindex="110">
+                            <m-input type="number" className="mt-8 w-100" v-model="property.life_time" tabindex="110"
+                                style="text-align: right; padding-right: 40px;">
+                            </m-input>
                             <div class="m-drop">
                                 <button class="btn__up" v-on:click="onclickStepLossRate(0)">
                                     <div class="m-icon-dropup"></div>
@@ -165,28 +149,30 @@
                                     <div class="m-icon-down"></div>
                                 </button>
                             </div>
+
                         </div>
                     </div>
-
-
                     <div class="m-lossyear" style="width: 32%; margin-left: 16px;">
                         <div class="m-text">Giá trị hao mòn năm <span style="color: red;">*</span></div>
-                        <input type="text" value="" class="mt-8 w-100 input m-input-lossyear"
-                        tabindex="111">
+                        <m-input type="text" className="mt-8 w-100 input__disable m-input-lossyear"
+                            :value="formartNumber(lossYear)" v-model="lossYear" tabindex="111"
+                            style="text-align: right;"></m-input>
                     </div>
-
                 </div>
 
+            </div>
 
-            </div>
             <div class="m-form-add__bottom">
-                <button class="btn btn-close" @click="btnCloseFormOnclick">Hủy</button>
-                <button class="btn btn-save" @click="btnSaveFormOnclick">Lưu</button>
+                <button class="btn btn-close" tabindex="112" @click="btnCloseFormOnclick">Hủy</button>
+                <button class="btn btn-save" tabindex="113" @click="btnSaveFormOnclick">Lưu</button>
             </div>
+
         </div>
 
-        <ToastMessageAdd v-show="isShowToastAdd" />
-        <ToastMessageEdit v-show="isShowToastEdit" />
+        <ToastMessageAdd v-if="isShowToastAdd" />
+        <ToastMessageEdit v-show="isShowToastEdit" :checkTitleForm="checkTitleForm" />
+        <ToastMessageValid v-show="isShowDialogToastValid" :moreInfo="moreInfo" :titleFormValid="titleFormValid" />
+        <ToastMessageException v-show="isShowDialogToastException" :titleFormException="titleFormException" />
     </div>
 </template>
 
@@ -194,107 +180,166 @@
 import axios from 'axios'
 import ToastMessageAdd from '../toast/ToastMessageAdd.vue';
 import ToastMessageEdit from '../toast/ToastMessageEdit.vue';
-import Enum from '../../assets/lib/enum.js' 
+import Enum from '../../lib/enum.js'
+import Resource from '@/lib/resource';
+import MInput from '../../base/input/MInput.vue';
+import MCombobox from '@/base/combobox/MCombobox.vue';
+import { ElNotification } from 'element-plus';
+import ToastMessageValid from '../toast/ToastMessageValid.vue';
+import ToastMessageException from '../toast/ToastMessageException.vue';
 
 
 
 export default {
-    name:'PropertyDetail',
+    name: 'PropertyDetail',
     components: {
         ToastMessageAdd,
-        ToastMessageEdit
+        ToastMessageEdit,
+        MInput,
+        MCombobox,
+        ToastMessageValid,
+        ToastMessageException
     },
 
-    /**
-     * porps được truyền vào của PropertyList
-     */
     props: ['isShowDialog', 'propertyIDSelected', 'checkTitleForm'],
 
-    /**
-     * created
-     */
-    created() {
+    computed: {
+        /**
+         * Hàm tính giá trị hao mòn
+         * Author NVHThai (27/09/2022)
+         */
+        lossYear: function () {
+            try {
+                let depreciationRate = this.property.depreciation_rate;
+                if (this.property.cost != 0 && !isNaN(this.property.cost)) {
+                    let cost = this.property.cost;
 
-        //lấy dữ liệu ngày tháng hiện tại cho form
-        this.formartDate();
+                    let lossYear = cost * depreciationRate / 100;
+                    return lossYear.toFixed(0);
+                }
+                else if (isNaN(this.property.cost)
+                ) {
+                    let cost = this.property.cost;
+                    let cost1 = cost.replace(/[^0-9]/g, '');
+                    let lossYear = cost1 * depreciationRate / 100;
+                    return lossYear.toFixed(0);
 
-        // lấy dữ liệu từ api cho cbx 
-        this.getDataDepartment();
+                }
+            } catch (error) {
+                return 0;
+            }
+            return 0;
+        },
 
-        this.getDataPosition();
+
     },
-
+    updated() {
+        this.formartDate();
+    },
     mounted() {
-        console.log(2);
-        //focus vào thẻ đầu tiên
+
+        /**
+         * focus vào thẻ đầu tiên
+         * Author: NVHThai (09/09/2022)
+         */
+
         this.$nextTick(function () {
-            this.$refs.propertycode.focus()
+            this.$refs.propertycode.focus();
         })
 
-        // check form mode
-        if (this.checkTitleForm == Enum.FormMode.Add){
+        /**
+         * Kiểm tra formMode đầu vào
+         * Author: NVHThai (09/09/2022)
+         */
+        if (this.checkTitleForm == Enum.FormMode.Add) {
             this.checkToastAdd = this.checkTitleForm;
-            this.titleForm = Enum.FormModeTitle.Add;
-        } else if(this.checkTitleForm == Enum.FormMode.Edit){
+            this.titleForm = Resource.FormModeTitle.Add;
+        } else if (this.checkTitleForm == Enum.FormMode.Edit) {
             this.checkToastAdd = this.checkTitleForm;
-            this.titleForm = Enum.FormModeTitle.Edit;
+            this.titleForm = Resource.FormModeTitle.Edit;
         }
-        else if(this.checkTitleForm == Enum.FormMode.Duplicate){
+        else if (this.checkTitleForm == Enum.FormMode.Duplicate) {
             this.checkToastAdd = this.checkTitleForm;
-            this.titleForm = Enum.FormModeTitle.Duplicate;
+            this.titleForm = Resource.FormModeTitle.Duplicate;
         }
 
 
-        // lấy dữ liệu 
-        if (this.propertyIDSelected && this.checkTitleForm == Enum.FormMode.Edit) {
-            try {
-                this.getApiPropertyByID(this.propertyIDSelected)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        else if(this.propertyIDSelected && this.checkTitleForm == Enum.FormMode.Duplicate){
-            try {
-                this.getApiPropertyByID(this.propertyIDSelected);
+        /**
+         * Lấy dữ liệu
+         * Author: NVHThai (09/09/2022)
+         */
 
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        else {
-            this.property = {};
-            this.getApiPropertyMaxCode();
-        }
-    },
 
-    /**
-     * Validate dữ liệu
-     * Author: NVHThai (10/09/2022)
-     */
-    updated() {
-        if (this.property.employeesCode) {
-            this.borderRedPropertyCode = false;
-        }
-        if (this.property.employeesName) {
-            this.borderRedPropertyName = false;
+        switch (this.checkTitleForm) {
+            case Enum.FormMode.Edit:
+                if (this.propertyIDSelected) {
+                    this.getApiPropertyByID(this.propertyIDSelected);
+                }
+                break;
+            case Enum.FormMode.Duplicate:
+                if (this.propertyIDSelected) {
+                    this.getApiPropertyByID(this.propertyIDSelected);
+                }
+                break;
+            case Enum.FormMode.Add:
+                this.property = {};
+                this.getApiPropertyMaxCode();
+                this.property.tracked_year = this.curYear;
+                this.property.cost = 0;
+                break;
+
         }
 
     },
+
 
 
     methods: {
         /**
-         * Hàm lấy dữ liệu mã tài sản lớn nhất
-         *
+         * Hàm nhập số tiền vào ô thì tự format số 
+         * Author: NVHThai (27/09/2022)
          */
-        getApiPropertyMaxCode(){
+        showValueCost() {
+            let cost = this.property.cost;
+            if (cost != 0) {
+                let tmpCost = cost.replace(/[^0-9]/g, '');
+                let showCost = this.formartNumber(tmpCost);
+                this.property.cost = showCost;
+            }
+        },
+        /**
+         * Hàm formart số  
+         * Author: NVHTHai (12/09/2022)
+         * @param {int} number 
+         */
+        formartNumber(number) {
+            if (number && !isNaN(number)) {
+                return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+            } else {
+                return number;
+            }
+        },
+        /**
+         * Hàm focus vào thẻ mong muốn 
+         * Author(24/09/2022)
+         */
+        focus() {
+            this.$nextTick(function () {
+                this.$refs.propertycode.focus();
+            })
+        },
+        /**
+         * Hàm lấy dữ liệu mã tài sản lớn nhất
+         * Author: NVHThai (19/09/2022)
+         */
+        getApiPropertyMaxCode() {
             let me = this;
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .get(`https://localhost:7285/api/v1/Employees/new-code`)
+                    .get(`https://localhost:44380/api/v1/Assets/new-code`)
                     .then((response) => {
-                        me.property.employeesCode = response.data;
+                        me.property.fixed_asset_code = response.data;
                     }).catch(error => {
                         console.log('Error: ', error)
                     });
@@ -309,19 +354,134 @@ export default {
          * Author: NVHThai (19/09/2022)
          * @param {*} propertyID 
          */
-        getApiPropertyByID(propertyID){
+        getApiPropertyByID(propertyID) {
             let me = this;
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .get(`https://localhost:7285/api/v1/Employees/${propertyID}`)
+                    .get(`https://localhost:44380/api/v1/Assets/${propertyID}`)
                     .then((response) => {
                         me.property = response.data;
+
+                        // Lấy mã tài sản lớn nhất nếu là form nhân bản còn sửa thì không
+                        if (me.checkTitleForm == Enum.FormMode.Duplicate) {
+                            me.getApiPropertyMaxCode();
+                        }
+
                     }).catch(error => {
                         console.log('Error: ', error)
                     });
             } catch (error) {
                 console.log(error);
+            }
+        },
+
+        /**
+         * Thêm 1 bản ghi vào bảng tài sản
+         * Author: NVHThai (25/09/2022)
+         * @param {*} property 
+         */
+        postApiProperty() {
+            let me = this;
+            try {
+                // gọi api để lấy dữ liệu sử dụng axios
+                axios
+                    .post(`https://localhost:44380/api/v1/Assets`, me.property)
+                    .then((response) => {
+                        if (response.status == Enum.StatusCode.CREATED) {
+
+                            //đóng form add
+                            this.btnDetroyToastAttentionAddOnclick();
+
+                            // tải lại dữ liệu
+                            this.$parent.getDataAPI();
+
+                            // hiện thông báo thêm thành công
+                            ElNotification({
+                                duration: 1500,
+                                message: "Lưu dữ liệu thành công",
+                                position: 'bottom-right',
+                                type: 'success',
+                            })
+                        }
+                    }).catch(response => {
+                        console.log('response: ', response.response.status);
+                        me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
+        /**
+         * Sửa 1 bản ghi vào bảng tài sản
+         * Author: NVHThai (26/09/2022)
+         * @param {Obj} property: 1 đối tượng chứa thông tin tài sản
+         */
+        putApiProperty() {
+            let me = this;
+            try {
+                // gọi api để lấy dữ liệu sử dụng axios
+                axios
+                    .put(`https://localhost:44380/api/v1/Assets/${me.propertyIDSelected}`, me.property)
+                    .then((response) => {
+                        if (response.status == Enum.StatusCode.CREATED) {
+
+                            //đóng form add
+                            this.btnDetroyToastAttentionAddOnclick();
+
+                            // tải lại dữ liệu
+                            this.$parent.getDataAPI();
+
+                            // hiện thông báo thêm thành công
+                            ElNotification({
+                                duration: 1500,
+                                message: "Lưu dữ liệu thành công",
+                                position: 'bottom-right',
+                                type: 'success',
+                            })
+                        }
+                    }).catch(response => {
+                        console.log('response: ', response.response.status);
+                        me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
+        /**
+         * Hàm xử lý exception gửi về từ backend hiện ra cho người dùng
+         * Author: NVHThai(26/09/2022)
+         * @param {int} status: trạng thái bên backend trả về 
+         * @param {arr} moreInfo: Mảng các lỗi do người dùng nhập thiếu từ backend trả về 
+         * @param {string} userMsg: Lỗi từ backend trả về hiển thị cho người dùng 
+         */
+        handleException(status, moreInfo, userMsg) {
+            switch (status) {
+                case Enum.StatusCode.BADREQUEST:
+                    this.moreInfo = moreInfo;
+                    this.titleFormValid = userMsg;
+                    this.isShowDialogToastValid = true;
+                    break;
+                case Enum.StatusCode.FORBIDDEN:
+                    this.titleFormException = Resource.TitleException.FORBIDDEN;
+                    this.isShowDialogToastException = true;
+                    break;
+                case Enum.StatusCode.NOTFOUND:
+                    this.titleFormException = Resource.TitleException.NOTFOUND;
+                    this.isShowDialogToastException = true;
+                    break;
+                case Enum.StatusCode.UNAUTHORIZED:
+                    this.titleFormException = Resource.TitleException.UNAUTHORIZED;
+                    this.isShowDialogToastException = true;
+                    break;
+                case Enum.StatusCode.NTERNALSERVERERROR:
+                    this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
+                    this.isShowDialogToastException = true;
+                    break;
             }
         },
 
@@ -333,10 +493,10 @@ export default {
             if (this.checkTitleForm == Enum.FormMode.Add) {
                 this.isShowToastAdd = true;
             }
-            else if(this.checkTitleForm == Enum.FormMode.Edit) {
+            else if (this.checkTitleForm == Enum.FormMode.Edit) {
                 this.isShowToastEdit = true;
             }
-            else if(this.checkTitleForm == Enum.FormMode.Duplicate) {
+            else if (this.checkTitleForm == Enum.FormMode.Duplicate) {
                 this.isShowToastEdit = true;
             }
         },
@@ -348,6 +508,24 @@ export default {
         btnCloseToastAttentionAddOnclick() {
             this.isShowToastAdd = false;
         },
+
+
+        /**
+         *  Hàm đóng popup nếu click vào nút hủy trên toast message valid
+         *  Author: NVHThai (26/09/2022)
+         */
+        closeToastValid() {
+            this.isShowDialogToastValid = false;
+        },
+
+        /**
+         *  Hàm đóng popup nếu click vào nút hủy trên toast message Exception
+         *  Author: NVHThai (26/09/2022)
+         */
+        closeToastException() {
+            this.isShowDialogToastException = false;
+        },
+
 
 
 
@@ -386,65 +564,21 @@ export default {
          * @param {*} check 
          */
         onclickStepLossRate(check) {
-            let me = this;
             switch (check) {
                 case 0:
-                    me.valueLossRate = me.valueLossRate + 1;
+                    this.property.life_time = parseInt(this.property.life_time) + 1;
+                    this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
                     break;
                 case 1:
-                    if (me.valueLossRate < 1) {
+                    if (this.property.life_time < 1) {
                         break;
                     } else {
-                        me.valueLossRate = me.valueLossRate - 1;
+                        this.property.life_time = parseInt(this.property.life_time) - 1;
+                        this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
                         break;
                     }
             }
         },
-
-
-
-        /**
-         * Author: nvhthai (01/09/2022)
-         * Lấy dữ liệu bảng phòng ban
-         */
-        getDataDepartment() {
-            let me = this;
-            try {
-                // gọi api để lấy dữ liệu sử dụng axios
-                axios
-                    .get("https://localhost:7285/api/Departments")
-                    .then((response) => {
-                        me.departments = response.data;
-                    }).catch(error => {
-                        console.log('Error: ', error)
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        /**
-         * Author: nvhthai (01/09/2022)
-         * Lấy dữ liệu bảng vị trí: sau này là mã loại tài sản
-         */
-         getDataPosition() {
-            let me = this;
-            try {
-                // gọi api để lấy dữ liệu sử dụng axios
-                axios
-                    .get("https://localhost:7285/api/v1/Positions")
-                    .then((response) => {
-                        me.positions = response.data;
-                        console.log(me.positions);
-                    }).catch(error => {
-                        console.log('Error: ', error)
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-
 
 
         /**
@@ -453,22 +587,21 @@ export default {
          * @param {*} check 
          */
         onclickStepAmount(check) {
-            let me = this;
             switch (check) {
                 case 0:
-                    me.valueAmount = me.valueAmount + 1;
+                    this.property.quantity = parseInt(this.property.quantity) + 1;
+                    this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
                     break;
                 case 1:
-                    if (me.valueAmount < 1) {
+                    if (this.property.quantity < 1) {
                         break;
                     } else {
-                        me.valueAmount = me.valueAmount - 1;
+                        this.property.quantity = parseInt(this.property.quantity) - 1;
+                        this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
                         break;
                     }
             }
         },
-
-
 
 
         /**
@@ -483,8 +616,14 @@ export default {
             month = month < 10 ? `0${month}` : day;
             let fullYear = curDate.getFullYear();
 
-            this.curDate = `${fullYear}-${month}-${day}`;
-            this.curYear = fullYear;
+            console.log(2);
+            if (this.checkTitleForm == Enum.FormMode.Add) {
+            
+                this.property.purchase_date = `${fullYear}-${month}-${day}`;
+                this.property.production_date = `${fullYear}-${month}-${day}`;
+                this.curYear = fullYear;
+            }
+           
         },
 
 
@@ -492,15 +631,15 @@ export default {
          * Hàm click vào thì nội dung cbx hiện ra
          *  Author: NVHThai (08/09/2022)
          */
-         btnOpenShowComboboxDepartment() {
+        btnOpenShowComboboxDepartment() {
             this.isShowmComboboxContentDepartment = !this.isShowmComboboxContentDepartment;
         },
 
-         /**
-         * Hàm click vào thì nội dung cbx hiện ra
-         *  Author: NVHThai (08/09/2022)
-         */
-         btnOpenShowComboboxAssetType() {
+        /**
+        * Hàm click vào thì nội dung cbx hiện ra
+        *  Author: NVHThai (08/09/2022)
+        */
+        btnOpenShowComboboxAssetType() {
             this.isShowmComboboxContentAssetType = !this.isShowmComboboxContentAssetType;
         },
 
@@ -514,55 +653,73 @@ export default {
             this.isShowmComboboxContentAssetType = false;
         },
 
-        onClickCbbDepartment(department){
+        onClickCbbDepartment(department) {
             this.departmentName = department;
             this.isShowmComboboxContentDepartment = false;
         },
 
 
+
+
         /**
-         * Blur check rỗng trong form nhập
-         * 
+         * Hàm xử lý dữ liệu đầu vào
+         * Author: NVHThai (26/09/2022)
          */
-        inputValidateOnblur(formModeValidate) {
-            if (!this.property.employeesCode && formModeValidate == Enum.Validate.PropertyCode) {
-                this.borderRedPropertyCode = true;
-            }
-            if (!this.property.employeesName && formModeValidate == Enum.Validate.PropertyName) {
-                this.borderRedPropertyName = true;
-            }
-            if (!this.property.employeesName && formModeValidate == Enum.Validate.DepartmentCode) {
-                this.borderRedDepartmentCode = true;
-            }
-            if (!this.property.employeesName && formModeValidate == Enum.Validate.DepartmentCode) {
-                this.borderRedPropertyCodeType = true;
-            }
+        handleInsertData() {
             
+            if (!isNaN(this.property.cost)) {
+                this.property.cost = parseFloat(this.property.cost);
+            }
+            else {
+                this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ''));
+            }
+            this.property.quantity = parseInt(this.property.quantity);
+            this.property.life_time = parseInt(this.property.life_time);
+            if (this.property.depreciation_rate != null) {
+                this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+            }
         },
 
-       
 
         /**
          * Hàm lưu form
          * Author: NVHThai (14/09/2022)
          */
-
         btnSaveFormOnclick() {
-            console.log(this.property);
+
+            switch (this.checkTitleForm) {
+                case Enum.FormMode.Add:
+                    this.handleInsertData();
+                    this.postApiProperty();
+                    break;
+                case Enum.FormMode.Edit:
+                    this.handleInsertData();
+                    this.putApiProperty();
+                    break;
+                case Enum.FormMode.Duplicate:
+                    this.handleInsertData();
+                    this.postApiProperty();
+                    break;
+            }
+
         },
 
-        /**
-         * hàm khi blur ra khỏi combobox thì content cbb sẽ ẩn
-         * Author: NVHThai (14/09/2022)
-         */
-        //  hideContentCbbBlur(){
-        //     this.isShowmComboboxContent = false;
-        //  }
     },
 
 
     data() {
         return {
+            num: 1,
+            // biến show khi backend trả về lỗi 401,404,500
+            isShowDialogToastException: false,
+            // biến show khi backend trả về lỗi 400
+            isShowDialogToastValid: false,
+            // title của toast validate
+            titleFormValid: null,
+            // title của toast validate
+            titleFormException: null,
+            //kiểm tra nút lưu
+            FormModeCheck: null,
             // show form sau khi hủy form thêm tài sản
             isShowToastAdd: false,
             // show form sau khi hủy form sửa tài sản
@@ -575,29 +732,35 @@ export default {
             valueLossRate: 0,
 
             //ngày hiện tại
-            curDate: null,
-
+            productionDate: null,
+            purchaseDate: null,
             //năm hiện tại
             curYear: null,
+
+            moreInfo: [],
 
             //tài sản
             property: {},
             // mã loại tài sản
-            positions:{},
+            positions: {},
             //ẩn hiện cbxx
             isShowmComboboxContentAssetType: false,
             isShowmComboboxContentDepartment: false,
 
             //title form
-            titleForm: 'Thêm tài sản',
+            titleForm: Resource.FormModeTitle.Add,
 
             //
-            borderRedPropertyCode: false,
-            borderRedPropertyName: false,
-            borderRedDepartmentCode: false,
-            borderRedPropertyCodeType: false,
+            urlCategoryAsset: Resource.Url.CategoryAsset,
+            urlDepartment: Resource.Url.Department,
 
-
+            //
+            ItemCodeCategoryAsset: Resource.ItemCode.ItemCodeCategoryAsset,
+            ItemIDCategoryAsset: Resource.ItemID.ItemIDCategoryAsset,
+            ItemCodeDepartment: Resource.ItemCode.ItemCodeDepartment,
+            ItemIDDepartment: Resource.ItemID.ItemIDDepartment,
+            ItemNameDepartment: Resource.ItemName.ItemNameDepartment,
+            ItemNameCategoryAsset: Resource.ItemName.ItemNameCategoryAsset,
 
         }
     },
@@ -605,5 +768,5 @@ export default {
 </script>
 
 <style scoped>
-@import url(../../css/details/propertydetail.css)
+@import url(../../css/details/propertydetail.css);
 </style>

@@ -65,7 +65,6 @@
     position: absolute;
     width: calc(100% - 16px);
     height: calc(100% - 16px);
-    /* background-color: aqua; */
     top: 8px;
     left: 8px;
     overflow-y: auto;
@@ -90,13 +89,12 @@
     display: flex;
     align-items: center;
     padding-left: 40px;
-    box-sizing: border-box;
     border-radius: 2.5px;
+    
 }
 .m-option-cbb-paging{
-    height: 20px;
+    height: 15px;
     width: 100%;
-    box-sizing: border-box;
     cursor: pointer;
     display: flex;
     align-items: center;

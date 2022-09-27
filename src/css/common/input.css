@@ -35,4 +35,6 @@ input[type=text]{
 
 .input__disable{
     background-color: #F5F5F5;
+    border: 1px solid #afafaf !important;
+
 }
