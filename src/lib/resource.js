@@ -25,6 +25,7 @@ export default {
         DeleteException:"Vui lòng chọn tài sản cần xóa",
         titleFormDelete:"Bạn có muốn xóa tài sản",
         titleFormDeletes:"tài sản đã được chọn. Bạn có muốn xóa các tài sản khỏi danh sách này không?",
+        TitleFormValidate: "Dữ liệu đầu vào không hợp lệ",
     },
 
     TitleException:{
@@ -38,6 +39,7 @@ export default {
     Url:{
         Department:"https://localhost:44380/api/v1/Department",
         CategoryAsset:"https://localhost:44380/api/v1/AssetCategory",
+        Asset:"https://localhost:44380/api/v1/Assets"
     },
     ItemName:{
         ItemNameDepartment: 'department_name',
@@ -50,7 +52,19 @@ export default {
     ItemID:{
         ItemIDDepartment: 'department_id',
         ItemIDCategoryAsset:'fixed_asset_category_id',
-    }
-    
+    },
 
+    MessageValidate:{
+        AssetCode:"Mã tài sản không được phép để trống",
+        AssetName:"Tên tài sản không được phép để trống",
+        DepartmentCode:"Mã bộ phận sử dụng không được phép để trống",
+        AssetCategoryCode:"Mã loại tài sản không được phép để trống",
+        Quanlity:"Số lượng tài sản không được phép để trống",
+        Cost:"Nguyên giá không được phép để trống",
+        DepreciationRate:"Tỷ lệ hao mòn không được phép để trống",
+        LifeTime:"Số năm sử dụng không được phép để trống",
+        LossYear:"Giá trị hao mòn không được phép để trống",
+    },
+    
+    
 }

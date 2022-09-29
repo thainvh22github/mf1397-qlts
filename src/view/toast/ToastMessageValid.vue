@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="m-dialog-toast__attention--btn">
-                    <div class="btn btn__outline" @click="btnCloseToastnAddOnclick()">Đóng</div>
+                    <div class="btn" @click="btnCloseToastnAddOnclick()">Đóng</div>
                 </div>
             </div>
         </div>
@@ -31,6 +31,7 @@ export default {
          */
          btnCloseToastnAddOnclick() {
             this.$parent.closeToastValid();
+            this.$parent.deleteDataInMoreInfo();
         }
     },
 }
@@ -40,7 +41,6 @@ export default {
     @import url(../../css/details/toastdialog.css);
     .m-dialog-toast__attention-add{
         height: auto;
-        top: calc(50% - 200px);
     }
     .m-dialog-valid{
         margin-top: 24px;
@@ -51,7 +51,7 @@ export default {
     }
     .m-dialog-valid-list{
         width: 100%;
-        height: 36px;
+        height: 30px;
         display: flex;
         align-items: center;
     }

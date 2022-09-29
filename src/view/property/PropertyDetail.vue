@@ -43,7 +43,9 @@
                     </div>
                     <div class="m-positionname" style="width: calc(68% - 16px); margin-left: 16px;">
                         <div class="m-text">Tên bộ phận sử dụng</div>
-                        <el-tooltip :content="property.department_name" placement="top" show-after="400"
+                        <el-tooltip :content="property.department_name" 
+                        :disabled="property.department_name == null"
+                        placement="top" show-after="400"
                             effect="customized">
                             <m-input type="text" className="mt-8 w-100 input__disable m-input-positionname"
                                 v-model="property.department_name" readonly>
@@ -70,7 +72,7 @@
                         <div class="m-text">Tên loại tài sản</div>
 
                         <el-tooltip :content="property.fixed_asset_category_name" placement="top" show-after="400"
-                            effect="customized">
+                            effect="customized" :disabled="property.fixed_asset_category_name == null">
                             <m-input type="text" className="mt-8 w-100 input__disable m-input-propertynametype"
                                 v-model="property.fixed_asset_category_name" readonly>
                             </m-input>
@@ -83,7 +85,7 @@
                         <div class="m-text">Số lượng <span style="color: red;">*</span></div>
                         <div class="m-input-amount">
                             <m-input type="number" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
-                                style="text-align: right; padding-right: 40px;">
+                                style="text-align: right; padding-right: 40px;" @keydown="validateNumber($event)">
                             </m-input>
                             <div class="m-drop">
                                 <button class="btn__up" @click="onclickStepAmount(0)">
@@ -100,13 +102,17 @@
                     <div class="m-cost" style="width: 32%; margin-left: 16px;">
                         <div class="m-text">Nguyên giá <span style="color: red;">*</span></div>
                         <m-input type="text" className="mt-8 w-100 m-input-cost" :value="formartNumber(property.cost)"
-                            v-model="property.cost" tabindex="106" style="text-align: right;" @input="showValueCost">
+                            v-model="property.cost" tabindex="106" style="text-align: right;" @input="showValueCost()"
+                            @keydown="validateNumber($event)">
                         </m-input>
+
                     </div>
                     <div class="m-longevity" style="width: calc(36% - 32px); margin-left: 16px;">
                         <div class="m-text">Tỷ lệ hao mòn (%) <span style="color: red;">*</span></div>
                         <m-input type="text" className="mt-8 w-100 m-input-longevity"
-                            v-model="property.depreciation_rate" tabindex="107" style="text-align: right;"></m-input>
+                            v-model="property.depreciation_rate" tabindex="107" style="text-align: right;"
+                            @keydown="validateNumber($event)"
+                            ></m-input>
                     </div>
                 </div>
 
@@ -154,7 +160,7 @@
                     </div>
                     <div class="m-lossyear" style="width: 32%; margin-left: 16px;">
                         <div class="m-text">Giá trị hao mòn năm <span style="color: red;">*</span></div>
-                        <m-input type="text" className="mt-8 w-100 input__disable m-input-lossyear"
+                        <m-input type="text" className="mt-8 w-100 input m-input-lossyear"
                             :value="formartNumber(lossYear)" v-model="lossYear" tabindex="111"
                             style="text-align: right;"></m-input>
                     </div>
@@ -205,7 +211,7 @@ export default {
 
     computed: {
         /**
-         * Hàm tính giá trị hao mòn
+         * Hàm tự động tính giá trị hao mòn
          * Author NVHThai (27/09/2022)
          */
         lossYear: function () {
@@ -217,13 +223,11 @@ export default {
                     let lossYear = cost * depreciationRate / 100;
                     return lossYear.toFixed(0);
                 }
-                else if (isNaN(this.property.cost)
-                ) {
+                else if (isNaN(this.property.cost)) {
                     let cost = this.property.cost;
                     let cost1 = cost.replace(/[^0-9]/g, '');
                     let lossYear = cost1 * depreciationRate / 100;
                     return lossYear.toFixed(0);
-
                 }
             } catch (error) {
                 return 0;
@@ -235,6 +239,9 @@ export default {
     },
     updated() {
         this.formartDate();
+        this.validateMax();
+
+        // this.validateDetail();
     },
     mounted() {
 
@@ -242,7 +249,6 @@ export default {
          * focus vào thẻ đầu tiên
          * Author: NVHThai (09/09/2022)
          */
-
         this.$nextTick(function () {
             this.$refs.propertycode.focus();
         })
@@ -265,10 +271,9 @@ export default {
 
 
         /**
-         * Lấy dữ liệu
+         * check formmode để lấy dữ liệu vào form
          * Author: NVHThai (09/09/2022)
          */
-
 
         switch (this.checkTitleForm) {
             case Enum.FormMode.Edit:
@@ -284,28 +289,52 @@ export default {
             case Enum.FormMode.Add:
                 this.property = {};
                 this.getApiPropertyMaxCode();
-                this.property.tracked_year = this.curYear;
                 this.property.cost = 0;
                 break;
-
         }
 
     },
 
 
-
     methods: {
+
+        /**
+         * hàm xét tỷ lệ hao mòn không được lớn hơn 100 
+         * Author: NVHThai (28/09/2022)
+         */
+        validateMax() {
+            if (this.property.depreciation_rate > 100) {
+                this.property.depreciation_rate = 100;
+            }
+        },
+
+        
+
+        /**
+         * hàm validate dữ liệu đầu vào của thẻ input number
+         * @param {$event} e : sự kiện để lấy key code
+         */
+        validateNumber(e) {
+            if ((e.keyCode > 9 && e.keyCode < 37) || (e.keyCode > 40 && e.keyCode < 46) || e.keyCode == 47 || (e.keyCode > 57 && e.keyCode < 96) || e.keyCode > 105 || e.keyCode < 7) {
+                e.preventDefault();
+            }
+        },
+        
+        
         /**
          * Hàm nhập số tiền vào ô thì tự format số 
          * Author: NVHThai (27/09/2022)
          */
         showValueCost() {
+
             let cost = this.property.cost;
             if (cost != 0) {
                 let tmpCost = cost.replace(/[^0-9]/g, '');
                 let showCost = this.formartNumber(tmpCost);
                 this.property.cost = showCost;
             }
+
+
         },
         /**
          * Hàm formart số  
@@ -313,10 +342,14 @@ export default {
          * @param {int} number 
          */
         formartNumber(number) {
-            if (number && !isNaN(number)) {
-                return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
-            } else {
-                return number;
+            try {
+                if (number && !isNaN(number)) {
+                    return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+                } else {
+                    return number;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         /**
@@ -386,7 +419,7 @@ export default {
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .post(`https://localhost:44380/api/v1/Assets`, me.property)
+                    .post(Resource.Url.Asset, me.property)
                     .then((response) => {
                         if (response.status == Enum.StatusCode.CREATED) {
 
@@ -500,6 +533,10 @@ export default {
                 this.isShowToastEdit = true;
             }
         },
+
+
+
+
 
         /**
          *  Hàm đóng popup nếu click vào nút hủy trên toast message add
@@ -615,17 +652,12 @@ export default {
             let month = curDate.getMonth() + 1;
             month = month < 10 ? `0${month}` : day;
             let fullYear = curDate.getFullYear();
-
-            console.log(2);
             if (this.checkTitleForm == Enum.FormMode.Add) {
-            
                 this.property.purchase_date = `${fullYear}-${month}-${day}`;
                 this.property.production_date = `${fullYear}-${month}-${day}`;
-                this.curYear = fullYear;
+                this.property.tracked_year = fullYear;
             }
-           
         },
-
 
         /**
          * Hàm click vào thì nội dung cbx hiện ra
@@ -653,12 +685,15 @@ export default {
             this.isShowmComboboxContentAssetType = false;
         },
 
+        /**
+         * Hàm để hiển thị thông tin lên thẻ input ở cbx
+         * Author: NVHThai (08/09/2022)
+         * @param {string} department 
+         */
         onClickCbbDepartment(department) {
             this.departmentName = department;
             this.isShowmComboboxContentDepartment = false;
         },
-
-
 
 
         /**
@@ -666,7 +701,7 @@ export default {
          * Author: NVHThai (26/09/2022)
          */
         handleInsertData() {
-            
+
             if (!isNaN(this.property.cost)) {
                 this.property.cost = parseFloat(this.property.cost);
             }
@@ -681,27 +716,83 @@ export default {
         },
 
 
+        deleteDataInMoreInfo() {
+            this.moreInfo.splice(0, 100);
+        },
+
         /**
          * Hàm lưu form
          * Author: NVHThai (14/09/2022)
          */
         btnSaveFormOnclick() {
-
-            switch (this.checkTitleForm) {
-                case Enum.FormMode.Add:
-                    this.handleInsertData();
-                    this.postApiProperty();
-                    break;
-                case Enum.FormMode.Edit:
-                    this.handleInsertData();
-                    this.putApiProperty();
-                    break;
-                case Enum.FormMode.Duplicate:
-                    this.handleInsertData();
-                    this.postApiProperty();
-                    break;
+            this.validateEmpty();
+            if (this.checkValidate == true) {
+                switch (this.checkTitleForm) {
+                    case Enum.FormMode.Add:
+                        this.handleInsertData();
+                        this.postApiProperty();
+                        break;
+                    case Enum.FormMode.Edit:
+                        this.handleInsertData();
+                        this.putApiProperty();
+                        break;
+                    case Enum.FormMode.Duplicate:
+                        this.handleInsertData();
+                        this.postApiProperty();
+                        break;
+                }
             }
 
+        },
+
+        /**
+         * Validate dữ liệu xem trường nào null hoặc rỗng
+         * Author: NVHThai (28/09/2022)
+         */
+        validateEmpty() {
+
+            if (this.property.fixed_asset_code == null || this.property.fixed_asset_name == null || this.property.department_code == null ||
+                this.property.fixed_asset_category_code == null || this.property.quantity == null || this.property.cost == null ||
+                this.property.depreciation_rate == null || this.property.life_time == null || this.lossYear == null ||
+                this.property.fixed_asset_code == "" || this.property.fixed_asset_name == "" || this.property.department_code == "" ||
+                this.property.fixed_asset_category_code == "" || this.property.quantity == "" || this.property.cost == "" ||
+                this.property.depreciation_rate == "" || this.property.life_time == "" || this.lossYear == ""
+            ) {
+                this.isShowDialogToastValid = true;
+                this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+                this.checkValidate = false;
+            } else {
+                this.checkValidate = true;
+            }
+
+
+            if (this.property.fixed_asset_code == null || this.property.fixed_asset_code == "") {
+                this.moreInfo.push(Resource.MessageValidate.AssetCode);
+            }
+            if (this.property.fixed_asset_name == null || this.property.fixed_asset_name == "") {
+                this.moreInfo.push(Resource.MessageValidate.AssetName);
+            }
+            if (this.property.department_code == null || this.property.department_code == "") {
+                this.moreInfo.push(Resource.MessageValidate.DepartmentCode);
+            }
+            if (this.property.fixed_asset_category_code == null || this.property.fixed_asset_category_code == "") {
+                this.moreInfo.push(Resource.MessageValidate.AssetCategoryCode);
+            }
+            if (this.property.quantity == null || this.property.quantity == "") {
+                this.moreInfo.push(Resource.MessageValidate.Quanlity);
+            }
+            if (this.property.cost == null || this.property.cost == "") {
+                this.moreInfo.push(Resource.MessageValidate.Cost);
+            }
+            if (this.property.depreciation_rate == null || this.property.depreciation_rate == "") {
+                this.moreInfo.push(Resource.MessageValidate.DepreciationRate);
+            }
+            if (this.property.life_time == null || this.property.life_time == "") {
+                this.moreInfo.push(Resource.MessageValidate.LifeTime);
+            }
+            if (this.lossYear == null || this.property.null == "") {
+                this.moreInfo.push(Resource.MessageValidate.LossYear);
+            }
         },
 
     },
@@ -709,7 +800,7 @@ export default {
 
     data() {
         return {
-            num: 1,
+            checkValidate: false,
             // biến show khi backend trả về lỗi 401,404,500
             isShowDialogToastException: false,
             // biến show khi backend trả về lỗi 400

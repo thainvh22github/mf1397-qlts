@@ -74,21 +74,23 @@
                                         <span style="font-weight: 700;">HM/KH lũy kế</span>
                                     </el-tooltip>
                                 </th>
-                                <th style="width: 130px; color: #001031; padding-right: 5px;" class="text-rigth">Giá trị còn lại</th>
+                                <th style="width: 130px; color: #001031; padding-right: 5px;" class="text-rigth">Giá trị
+                                    còn lại</th>
                                 <th style="width: 100px; color: #001031;" class="text-center">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
 
 
-                            <tr @mousedown="selectedRow(property.fixed_asset_id)" 
-                            :class="[{active: filterCheckbox(property.fixed_asset_id)},{active:property.fixed_asset_id == tmpID}]"
+                            <tr @mousedown="selectedRow(property.fixed_asset_id)"
+                                :class="[{active: filterCheckbox(property.fixed_asset_id)},{active:property.fixed_asset_id == tmpID}]"
                                 v-for="(property, index) in propertys" :key="property.fixed_asset_id">
 
                                 <td style="width: 100px;height: 39px;" class="text-rigth m-boder-check">
                                     <div class="m-check">
                                         <input class="m-checkbox" type="checkbox" :value="property.fixed_asset_id"
-                                            v-model="checkboxList" @mousedown="getNameProperty(property.fixed_asset_code,property.fixed_asset_name)"/>
+                                            v-model="checkboxList"
+                                            @mousedown="getNameProperty(property.fixed_asset_code,property.fixed_asset_name)" />
                                     </div>
                                     <span class="ml-17 text-center">{{index+1}}</span>
                                 </td>
@@ -113,8 +115,10 @@
                                 </td>
                                 <td class="text-rigth">{{ formartNumber(property.quantity) }}</td>
                                 <td class="text-rigth">{{ formartNumber(property.cost) }}</td>
-                                <td class="text-rigth">{{ formartNumber(property.cost*property.depreciation_rate/100) }}</td>
-                                <td class="text-rigth">{{ formartNumber(property.cost-property.cost*property.depreciation_rate/100) }}</td>
+                                <td class="text-rigth">{{ formartNumber(property.cost*property.depreciation_rate/100) }}
+                                </td>
+                                <td class="text-rigth">{{
+                                formartNumber(property.cost-property.cost*property.depreciation_rate/100) }}</td>
                                 <td class="text-center">
                                     <el-tooltip :disabled="disabled" content="Sửa" placement="bottom" show-after="400"
                                         effect="customized">
@@ -142,14 +146,10 @@
                                     </div>
                                     <div class="m-combobox" style="margin-left: 15px;">
                                         <input type="text" class="combobox m-page" v-model="pageSize">
-                                        <el-tooltip :disabled="disabled" content="số lượng bản ghi trong 1 trang"
-                                            placement="top" show-after="400" effect="customized">
 
-                                            <button class="btn_combobox" @click="showCBBClick()"
-                                                @blur="hideContentCbbBlur">
-                                                <div class="m-icon-dropdown"></div>
-                                            </button>
-                                        </el-tooltip>
+                                        <button class="btn_combobox" @click="showCBBClick()" @blur="hideContentCbbBlur">
+                                            <div class="m-icon-dropdown"></div>
+                                        </button>
 
                                         <div class="m-combobox__content"
                                             style="bottom:100%; height: 65px;font-size: 11px; margin-bottom: 2px;"
@@ -177,9 +177,10 @@
                                             :class="{btnpagenaviactive: pageNumber==1}">
                                             <span>1</span>
                                         </button>
-                                        <button v-if="isShowNextPage" class="btn-pagenavi" @click="pageNumberClick(2)"
-                                            :class="{btnpagenaviactive: pageNumber==2}">
-                                            <span>2</span>
+                                        <button v-if="isShowNextPage" class="btn-pagenavi"
+                                            @click="pageNumberClick(page)"
+                                            :class="{btnpagenaviactive: pageNumber==page}">
+                                            <span>{{page}}</span>
                                         </button>
 
                                         <div class="ml-12" v-if="isShowThreeDot">...</div>
@@ -234,11 +235,10 @@
             <PropertyDetail v-if="isShowDialog" :propertyIDSelected="propertyIDSelected"
                 :checkTitleForm="checkTitleForm" />
 
-            <ToastMessageException v-show="isShowToastException" :titleFormException="titleFormException"/>
-            <ToastMessageDelete 
-            :titleFormDelete="titleFormDelete"
-            :totalCountAsset="totalCountAsset"
-            :tmpPropertyCode="tmpPropertyCode" :tmpPropertyName="tmpPropertyName" :checkboxList="checkboxList" v-show="isDialogToastDelete" />
+            <ToastMessageException v-show="isShowToastException" :titleFormException="titleFormException" />
+            <ToastMessageDelete :titleFormDelete="titleFormDelete" :totalCountAsset="totalCountAsset"
+                :tmpPropertyCode="tmpPropertyCode" :tmpPropertyName="tmpPropertyName" :checkboxList="checkboxList"
+                v-show="isDialogToastDelete" />
             <ToastMessageDone :titleToastDone="titleToastDone" v-show="isShowToastDone" />
         </div>
         <LoadDing v-show="isShowLoading" />
@@ -262,14 +262,14 @@ export default {
     name: "PropertyList",
 
     components: {
-    PropertyDetail,
-    ToastMessageDelete,
-    ToastMessageDone,
-    LoadDing,
-    MInput,
-    MCombobox,
-    ToastMessageException
-},
+        PropertyDetail,
+        ToastMessageDelete,
+        ToastMessageDone,
+        LoadDing,
+        MInput,
+        MCombobox,
+        ToastMessageException
+    },
 
     /**
      * created
@@ -279,6 +279,9 @@ export default {
     },
 
     updated() {
+
+
+
         if (this.endPageNumber == 0 || this.endPageNumber == 1) {
             this.isShowThreeDot = false;
             this.isShowNextPage = false;
@@ -317,15 +320,16 @@ export default {
             }
         },
 
-        
+
     },
     watch: {
-     
+
         /**
          * Hàm theo dõi pageSize: nếu pageNumber thay đổi thì phải render lại dữ liệu trên table
          * Author: NVHTHai (19/09/2022)
          */
         pageSize: function () {
+            this.page = 2;
             this.getDataAPI();
         },
 
@@ -359,6 +363,8 @@ export default {
     },
 
     methods: {
+
+
         /**
         * Hàm blur thì sẽ ẩn form cbb
         * Author: NVHThai (14/09/2022)
@@ -385,14 +391,18 @@ export default {
 
 
         /**
-         *
-         *
-         *
+         * hàm tạo sự kiện cho nút prev trang ở paging, khi click vào sẽ đến trang trước đó
+         * Author: NVHTHai (19/09/2022)
+         * @param {int} pageNumber
          */
         pageNumberPrevClick(pageNumber) {
             if (pageNumber > 1) {
                 this.pageNumber = pageNumber - 1;
             }
+            if (pageNumber > 2) {
+                this.page = pageNumber - 1;
+            }
+
         },
 
         /**
@@ -403,6 +413,7 @@ export default {
         pageNumberNextClick(pageNumber) {
             if (pageNumber < this.endPageNumber) {
                 this.pageNumber = pageNumber + 1;
+                this.page = pageNumber + 1;
             }
         },
 
@@ -413,6 +424,12 @@ export default {
          */
         pageNumberClick(pageNumber) {
             this.pageNumber = pageNumber;
+            if (pageNumber == 1) {
+                this.page = 2;
+            }
+            if (pageNumber == this.endPageNumber) {
+                this.page = this.endPageNumber - 1;
+            }
 
         },
 
@@ -471,7 +488,7 @@ export default {
          *  Hàm đóng popup nếu click vào nút hủy trên toast message Exception
          *  Author: NVHThai (26/09/2022)
          */
-         closeToastException() {
+        closeToastException() {
             this.isShowToastException = false;
         },
 
@@ -480,24 +497,22 @@ export default {
          * Author: NVHThai (09/09/2022)
          */
         btnOpenToastDeleteOnclick() {
-            if(this.checkboxList.length == 1){
+            if (this.checkboxList.length == 1) {
                 this.totalCountAsset = 1;
                 this.isDialogToastDelete = true;
                 this.titleFormDelete = Resource.TitleToast.titleFormDelete;
             }
-            else if(this.checkboxList.length == 0){
+            else if (this.checkboxList.length == 0) {
                 this.totalCountAsset = 0;
                 this.isShowToastException = true;
                 this.titleFormException = Resource.TitleToast.DeleteException;
             }
-            else{
+            else {
                 this.totalCountAsset = this.checkboxList.length;
                 this.isDialogToastDelete = true;
                 this.titleFormDelete = Resource.TitleToast.titleFormDeletes;
-                
-            }
 
-            // console.log(this.checkboxList);
+            }
         },
 
 
@@ -522,7 +537,7 @@ export default {
                 this.isShowLoading = true;
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .get(`https://localhost:44380/api/v1/Assets/filter?keword=${this.keword}&assetCategoryID=${this.assetCategoryID}&departmentID=${this.departmentID}&limit=${this.pageSize}&offset=${this.pageNumber}`)
+                    .get(`${Resource.Url.Asset}/filter?keword=${this.keword}&assetCategoryID=${this.assetCategoryID}&departmentID=${this.departmentID}&limit=${this.pageSize}&offset=${this.pageNumber}`)
                     .then((response) => {
                         me.propertys = response.data.data;
                         me.totalCount = response.data.totalCount;
@@ -539,8 +554,9 @@ export default {
         },
 
         /**
-         * 
-         * @param {*} property 
+         * Hàm lấy id tài sản và hiện lên form chi tiết
+         * Author: NVHThai (09/09/2022)
+         * @param {guid} property: id tài sản 
          */
         editPropertyOnclick(property) {
             this.propertyIDSelected = property;
@@ -551,7 +567,7 @@ export default {
 
         /**
          * Author: nvhthai (31/08/2022)
-         * click vào thì mở form thêm tài sản
+         * click vào thì mở form thêm tài sản và reset id tài sản
          */
         btnOpenFormAddOnclick() {
             this.isShowDialog = true;
@@ -608,7 +624,7 @@ export default {
          * Author: NVHThai (24/09/2022)
          * @param {guid} value : id của tài sản 
          */
-        selectedRow(value){
+        selectedRow(value) {
             this.tmpID = value;
         },
 
@@ -617,26 +633,26 @@ export default {
          * @param {string} propertyCode: Mã tài sản
          * @param {string} propertyName: Tên tài sản
          */
-        getNameProperty(propertyCode, propertyName){
+        getNameProperty(propertyCode, propertyName) {
             this.tmpPropertyCode = propertyCode;
             this.tmpPropertyName = propertyName;
-        },  
+        },
 
     },
     data() {
         return {
             //tổng số bản ghi đc chọn
-            totalCountAsset:null,
+            totalCountAsset: null,
             //tiêu đề popup exception
-            titleFormException:null,
+            titleFormException: null,
             // Mã tài sản lưu tạm
-            tmpPropertyCode:null,
+            tmpPropertyCode: null,
 
             //tên tài sản lưu tạm
-            tmpPropertyName:null,
+            tmpPropertyName: null,
 
             // id lưu tạm
-            tmpID:null,
+            tmpID: null,
 
             // titile của thông báo thành công
             titleToastDone: '',
@@ -657,12 +673,6 @@ export default {
             //Danh sách tài sản
             propertys: null,
 
-            //Danh sách phòng ban
-            departments: {},
-
-            // Danh sách vị trí: sau này là danh sách mã tài sản
-            positions: {},
-
             // Ẩn hiện form detail
             isShowDialog: false,
             // isShowmComboboxContent:true,
@@ -672,11 +682,6 @@ export default {
             // Ẩn hiện cbx phòng ban ỏ thanh toolbar
             isShowmComboboxContentAssetType: false,
 
-            // tên phòng ban
-            departmentName: 'Bộ phận sử dụng',
-
-            // tên vị trí: sau này tên mã loại tài sản
-            positionName: 'Loại tài sản',
             // chọn tất cả cbbx
             selectAll: true,
 
@@ -703,7 +708,7 @@ export default {
             // mảng để lưu id tài sản
             checkboxList: [],
 
-            
+
 
             // hiển thị tooltip ở cbb
             isShowTooltipDepartment: false,
@@ -715,24 +720,44 @@ export default {
             // số bản ghi trong dữ liệu
             totalCount: null,
 
-            //
+            // link api mã loại tài sản
             urlCategoryAsset: Resource.Url.CategoryAsset,
+
+            //link api phòng ban
             urlDepartment: Resource.Url.Department,
 
-            //
+            // mã tài sản
             ItemCodeCategoryAsset: Resource.ItemCode.ItemCodeCategoryAsset,
+
+            //id tài sản
             ItemIDCategoryAsset: Resource.ItemID.ItemIDCategoryAsset,
+
+            //mã phòng ban
             ItemCodeDepartment: Resource.ItemCode.ItemCodeDepartment,
+
+            // id phòng ban
             ItemIDDepartment: Resource.ItemID.ItemIDDepartment,
+
+            // tên phòng ban
             ItemNameDepartment: Resource.ItemName.ItemNameDepartment,
+
+            // tên mã loại tài sản
             ItemNameCategoryAsset: Resource.ItemName.ItemNameCategoryAsset,
-            //
+
+            // biến để show chỗ phân trang
             isShowThreeDot: true, isShowNextPage: true, isShowEndPage: true,
 
+            // id của mã loại tài sản
             IDCategoryAsset: null,
+
+            //id phòng ban
             IDDepartment: null,
 
+            // biến show popup exception
             isShowToastException: false,
+
+            //page hiện tại
+            page: 2,
         };
 
     },

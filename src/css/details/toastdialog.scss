@@ -1,28 +1,17 @@
-.isDialogToastAttentionAdd{
-    display: block !important;
-}
-.isDialogToastAttentionEdit{
-    display: block !important;
-}
-.isDialogToastAttentionDelete{
-    display: block !important;
-}
+
 .m-dialog-toast-attention-add{
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.55);
     width: 100vw;
     height: 100vh;
     z-index: 3;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     .m-dialog-toast__attention-add {
         position: absolute;
-        top: calc(50% - 85px);
-        left: calc(50% - 200px);
         width: 400px;
         height: 170px;
         background-color: #fff;

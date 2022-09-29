@@ -1,6 +1,7 @@
 <template>
     <div class="m-combobox" :class="css" >
-        <el-tooltip :content="nameInputs" placement="top" show-after="400" effect="customized">
+        <el-tooltip :content="nameInputs" placement="top" show-after="400" effect="customized"
+         :disabled="nameInputs == null">
             <input :type="type" class="combobox" :class="[className, {borderred: borderRed}]" :placeholder="placeholder"
                 :value="nameInputs" :tabindex="tabindex" @click="btnOpenShowCombobox"
                 @blur="validateInputBlur(nameInputs)">
