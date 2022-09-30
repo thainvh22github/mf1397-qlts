@@ -1,5 +1,5 @@
 <template>
-    <div class="m-dialog" @keyup.esc="btnCloseFormOnclick">
+    <div class="m-dialog">
         <div id="formadd" class="m-form-add">
             <div class="m-form-add__detail">
                 <div class="m-form-add__header">
@@ -238,6 +238,18 @@ export default {
 
     },
     updated() {
+        /**
+         * Hàm lắng nghe sự kiện của bàn phím khi click vào nút insert
+         * Author NVHThai(29/09/2022)
+         */
+        //  let me = this;
+        document.addEventListener('keyup', function(event){
+            if(event.code == "Escape"){
+               console.log(2);                
+            }
+        });
+
+
         this.formartDate();
         this.validateMax();
 
@@ -370,7 +382,7 @@ export default {
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .get(`https://localhost:44380/api/v1/Assets/new-code`)
+                    .get(`https://localhost:7242/api/v1/Assets/new-code`)
                     .then((response) => {
                         me.property.fixed_asset_code = response.data;
                     }).catch(error => {
@@ -392,7 +404,7 @@ export default {
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .get(`https://localhost:44380/api/v1/Assets/${propertyID}`)
+                    .get(`https://localhost:7242/api/v1/Assets/${propertyID}`)
                     .then((response) => {
                         me.property = response.data;
 
@@ -457,7 +469,7 @@ export default {
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .put(`https://localhost:44380/api/v1/Assets/${me.propertyIDSelected}`, me.property)
+                    .put(`https://localhost:7242/api/v1/Assets/${me.propertyIDSelected}`, me.property)
                     .then((response) => {
                         if (response.status == Enum.StatusCode.CREATED) {
 

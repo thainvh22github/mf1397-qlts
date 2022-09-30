@@ -280,7 +280,16 @@ export default {
 
     updated() {
 
-
+        /**
+         * Hàm lắng nghe sự kiện của bàn phím khi click vào nút insert
+         * Author NVHThai(29/09/2022)
+         */
+        let me = this;
+        document.addEventListener('keyup', function(event){
+            if(event.code == "Insert"){
+                me.isShowDialog = true;                
+            }
+        });
 
         if (this.endPageNumber == 0 || this.endPageNumber == 1) {
             this.isShowThreeDot = false;

@@ -37,9 +37,9 @@ export default {
     },
 
     Url:{
-        Department:"https://localhost:44380/api/v1/Department",
-        CategoryAsset:"https://localhost:44380/api/v1/AssetCategory",
-        Asset:"https://localhost:44380/api/v1/Assets"
+        Department:"https://localhost:7242/api/v1/Department",
+        CategoryAsset:"https://localhost:7242/api/v1/AssetCategory",
+        Asset:"https://localhost:7242/api/v1/Assets"
     },
     ItemName:{
         ItemNameDepartment: 'department_name',

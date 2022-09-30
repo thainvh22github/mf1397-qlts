@@ -88,7 +88,7 @@ export default {
             try {
                 // gọi api để lấy dữ liệu sử dụng axios
                 axios
-                    .delete(`https://localhost:44380/api/v1/Assets/${propertyID}`)
+                    .delete(`https://localhost:7242/api/v1/Assets/${propertyID}`)
                     .then(() => {
                         //tải lại trang
                         me.$parent.getDataAPI();

@@ -4,7 +4,8 @@
          :disabled="nameInputs == null">
             <input :type="type" class="combobox" :class="[className, {borderred: borderRed}]" :placeholder="placeholder"
                 :value="nameInputs" :tabindex="tabindex" @click="btnOpenShowCombobox"
-                @blur="validateInputBlur(nameInputs)">
+                @blur="validateInputBlur(nameInputs)"
+                @keydown.enter="btnOpenShowCombobox">
         </el-tooltip>
         <button class="btn_combobox" @click="btnOpenShowCombobox" @blur=hideContentCbbBlur()>
             <div class="m-icon-dropdown"></div>
