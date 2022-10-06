@@ -1,15 +1,14 @@
 <template>
-    <input :type="type" class="input" :class="[className, {borderred: borderRed}]" :placeholder="placeholder"
-        :tabindex="tabindex" :value="modelValue" @input="(event)=> $emit('update:modelValue',event.target.value)"
-        @blur="validateInputBlur()"
-        :style="style"
-        >
+        <input :type="type" class="input" :class="[className, {borderred: borderRed}]" :placeholder="placeholder"
+            :tabindex="tabindex" :value="modelValue" @input="(event)=> $emit('update:modelValue',event.target.value)"
+            @blur="validateInputBlur()" :style="style">
+    
 </template>
 
 <script>
 export default {
     name: "MInput",
-    props: ['type', 'className', 'placeholder', 'tabindex', 'modelValue', 'style'],
+    props: ['type', 'className', 'placeholder', 'tabindex', 'modelValue', 'style', 'checkInputValidate', 'message', 'thai'],
 
     updated() {
         /**
@@ -20,24 +19,43 @@ export default {
             this.borderRed = false;
         }
     },
+    watch: {
+
+        /**
+         * Hàm theo dõi khi mà click vào nút lưu thì validate dữ liệu
+         * @param {boolean} value: nếu value là true thì đã ấn lưu
+         * Author: NVHThai (30/09/2022) 
+         */
+        checkInputValidate: function (value) {
+            if (value == true && this.modelValue != "0") {
+                if (this.modelValue == null || this.modelValue == "") {
+                    this.borderRed = true;
+                }
+            }
+
+        }
+    },
     methods: {
         /**
         * validate dữ liệu
         * Author: NVHThai (21/09/2022)
         */
-        validateInputBlur(){
-            this.borderRed = true;
+        validateInputBlur() {
+            if (this.modelValue != "0") {
+                if (this.modelValue == null || this.modelValue == "") {
+                    this.borderRed = true;
+                }
+            }
         }
     },
-   
+
     data() {
         return {
-            borderRed:false
+            borderRed: false,
         }
     },
 }
 </script>
 
 <style scoped>
-
 </style>

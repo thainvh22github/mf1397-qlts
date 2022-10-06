@@ -102,6 +102,8 @@
 }
 .btn__sub:focus{
     outline: 3px solid #D1EDF4;
+    background-color: #D1EDF4;
+
 }
 
 /* .btn-x:hover{

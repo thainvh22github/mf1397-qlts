@@ -7,10 +7,11 @@
                         này?</span>
                 </div>
 
-                <div class="m-dialog-toast__attention--btn">
-                    <div class="btn btn__outline" v-on:click="btnDetroyToastEdit()">Hủy bỏ</div>
-                    <div class="ml-8 btn btn__sub" v-on:click="btnNotSaveToastEdit()">Không lưu</div>
-                    <div class="ml-8 btn" v-on:click="btnSaveToastEdit()">Lưu</div>
+                <div id="content-btn" class="m-dialog-toast__attention--btn">
+                    <div id="btnTmp" tabindex="301"></div>
+                    <div class="btn btn__outline" id="btnClose" tabindex="301" @keydown.enter="btnDetroyToastEdit()" v-on:click="btnDetroyToastEdit()">Hủy bỏ</div>
+                    <div class="ml-8 btn btn__sub" tabindex="302" @keydown.enter="btnNotSaveToastEdit()" v-on:click="btnNotSaveToastEdit()">Không lưu</div>
+                    <div class="ml-8 btn" tabindex="303" @keydown.enter="btnSaveToastEdit()" @keydown.tab="loopTabIndex" v-on:click="btnSaveToastEdit()">Lưu</div>
                 </div>
             </div>
         </div>
@@ -24,8 +25,18 @@ export default {
 
     name: "ToastMessageEdit",
     props: ['checkTitleForm'],
-
+    mounted() {
+        document.getElementById("btnClose").focus();
+    },
     methods: {
+        /**
+         * Focus vòng tròn để không ra khỏi component
+         * Author: NVHThai (05/10/2022)
+         */
+        loopTabIndex(){
+            document.getElementById("btnTmp").focus();
+        },
+
         /**
          * click vào nút hủy bỏ trong toast thì đóng cả form add và toast  
          * Author: NVHThai (19/09/2022)

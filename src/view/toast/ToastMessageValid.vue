@@ -1,7 +1,7 @@
 <template>
     <div class="m-toast-main">
-        <div class="m-dialog-toast-attention-add">
-            <div class="m-dialog-toast__attention-add">
+        <div class="m-dialog-toast-attention-validate">
+            <div class="m-dialog-toast__attention-validate">
                 <div class="m-dialog-toast__attention--content">
                     <span>{{titleFormValid}}</span>
                 </div>  
@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="m-dialog-toast__attention--btn">
-                    <div class="btn" @click="btnCloseToastnAddOnclick()">Đóng</div>
+                    <div id="btnClose" tabindex="203" @keydown="btnCloseToastnAddOnclick" class="btn" @click="btnCloseToastnAddOnclick()">Đóng</div>
                 </div>
             </div>
         </div>
@@ -21,7 +21,10 @@
 <script>
 export default {
     name: "ToastMessageAdd",
-    props: ['moreInfo','titleFormValid'],
+    props: ['moreInfo','titleFormValid','checkInputValidate'],
+    mounted() {
+        document.getElementById("btnClose").focus();
+    },
 
 
     methods: {
@@ -29,9 +32,11 @@ export default {
          * Hàm đóng popup nhưng vẫn giữ lại form add để tiếp tục nhập dữ liệu 
          * Author: NVHThai (09/09/2022)
          */
-         btnCloseToastnAddOnclick() {
+        btnCloseToastnAddOnclick() {
             this.$parent.closeToastValid();
             this.$parent.deleteDataInMoreInfo();
+            this.$parent.inputFocus();
+            this.$parent.changeCheckInputValidate();
         }
     },
 }

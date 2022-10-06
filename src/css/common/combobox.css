@@ -70,12 +70,12 @@
     overflow-y: auto;
 }
 .m-combobox ::-webkit-scrollbar{
+    display: block !important;
     width: 8px;
 }
 .m-combobox ::-webkit-scrollbar-thumb {
     background: #9E9E9E;
     border-radius: 4px; 
-    
 }
 .m-combobox{
     position: relative;
@@ -116,6 +116,15 @@
     background-size: 18px 18px;
     background-repeat: no-repeat;
     background-position: 5px center;
+}
+
+.m-option-cbb:focus{
+    background-color: #C7E0F5;
+    background-image: url(../../assets/icon/icons8-v-24.png);
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    outline: none;
 }
 .m-icon-dropdown{
     position: absolute;

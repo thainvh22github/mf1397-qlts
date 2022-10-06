@@ -1,17 +1,18 @@
 
 .m-dialog-toast-attention-add{
     position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.55);
     width: 100vw;
     height: 100vh;
     z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
     .m-dialog-toast__attention-add {
         position: absolute;
+        top: calc(50% - 85px);
+        left: calc(50% - 200px);
         width: 400px;
         height: 170px;
         background-color: #fff;
@@ -40,7 +41,48 @@
         }
     }
 }
+.m-dialog-toast-attention-validate{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .m-dialog-toast__attention-validate {
+        position: absolute;
+        width: 400px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-sizing: border-box;
 
+        .m-dialog-toast__attention--content{
+            width: calc(100% - 48px);
+            height: 37px;
+            margin-top: 40px;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+
+            span{
+                padding-left: 50px;
+            }
+        }
+
+
+        .m-dialog-toast__attention--btn{
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+        }
+    }
+}
 
 .m-dialog-toast-attention-edit{
     position: fixed;
