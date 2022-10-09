@@ -10,8 +10,11 @@
           </div>
         </div>
         <div class="m-dialog-toast__attention--btn">
-          <div class="btn btn__outline" @click="btnCloseToastDeleteOnclick()">Không</div>
-          <div class="ml-8 btn" @click="btnDelete()">Xóa</div>
+          <div tabindex="203" id="tmp"></div>
+          <div class="btn btn__outline" tabindex="204" id="btnClose" @keyup.enter="btnCloseToastDeleteOnclick()"
+            @click="btnCloseToastDeleteOnclick()">{{textBtnClose}}</div>
+          <div class="ml-8 btn" tabindex="205" @keydown="loopFocus()" @keyup.enter="btnDelete()" @click="btnDelete()">
+            {{textBtnDelete}}</div>
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@ export default {
     "tmpPropertyCode",
     "titleFormDelete",
     "totalCountAsset",
+    "assetIDContextDelete",
   ],
   computed: {
     /**
@@ -48,7 +52,7 @@ export default {
      * Author: NVHThai (27/09/2022)
      */
     ishow: function () {
-      if (this.totalCountAsset == 1) {
+      if (this.totalCountAsset == 1 || this.assetIDContextDelete) {
         return true;
       }
       return false;
@@ -65,14 +69,40 @@ export default {
       return false;
     },
   },
+  mounted() {
+    /**
+     * Focus vào btnClose khi mở form add
+     * Author: NVHThai
+     */
+    try {
+      document.getElementById("btnClose").focus();
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    /**
+      * Focus vòng tròn
+      * Author: NVHThai (09/10/2022)
+      */
+    loopFocus() {
+      try {
+        document.getElementById("tmp").focus();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     /**
      * Hàm click vào nút hủy thì popup delete đóng form pop up
      * Author: NVHThai (09/09/2022)
      */
-
     btnCloseToastDeleteOnclick() {
-      this.$parent.btnCloseToastDeleteOnclick();
+      try {
+        this.$parent.btnCloseToastDeleteOnclick();
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -80,24 +110,31 @@ export default {
      * Author: NVHThai
      */
     btnDelete() {
-      if (this.totalCountAsset == 1) {
-        this.deleteDataPropertyApi();
-      } else {
-        this.deleteMultiDataPropertyApi();
+      try {
+        if (this.assetIDContextDelete) {
+          this.deleteDataPropertyApi(this.assetIDContextDelete);
+        } else if (this.totalCountAsset == 1) {
+          let deleteID = this.checkboxList[0];
+          this.deleteDataPropertyApi(deleteID);
+        } else {
+          this.deleteMultiDataPropertyApi();
+        }
+        this.$parent.deleteDataInCheckboxList(); // xóa hết dữ liệu trong mảng
+      } catch (error) {
+        console.log(error);
       }
-      this.$parent.deleteDataInCheckboxList(); // xóa hết dữ liệu trong mảng
     },
 
     /**
      * Hàm xóa 1 tài sản
      * Author: NVHThai (20/09/2022)
      */
-    deleteDataPropertyApi() {
+    deleteDataPropertyApi(deleteID) {
       let me = this;
       try {
         // gọi api để lấy dữ liệu sử dụng axios
         axios
-          .delete(`${Resource.Url.Asset}/${me.checkboxList[0]}`)
+          .delete(`${Resource.Url.Asset}/${deleteID}`)
           .then(() => {
             //tải lại trang
             me.$parent.getDataAPI();
@@ -154,7 +191,16 @@ export default {
       }
     },
   },
+
+  data() {
+    return {
+      textBtnClose: Resource.TitleToast.No,
+      textBtnDelete: Resource.TitleToast.Delete
+    }
+  },
 };
+
+
 </script>
 
 <style scoped>

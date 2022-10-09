@@ -1,50 +1,20 @@
 <template>
   <div class="m-combobox" :class="css">
-    <el-tooltip
-      :content="nameInputs"
-      placement="top"
-      show-after="400"
-      effect="customized"
-      :disabled="nameInputs == null || nameInputs == ''"
-    >
-      <input
-        id="inputcombobox"
-        :type="type"
-        class="combobox"
-        :class="[className, { borderred: borderRed }]"
-        :placeholder="placeholder"
-        v-model="nameInputs"
-        :tabindex="tabindex"
-        @click="btnOpenShowCombobox"
-        @blur="validateInputBlur(nameInputs)"
-        @keydown="addValueNameInput($event)"
-        @keydown.enter="btnOpenShowCombobox"
-        @input="filterData(nameInputs)"
-        @keydown.down="nextEleMove()"
-      />
+    <el-tooltip :content="nameInputs" placement="top" show-after="400" effect="customized"
+      :disabled="nameInputs == null || nameInputs == ''">
+      <input id="inputcombobox" :type="type" class="combobox" :class="[className, { borderred: borderRed }]"
+        :placeholder="placeholder" v-model="nameInputs" :tabindex="tabindex" @click="btnOpenShowCombobox"
+        @blur="validateInputBlur(nameInputs)" @keydown="addValueNameInput($event)" @keydown.enter="btnOpenShowCombobox"
+        @input="filterData(nameInputs)" @keydown.down="nextEleMove()" />
     </el-tooltip>
-    <button
-      class="btn_combobox"
-      @click="btnOpenShowCombobox"
-      @blur="hideContentCbbBlur()"
-      @keydown.down="nextEleMove()"
-    >
+    <div class="btn_combobox">
       <div class="m-icon-dropdown"></div>
-    </button>
+    </div>
     <!-- nội dung cbb -->
-    <div
-      class="m-combobox__content"
-      :class="styleContent"
-      v-show="isShowmComboboxContent"
-    >
+    <div class="m-combobox__content" :class="styleContent" v-show="isShowmComboboxContent">
       <div class="m-border">
-        <div
-          :id="itemCode + index"
-          :tabindex="tabindex"
-          v-for="(item, index) in items"
-          :key="item[itemID]"
-          class="m-option-cbb max-line"
-          @mousedown="
+        <div :id="itemCode + index" :tabindex="tabindex" v-for="(item, index) in items" :key="item[itemID]"
+          class="m-option-cbb max-line" @mousedown="
             onClickCbb(
               item[itemID],
               item[itemCode],
@@ -52,11 +22,8 @@
               item.depreciation_rate,
               item.life_time
             )
-          "
-          :class="{ active: item[itemCode] == this.nameInputs }"
-          @keydown.down="nextEleMoveFocus()"
-          @keydown.up="prevEleMoveFocus()"
-          @keydown.enter="
+          " :class="{ active: item[itemCode] == this.nameInputs }" @keydown.down="nextEleMoveFocus()"
+          @keydown.up="prevEleMoveFocus()" @keydown.enter="
             onClickCbb(
               item[itemID],
               item[itemCode],
@@ -64,20 +31,14 @@
               item.depreciation_rate,
               item.life_time
             )
-          "
-        >
-          <el-tooltip
-            :content="item[itemCode]"
-            placement="top"
-            show-after="400"
-            effect="customized"
-          >
+          ">
+          <el-tooltip :content="item[itemCode]" placement="top" show-after="400" effect="customized">
             <span>{{ item[itemCode] }}</span>
           </el-tooltip>
         </div>
 
-        <div v-if="emptyList">
-          <el-empty description="Không có dữ liệu"></el-empty>
+        <div class="null" v-if="emptyList">
+          <div class="description">Không có dữ liệu</div>
         </div>
       </div>
     </div>
@@ -103,6 +64,7 @@ export default {
     "styleContent",
     "showValue",
     "checkInputValidate",
+    "nameAsset",
   ],
   created() {
     // lấy dữ liệu từ api cho cbx
@@ -128,11 +90,17 @@ export default {
       this.nameInputs = value;
     },
 
-    checkInputValidate: function () {
-      if (this.modelValue == null) {
-        this.borderRed = true;
+    /**
+     * Hàm theo dõi khi mà click vào nút lưu thì validate dữ liệu
+     * @param {boolean} value: nếu value là true thì đã ấn lưu
+     * Author: NVHThai (30/09/2022)
+     */
+    checkInputValidate: function (value) {
+      if (value == true && this.nameInputs != "0") {
+        if (this.nameInputs == null || this.nameInputs == "") {
+          this.borderRed = true;
+        }
       }
-      this.$emit("checkInputValidate", false);
     },
   },
 
@@ -281,8 +249,12 @@ export default {
   border: 1px solid #bbb;
 }
 
-.el-empty {
-  width: 100% !important;
-  height: 200px !important;
+.null{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 </style>

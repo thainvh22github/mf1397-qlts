@@ -1,18 +1,16 @@
 <template>
-    <div class="m-content-main">
-        <PropertyList />
-    </div>
+  <div class="m-content-main">
+    <PropertyList />
+  </div>
 </template>
 
 <script>
-import PropertyList from '@/view/property/PropertyList.vue';
+import PropertyList from "@/view/property/PropertyList.vue";
 
 export default {
-    name:"TheContent",
-    components: { PropertyList},
-}
-
-
+  name: "TheContent",
+  components: { PropertyList },
+};
 </script>
 
 <style scoped>

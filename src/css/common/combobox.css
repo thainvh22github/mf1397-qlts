@@ -12,6 +12,7 @@
     box-sizing: border-box;
     border-radius: 2.5px;
     background-position: 6px center;
+    padding-right: 30px !important;
 }
 
 .combobox:focus{
@@ -42,13 +43,12 @@
 }
 .btn_combobox{
     position: absolute;
-    width: 34px;
-    height: 34px;
+    width: 0;
+    height: 0;
     cursor: pointer;
     border: none;
     outline: none;
     background-position: center center;
-    background-color: #fff;
     box-sizing: border-box;
     right:1px;
     top:1px;

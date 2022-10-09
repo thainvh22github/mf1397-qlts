@@ -20,12 +20,18 @@ export default {
     },
     TitleToast:{
         Delete: 'Xóa',
+        Close:"Đóng",
         Save: 'Lưu',
+        No:"Không",
+        NotSave:"Không lưu",
+        Detroy:"Hủy bỏ",
         Duplicate:'Nhân bản',
         DeleteException:"Vui lòng chọn tài sản cần xóa",
         titleFormDelete:"Bạn có muốn xóa tài sản",
         titleFormDeletes:"tài sản đã được chọn. Bạn có muốn xóa các tài sản khỏi danh sách này không?",
         TitleFormValidate: "Dữ liệu đầu vào không hợp lệ",
+        TitleFormAdd: "Bạn có muốn hủy bỏ khai báo tài sản này?",
+        TitleFormEdit: "Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này?"
     },
 
     TitleException:{
@@ -71,5 +77,67 @@ export default {
         ValidateLossYear:"Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá"
     },
     
+    TextVi:{
+        List:{
+            BtnAdd:"Thêm tài sản",
+            STT:"STT",
+            AssetCode: "Mã tài sản",
+            AssetName: "Tên tài sản",
+            AssetCategoryName: "Loại tài sản",
+            AssetDepartmentName: "Bộ phận sử dụng",
+            Quanlity: "Số lượng",
+            Cost: "Nguyên giá",
+            LossCost:"HM/KH lũy kế",
+            Remaining:"Giá trị còn lại",
+            Tool:"Chức năng",
+            Emply:"Không có dữ liệu",
+            Total:"Tổng số",
+            Record:"bản ghi"
+        },
+        Detail:{
+            AssetCode: "Mã tài sản",
+            AssetName: "Tên tài sản",
+            AssetDepartmentCode: "Mã bộ phận sử dụng",
+            AssetDepartmentName: "Tên bộ phận sử dụng",
+            AssetCategoryCode: "Mã loại tài sản",
+            AssetCategoryName: "Tên loại tài sản",
+            Quanlity: "Số lượng",
+            Cost: "Nguyên giá",
+            DepreciationRate: "Tỷ lệ hao mòn (%)",
+            BuyingDate: "Ngày mua",
+            UsingDate: "Ngày bắt đầu sử dụng",
+            TrackedYear: "Năm theo dõi",
+            LifeTime: "Số năm sử dụng",
+            LossYear: "Giá trị hao mòn năm",
+        },
+        Tooltip:{
+            Close: "Đóng",
+            InputSearch:"Tìm kiếm theo mã tài sản, tên tài sản (Ctrl F3)",
+            BtnAdd:"Ấn Insert để thêm tài sản",
+            BtnToolbarExport:"Xuất khẩu",
+            BtnToolbarDelete:"Xóa",
+            CheckBoxAll:"Chọn tất cả",
+            STT:"Số thứ tự",
+            LossCost:"Hao mòn/ Khấu hao lũy kế",
+            Edit:"Sửa",
+            Duplicate:"Nhân bản",
+            Prev:"Trang trước",
+            Next:"Trang sau"
+        },
+        PlaceHolder:{
+            DepartmentCode:"Chọn mã bộ phận sử dụng",
+            AssetCategoryCode:"Chọn mã loại tài sản",
+            AssetName:"Nhập tên tài sản",
+            InputSearch:"Tìm kiếm tài sản",
+            ComboboxDepartment:"Bộ phận sử dụng",
+            ComboboxAssetCategory:"Loại tài sản",
+        },
+        Button:{
+            Close: "Hủy",
+            Save: "Lưu"
+        },
+
+       
+    }
     
 }

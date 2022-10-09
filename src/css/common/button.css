@@ -51,6 +51,17 @@
     background-color:#ffffff;
     outline: #D1EDF4 3px solid;
 }
+
+.disableBtn{
+    cursor: no-drop;
+    background-color: #f5f5f5;
+}
+.disableBtn:focus{
+    outline: none;
+    background-color: #f5f5f5;
+}
+
+
 .btn-x{
     width: 20px;
     height: 20px;

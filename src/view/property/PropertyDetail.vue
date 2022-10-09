@@ -1,11 +1,15 @@
 <template>
-  <div class="m-dialog">
+  <div class="m-dialog" @keydown.ctrl.f8="btnSaveFormOnclick()" @keydown.ctrl.f9="btnCloseFormOnclick()"
+    @keydown.esc="btnCloseFormOnclick()">
     <div id="formadd" class="m-form-add">
       <div class="m-form-add__detail">
         <div class="m-form-add__header">
-          <div class="m-form-add__titel" style="font-size: 20px">{{ titleForm }}</div>
-          <el-tooltip content="Đóng" placement="top" show-after="400" effect="customized">
-            <button class="btn-x" @click="btnCloseFormOnclick" tabindex="114" @keyup.tab="focus">
+          <div class="m-form-add__titel" style="font-size: 20px">
+            {{ titleForm }}
+          </div>
+
+          <el-tooltip :content="textTooltipClose" placement="top" show-after="400" effect="customized">
+            <button id="btnX" class="btn-x" @click="btnCloseFormOnclick" tabindex="100">
               <div class="m-icon-x"></div>
             </button>
           </el-tooltip>
@@ -13,32 +17,36 @@
 
         <div class="mt-20 m-propertycode-propertyname" style="display: flex">
           <div class="m-propertycode" style="width: 32%">
-            <div class="m-text">Mã tài sản <span style="color: red">*</span></div>
-            <input ref="propertycode" type="text" class="mt-8 w-100 input m-input-propertycode"
-              :class="{ borderred: borderRedPropertyCode }" v-model="property.fixed_asset_code"
-              :checkInputValidate="checkInputValidate" tabindex="-1" />
+            <div class="m-text">{{ textAssetCode }} <span style="color: red">*</span></div>
+              <m-input type="text" focusInput="propertycode" className="mt-8 w-100 m-input-propertycode" v-model="property.fixed_asset_code"
+                tabindex="101" :checkInputValidate="checkInputValidate">
+              </m-input>
           </div>
+
           <div class="m-propertyname" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">Tên tài sản <span style="color: red">*</span></div>
+            <div class="m-text">{{ textAssetName }} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-propertyname" v-model="property.fixed_asset_name"
-              tabindex="102" :checkInputValidate="checkInputValidate" message="Tên tài sản không được phép để trống">
+              tabindex="102" :checkInputValidate="checkInputValidate" :placeholder=textPAssetName>
             </m-input>
           </div>
         </div>
 
         <div class="mt-15 m-positioncode-positionname" style="display: flex">
           <div class="m-positioncode" style="width: 32%">
-            <div class="m-text">Mã bộ phận sử dụng <span style="color: red">*</span></div>
+            <div class="m-text">{{textAssetDepartmentCode}} <span style="color: red">*</span></div>
+
             <m-combobox css="mt-8" type="text" className="m-property-positioncode w-100"
-              placeholder="Chọn mã bộ phận sử dụng" :showValue="property.department_code"
+              :placeholder=textPDepartmentCode :showValue="property.department_code"
               v-model:department_id="property.department_id" v-model:department_code="property.department_code"
               v-model:department_name="property.department_name" tabindex="103" :url="urlDepartment"
               :itemID="ItemIDDepartment" :itemName="ItemNameDepartment" :itemCode="ItemCodeDepartment"
               styleContent="height-150" :checkInputValidate="checkInputValidate">
             </m-combobox>
           </div>
+
           <div class="m-positionname" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">Tên bộ phận sử dụng</div>
+            <div class="m-text">{{textAssetDepartmentName}}</div>
+
             <el-tooltip :content="property.department_name" :disabled="property.department_name == null" placement="top"
               show-after="400" effect="customized">
               <m-input type="text" className="mt-8 w-100 input__disable m-input-positionname"
@@ -50,9 +58,10 @@
 
         <div class="mt-15 m-propertycodetype-propertynametype" style="display: flex">
           <div class="m-propertycodetype" style="width: 32%">
-            <div class="m-text">Mã loại tài sản <span style="color: red">*</span></div>
+            <div class="m-text">{{textAssetCategoryCode}} <span style="color: red">*</span></div>
+
             <m-combobox css="mt-8" type="text" className="m-property-propertycodetype w-100"
-              placeholder="Chọn mã loại tài sản" :showValue="property.fixed_asset_category_code"
+              :placeholder="textPAssetCategoryCode" :showValue="property.fixed_asset_category_code"
               v-model:fixed_asset_category_id="property.fixed_asset_category_id"
               v-model:fixed_asset_category_code="property.fixed_asset_category_code"
               v-model:fixed_asset_category_name="property.fixed_asset_category_name"
@@ -61,8 +70,9 @@
               :itemName="ItemNameCategoryAsset" styleContent="height-150" :checkInputValidate="checkInputValidate">
             </m-combobox>
           </div>
+
           <div class="m-propertynametype" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">Tên loại tài sản</div>
+            <div class="m-text">{{textAssetCategoryName}} </div>
 
             <el-tooltip :content="property.fixed_asset_category_name" placement="top" show-after="400"
               effect="customized" :disabled="property.fixed_asset_category_name == null">
@@ -75,12 +85,14 @@
 
         <div class="mt-15 m-amount-cost-longevity" style="display: flex">
           <div class="m-amount" style="width: 32%">
-            <div class="m-text">Số lượng <span style="color: red">*</span></div>
+            <div class="m-text">{{textQuanlity}} <span style="color: red">*</span></div>
+
             <div class="m-input-amount">
               <m-input type="number" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
                 style="text-align: right; padding-right: 40px" @keydown="validateNumber($event)"
-                :checkInputValidate="checkInputValidate" message="Số lượng không được phép để trống" min="0">
+                :checkInputValidate="checkInputValidate" min="0">
               </m-input>
+
               <div class="m-drop">
                 <button class="btn__up" @click="onclickStepAmount(0)">
                   <div class="m-icon-dropup"></div>
@@ -91,17 +103,17 @@
               </div>
             </div>
           </div>
-          <div class="m-cost" style="width: 32%; margin-left: 16px">
-            <div class="m-text">Nguyên giá <span style="color: red">*</span></div>
 
+          <div class="m-cost" style="width: 32%; margin-left: 16px">
+            <div class="m-text">{{textCost}} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-cost" :value="formartNumber(property.cost)"
               v-model="property.cost" tabindex="106" style="text-align: right" @input="showValueCost()"
-              @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate"
-              message="Nguyên giá không được phép để trống">
+              @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate">
             </m-input>
           </div>
+
           <div class="m-longevity" style="width: calc(36% - 32px); margin-left: 16px">
-            <div class="m-text">Tỷ lệ hao mòn (%) <span style="color: red">*</span></div>
+            <div class="m-text">{{DepreciationRate}} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-longevity"
               :value="formartRate(property.depreciation_rate)" v-model="property.depreciation_rate" tabindex="107"
               style="text-align: right" @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate"
@@ -111,14 +123,14 @@
 
         <div class="mt-15 m-buyingdate-usingdate-trackingyear" style="display: flex">
           <div class="m-buyingdate" style="width: 32%">
-            <div class="m-text">Ngày mua <span style="color: red">*</span></div>
+            <div class="m-text">{{textBuyingDate}} <span style="color: red">*</span></div>
             <el-date-picker v-model="property.purchase_date" type="date" popper-class="custom-date-picker"
               class="mt-8 w-100 m-input-buyingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD" tabindex="108">
             </el-date-picker>
           </div>
+
           <div class="m-usingdate" style="width: 32%; margin-left: 16px">
-            <div class="m-text">
-              Ngày bắt đầu sử dụng <span style="color: red">*</span>
+            <div class="m-text">{{textUsingDate}} <span style="color: red">*</span>
             </div>
             <el-date-picker v-model="property.production_date" type="date" popper-class="custom-date-picker"
               class="mt-8 w-100 m-input-usingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD" tabindex="109">
@@ -126,7 +138,6 @@
           </div>
           <div class="m-trackingyear" style="width: calc(36% - 32px); margin-left: 16px">
             <div class="m-text">Năm theo dõi</div>
-
             <m-input type="text" className="mt-8 w-100 input__disable m-input-trackingyear"
               v-model="property.tracked_year" readonly style="text-align: right">
             </m-input>
@@ -135,11 +146,10 @@
 
         <div class="mt-15 m-lossrate-lossyear" style="display: flex">
           <div class="m-lossrate" style="width: 32%">
-            <div class="m-text">Số năm sửa dụng <span style="color: red">*</span></div>
+            <div class="m-text">{{textLifeTime}} <span style="color: red">*</span></div>
             <div class="m-input-lossrate">
               <m-input type="number" className="mt-8 w-100" v-model="property.life_time" tabindex="110"
-                style="text-align: right; padding-right: 40px" :checkInputValidate="checkInputValidate"
-                message="Số năm sử dụng không được phép để trống">
+                style="text-align: right; padding-right: 40px" :checkInputValidate="checkInputValidate">
               </m-input>
               <div class="m-drop">
                 <button class="btn__up" v-on:click="onclickStepLossRate(0)">
@@ -151,24 +161,23 @@
               </div>
             </div>
           </div>
+
           <div class="m-lossyear" style="width: 32%; margin-left: 16px">
-            <div class="m-text">
-              Giá trị hao mòn năm <span style="color: red">*</span>
+            <div class="m-text">{{textDepreciationRate}} <span style="color: red">*</span>
             </div>
             <m-input type="text" className="mt-8 w-100 input m-input-lossyear"
               :value="formartNumber(property.loss_year)" v-model="property.loss_year" tabindex="111"
-              style="text-align: right" :checkInputValidate="checkInputValidate" @input="showValueLossYear()"
-              message="Giá trị hao mòn không được phép để trống"></m-input>
+              style="text-align: right" :checkInputValidate="checkInputValidate" @input="showValueLossYear()"></m-input>
           </div>
         </div>
       </div>
 
       <div class="m-form-add__bottom">
         <button class="btn btn-close" tabindex="112" @click="btnCloseFormOnclick">
-          Hủy
+          {{textBClose}}
         </button>
-        <button class="btn btn-save" tabindex="113" @click="btnSaveFormOnclick">
-          Lưu
+        <button class="btn btn-save" tabindex="113"  @keydown.tab="loopFocus" @click="btnSaveFormOnclick">
+          {{textBSave}}
         </button>
       </div>
     </div>
@@ -185,6 +194,7 @@ import axios from "axios";
 import ToastMessageAdd from "../toast/ToastMessageAdd.vue";
 import ToastMessageEdit from "../toast/ToastMessageEdit.vue";
 import Enum from "../../lib/enum.js";
+import BaseMethod from "../../lib/baseMethod";
 import Resource from "@/lib/resource";
 import MInput from "../../base/input/MInput.vue";
 import MCombobox from "@/base/combobox/MCombobox.vue";
@@ -211,25 +221,19 @@ export default {
   ],
 
   updated() {
-    /**
-     * Hàm lắng nghe sự kiện của bàn phím khi click vào nút insert
-     * Author NVHThai(29/09/2022)
-     */
-    let me = this;
-    document.addEventListener("keyup", function (event) {
-      if (event.code == "Escape") {
-        me.btnCloseFormOnclick();
-      }
-    });
-    this.formartDate();
+    this.getCurrentDate();
     this.validateMax();
+  },
+  watch: {
+    messageValid: function (value) {
+      this.moreInfo.push(value);
+    },
   },
   mounted() {
     if (this.property.fixed_asset_code != null) {
       this.tmpAssetCode = this.property.fixed_asset_code;
     }
 
-    this.inputFocus();
     /**
      * Kiểm tra formMode đầu vào
      * Author: NVHThai (09/09/2022)
@@ -269,17 +273,29 @@ export default {
 
   methods: {
     /**
+     * Hàm để khi hết trang thêm thì focus qoay lại
+     * Author: NVHThai (03/10/2022)
+     */
+    loopFocus(){
+      document.getElementById("btnX").focus();
+    },
+
+    /**
      * Hàm sử lý tỷ lệ hao mòn dấu chấm thành dấu phẩy vd 6.67 thành 6,67
      * Author: NVHThai (03/10/2022)
      */
     sloveDepreciationRateToString() {
-      if (this.property.depreciation_rate != null) {
-        let arrayStrig = this.property.depreciation_rate.toString(10).split(".");
-        if (arrayStrig[1] != null) {
-          this.property.depreciation_rate = arrayStrig[0] + "," + arrayStrig[1];
-        } else {
-          this.property.depreciation_rate = arrayStrig[0];
+      try {
+        if (this.property.depreciation_rate != null) {
+          let arrayStrig = this.property.depreciation_rate.toString(10).split(".");
+          if (arrayStrig[1] != null) {
+            this.property.depreciation_rate = arrayStrig[0] + "," + arrayStrig[1];
+          } else {
+            this.property.depreciation_rate = arrayStrig[0];
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -288,13 +304,17 @@ export default {
      * Author: NVHThai (03/10/2022)
      */
     formartRate(number) {
-      if (number != null) {
-        let arrayStrig = number.toString(10).split(".");
-        if (arrayStrig[1] != null) {
-          return arrayStrig[0] + "," + arrayStrig[1];
-        } else {
-          return arrayStrig[0];
+      try {
+        if (number != null) {
+          let arrayStrig = number.toString(10).split(".");
+          if (arrayStrig[1] != null) {
+            return arrayStrig[0] + "," + arrayStrig[1];
+          } else {
+            return arrayStrig[0];
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -303,13 +323,17 @@ export default {
      * Author: NVHThai (03/10/2022)
      */
     sloveDepreciationRateToNumber() {
-      if (this.property.depreciation_rate != null) {
-        let arrayStrig = this.property.depreciation_rate.toString(10).split(",");
-        if (arrayStrig[1] != null) {
-          this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
-        } else {
-          this.property.depreciation_rate = arrayStrig[0];
+      try {
+        if (this.property.depreciation_rate != null) {
+          let arrayStrig = this.property.depreciation_rate.toString(10).split(",");
+          if (arrayStrig[1] != null) {
+            this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
+          } else {
+            this.property.depreciation_rate = arrayStrig[0];
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
@@ -317,46 +341,39 @@ export default {
      * Author: NVHThai (02/10/2022)
      */
     solveLossYear() {
-      this.sloveDepreciationRateToNumber();
-      console.log(this.property.depreciation_rate);
-      if (this.property.depreciation_rate != null && this.property.cost == 0) {
-        this.property.loss_year = "0";
-      } else if (this.property.depreciation_rate == 0 && this.property.cost != null) {
-        this.property.loss_year = "0";
-      } else if (
-        this.property.depreciation_rate == null ||
-        this.property.depreciation_rate == "" ||
-        this.property.cost == null ||
-        this.property.cost == ""
-      ) {
-        this.property.loss_year = null;
-      } else if (typeof this.property.cost == "number") {
-        this.property.cost = parseFloat(this.property.cost);
-        this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
-        this.property.loss_year = (
-          (this.property.depreciation_rate * this.property.cost) /
-          100
-        ).toString(10);
-        this.sloveDepreciationRateToString();
-      } else if (typeof this.property.cost == "string") {
-        this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
-        this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
-        this.property.loss_year = (
-          (this.property.depreciation_rate * this.property.cost) /
-          100
-        ).toString(10);
-        this.sloveDepreciationRateToString();
+      try {
+        this.sloveDepreciationRateToNumber();
+        if (this.property.depreciation_rate != null && this.property.cost == 0) {
+          this.property.loss_year = "0";
+        } else if (this.property.depreciation_rate == 0 && this.property.cost != null) {
+          this.property.loss_year = "0";
+        } else if (
+          this.property.depreciation_rate == null ||
+          this.property.depreciation_rate == "" ||
+          this.property.cost == null ||
+          this.property.cost == ""
+        ) {
+          this.property.loss_year = null;
+        } else if (typeof this.property.cost == "number") {
+          this.property.cost = parseFloat(this.property.cost);
+          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+          this.property.loss_year = (
+            (this.property.depreciation_rate * this.property.cost) /
+            100
+          ).toString(10);
+          this.sloveDepreciationRateToString();
+        } else if (typeof this.property.cost == "string") {
+          this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
+          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+          this.property.loss_year = (
+            (this.property.depreciation_rate * this.property.cost) /
+            100
+          ).toString(10);
+          this.sloveDepreciationRateToString();
+        }
+      } catch (error) {
+        console.log(error);
       }
-    },
-
-    /**
-     * focus vào thẻ đầu tiên
-     * Author: NVHThai (09/09/2022)
-     */
-    inputFocus() {
-      this.$nextTick(function () {
-        this.$refs.propertycode.focus();
-      });
     },
 
     /**
@@ -374,16 +391,7 @@ export default {
      * @param {$event} e : sự kiện để lấy key code
      */
     validateNumber(e) {
-      if (
-        (e.keyCode > 9 && e.keyCode < 37) ||
-        (e.keyCode > 40 && e.keyCode < 46) ||
-        e.keyCode == 47 ||
-        (e.keyCode > 57 && e.keyCode < 96) ||
-        (e.keyCode > 105 && e.keyCode < 111) ||
-        e.keyCode < 7 ||
-        (e.keyCode > 111 && e.keyCode < 187) ||
-        e.keyCode > 189
-      ) {
+      if (BaseMethod.inputOnlyNumber(e)) {
         e.preventDefault();
       }
     },
@@ -394,12 +402,16 @@ export default {
      */
 
     showValueLossYear() {
-      this.checkLossYear = false;
-      let lossYear = this.property.loss_year;
-      if (lossYear != 0) {
-        let tmpCost = lossYear.replace(/[^0-9]/g, "");
-        let showCost = this.formartNumber(tmpCost);
-        this.property.loss_year = showCost;
+      try {
+        this.checkLossYear = false;
+        let lossYear = this.property.loss_year;
+        if (lossYear != 0) {
+          let tmpCost = lossYear.replace(/[^0-9]/g, "");
+          let showCost = this.formartNumber(tmpCost);
+          this.property.loss_year = showCost;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -416,13 +428,17 @@ export default {
      * Author: NVHThai (27/09/2022)
      */
     showValueCost() {
-      let cost = this.property.cost;
-      if (cost != 0) {
-        let tmpCost = cost.replace(/[^0-9]/g, "");
-        let showCost = this.formartNumber(tmpCost);
-        this.property.cost = showCost;
+      try {
+        let cost = this.property.cost;
+        if (cost != 0) {
+          let tmpCost = cost.replace(/[^0-9]/g, "");
+          let showCost = this.formartNumber(tmpCost);
+          this.property.cost = showCost;
+        }
+        this.solveLossYear();
+      } catch (error) {
+        console.log(error);
       }
-      this.solveLossYear();
     },
     /**
      * Hàm formart số
@@ -441,15 +457,6 @@ export default {
       }
     },
 
-    /**
-     * Hàm focus vào thẻ mong muốn
-     * Author(24/09/2022)
-     */
-    focus() {
-      this.$nextTick(function () {
-        this.$refs.propertycode.focus();
-      });
-    },
     /**
      * Hàm lấy dữ liệu mã tài sản lớn nhất
      * Author: NVHThai (19/09/2022)
@@ -528,7 +535,7 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(
+            BaseMethod.handleException(
               response.response.status,
               response.response.data.moreInfo,
               response.response.data.userMsg
@@ -588,28 +595,32 @@ export default {
      * @param {string} userMsg: Lỗi từ backend trả về hiển thị cho người dùng
      */
     handleException(status, moreInfo, userMsg) {
-      switch (status) {
-        case Enum.StatusCode.BADREQUEST:
-          this.moreInfo = moreInfo;
-          this.titleFormValid = userMsg;
-          this.isShowDialogToastValid = true;
-          break;
-        case Enum.StatusCode.FORBIDDEN:
-          this.titleFormException = Resource.TitleException.FORBIDDEN;
-          this.isShowDialogToastException = true;
-          break;
-        case Enum.StatusCode.NOTFOUND:
-          this.titleFormException = Resource.TitleException.NOTFOUND;
-          this.isShowDialogToastException = true;
-          break;
-        case Enum.StatusCode.UNAUTHORIZED:
-          this.titleFormException = Resource.TitleException.UNAUTHORIZED;
-          this.isShowDialogToastException = true;
-          break;
-        case Enum.StatusCode.NTERNALSERVERERROR:
-          this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
-          this.isShowDialogToastException = true;
-          break;
+      try {
+        switch (status) {
+          case Enum.StatusCode.BADREQUEST:
+            this.moreInfo = moreInfo;
+            this.titleFormValid = userMsg;
+            this.isShowDialogToastValid = true;
+            break;
+          case Enum.StatusCode.FORBIDDEN:
+            this.titleFormException = Resource.TitleException.FORBIDDEN;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.NOTFOUND:
+            this.titleFormException = Resource.TitleException.NOTFOUND;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.UNAUTHORIZED:
+            this.titleFormException = Resource.TitleException.UNAUTHORIZED;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.NTERNALSERVERERROR:
+            this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
+            this.isShowDialogToastException = true;
+            break;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -618,12 +629,17 @@ export default {
      *  Author: NVHThai (08/09/2022)
      */
     btnCloseFormOnclick() {
-      if (this.checkTitleForm == Enum.FormMode.Add) {
-        this.isShowToastAdd = true;
-      } else if (this.checkTitleForm == Enum.FormMode.Edit) {
-        this.isShowToastEdit = true;
-      } else if (this.checkTitleForm == Enum.FormMode.Duplicate) {
-        this.isShowToastEdit = true;
+      try {
+        this.checkInputValidate = true;
+        if (this.checkTitleForm == Enum.FormMode.Add) {
+          this.isShowToastAdd = true;
+        } else if (this.checkTitleForm == Enum.FormMode.Edit) {
+          this.isShowToastEdit = true;
+        } else if (this.checkTitleForm == Enum.FormMode.Duplicate) {
+          this.isShowToastEdit = true;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -643,6 +659,10 @@ export default {
       this.isShowDialogToastValid = false;
     },
 
+    /**
+     * Thay đổi để theo dõi input 
+     *  Author: NVHThai (26/09/2022)
+     */
     changeCheckInputValidate() {
       this.checkInputValidate = false;
     },
@@ -686,25 +706,29 @@ export default {
      * @param {*} check
      */
     onclickStepLossRate(check) {
-      switch (check) {
-        case 0:
-          this.property.life_time = parseInt(this.property.life_time) + 1;
-          this.property.life_time =
-            parseInt(this.property.life_time) < 10
-              ? `0${parseInt(this.property.life_time)}`
-              : parseInt(this.property.life_time);
-          break;
-        case 1:
-          if (this.property.life_time < 1) {
-            break;
-          } else {
-            this.property.life_time = parseInt(this.property.life_time) - 1;
+      try {
+        switch (check) {
+          case 0:
+            this.property.life_time = parseInt(this.property.life_time) + 1;
             this.property.life_time =
               parseInt(this.property.life_time) < 10
                 ? `0${parseInt(this.property.life_time)}`
                 : parseInt(this.property.life_time);
             break;
-          }
+          case 1:
+            if (this.property.life_time < 1) {
+              break;
+            } else {
+              this.property.life_time = parseInt(this.property.life_time) - 1;
+              this.property.life_time =
+                parseInt(this.property.life_time) < 10
+                  ? `0${parseInt(this.property.life_time)}`
+                  : parseInt(this.property.life_time);
+              break;
+            }
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -714,25 +738,29 @@ export default {
      * @param {*} check
      */
     onclickStepAmount(check) {
-      switch (check) {
-        case 0:
-          this.property.quantity = parseInt(this.property.quantity) + 1;
-          this.property.quantity =
-            parseInt(this.property.quantity) < 10
-              ? `0${parseInt(this.property.quantity)}`
-              : parseInt(this.property.quantity);
-          break;
-        case 1:
-          if (this.property.quantity < 1) {
-            break;
-          } else {
-            this.property.quantity = parseInt(this.property.quantity) - 1;
+      try {
+        switch (check) {
+          case 0:
+            this.property.quantity = parseInt(this.property.quantity) + 1;
             this.property.quantity =
               parseInt(this.property.quantity) < 10
                 ? `0${parseInt(this.property.quantity)}`
                 : parseInt(this.property.quantity);
             break;
-          }
+          case 1:
+            if (this.property.quantity < 1) {
+              break;
+            } else {
+              this.property.quantity = parseInt(this.property.quantity) - 1;
+              this.property.quantity =
+                parseInt(this.property.quantity) < 10
+                  ? `0${parseInt(this.property.quantity)}`
+                  : parseInt(this.property.quantity);
+              break;
+            }
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -740,17 +768,15 @@ export default {
      * Hàm lấy dữ liệu ngày hiện tại
      * Author: NVHThai (09/08/2022)
      */
-    formartDate() {
-      let curDate = new Date();
-      let day = curDate.getDate();
-      day = day < 10 ? `0${day}` : day;
-      let month = curDate.getMonth() + 1;
-      month = month < 10 ? `0${month}` : day;
-      let fullYear = curDate.getFullYear();
-      if (this.checkTitleForm == Enum.FormMode.Add) {
-        this.property.purchase_date = `${fullYear}-${month}-${day}`;
-        this.property.production_date = `${fullYear}-${month}-${day}`;
-        this.property.tracked_year = fullYear;
+    getCurrentDate() {
+      try {
+        if (this.checkTitleForm == Enum.FormMode.Add) {
+          this.property.purchase_date = BaseMethod.getCurrentDate();
+          this.property.production_date = BaseMethod.getCurrentDate();
+          this.property.tracked_year = BaseMethod.getCurrentFullYear();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -795,30 +821,33 @@ export default {
      * Author: NVHThai (26/09/2022)
      */
     handleInsertData() {
-      if (typeof this.property.cost == "number") {
-        this.property.cost = parseFloat(this.property.cost);
-      } else {
-        this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
-      }
-      if (this.property.quantity != null) {
-        this.property.quantity = parseInt(this.property.quantity);
-      }
-      if (this.property.life_time != null) {
-        this.property.life_time = parseInt(this.property.life_time);
-      }
-      if (this.property.depreciation_rate != null) {
-        //xử lý , thành .
-        let arrayStrig = this.property.depreciation_rate.split(",");
-        this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
-
-        this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
-      }
-      if (typeof this.property.loss_year == "number") {
-        this.property.loss_year = parseFloat(this.property.loss_year);
-      } else {
-        this.property.loss_year = parseFloat(
-          this.property.loss_year.replace(/[^0-9]/g, "")
-        );
+      try {
+        if (typeof this.property.cost == "number") {
+          this.property.cost = parseFloat(this.property.cost);
+        } else {
+          this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
+        }
+        if (this.property.quantity != null) {
+          this.property.quantity = parseInt(this.property.quantity);
+        }
+        if (this.property.life_time != null) {
+          this.property.life_time = parseInt(this.property.life_time);
+        }
+        if (this.property.depreciation_rate != null) {
+          //xử lý , thành .
+          let arrayStrig = this.property.depreciation_rate.split(",");
+          this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
+          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+        }
+        if (typeof this.property.loss_year == "number") {
+          this.property.loss_year = parseFloat(this.property.loss_year);
+        } else {
+          this.property.loss_year = parseFloat(
+            this.property.loss_year.replace(/[^0-9]/g, "")
+          );
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -826,21 +855,15 @@ export default {
      * Xử lý dữ liệu đầu vào để validate
      * Author: NVHThai (01/10/2022)
      */
-    toStringData() {
-      if (this.property.cost != null) {
-        this.property.cost = this.property.cost.toString(10);
-      }
-      if (this.property.quantity != null) {
-        this.property.quantity = this.property.quantity.toString(10);
-      }
-      if (this.property.life_time != null) {
-        this.property.life_time = this.property.life_time.toString(10);
-      }
-      if (this.property.depreciation_rate != null) {
-        this.property.depreciation_rate = this.property.depreciation_rate.toString(10);
-      }
-      if (this.property.loss_year != null) {
-        this.property.loss_year = this.property.loss_year.toString(10);
+    fomartDataToString() {
+      try {
+        this.property.cost = BaseMethod.forMartDataToString(this.property.cost);
+        this.property.quantity = BaseMethod.forMartDataToString(this.property.quantity);
+        this.property.life_time = BaseMethod.forMartDataToString(this.property.life_time);
+        this.property.depreciation_rate = BaseMethod.forMartDataToString(this.property.depreciation_rate);
+        this.property.loss_year = BaseMethod.forMartDataToString(this.property.loss_year);
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -857,42 +880,45 @@ export default {
      * Author: NVHThai (14/09/2022)
      */
     btnSaveFormOnclick() {
-      console.log(this.property);
-      this.checkInputValidate = true;
-      this.validateEmpty();
-      if (this.checkValidate == true) {
-        switch (this.checkTitleForm) {
-          case Enum.FormMode.Add:
-            this.validateDuplicateCode();
-            if (this.checkValidate == true) {
-              this.handleInsertData();
-              this.validateDetail();
+      try {
+        this.checkInputValidate = true;
+        this.validateEmpty();
+        if (this.checkValidate == true) {
+          switch (this.checkTitleForm) {
+            case Enum.FormMode.Add:
+              this.validateDuplicateCode();
               if (this.checkValidate == true) {
-                this.postApiProperty();
+                this.handleInsertData();
+                this.validateDetail();
+                if (this.checkValidate == true) {
+                  this.postApiProperty();
+                }
               }
-            }
-            break;
-          case Enum.FormMode.Edit:
-            this.validateDuplicateCodeForEdit();
-            if (this.checkValidate == true) {
-              this.handleInsertData();
-              this.validateDetail();
+              break;
+            case Enum.FormMode.Edit:
+              this.validateDuplicateCodeForEdit();
               if (this.checkValidate == true) {
-                this.putApiProperty();
+                this.handleInsertData();
+                this.validateDetail();
+                if (this.checkValidate == true) {
+                  this.putApiProperty();
+                }
               }
-            }
-            break;
-          case Enum.FormMode.Duplicate:
-            this.validateDuplicateCode();
-            if (this.checkValidate == true) {
-              this.handleInsertData();
-              this.validateDetail();
+              break;
+            case Enum.FormMode.Duplicate:
+              this.validateDuplicateCode();
               if (this.checkValidate == true) {
-                this.postApiProperty();
+                this.handleInsertData();
+                this.validateDetail();
+                if (this.checkValidate == true) {
+                  this.postApiProperty();
+                }
               }
-            }
-            break;
+              break;
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -901,27 +927,31 @@ export default {
      * Author: NVHThai (02/10/2022)
      */
     validateDetail() {
-      if (this.property.life_time != 0) {
-        if (
-          this.property.depreciation_rate !=
-          ((1 / this.property.life_time) * 100).toFixed(2)
-        ) {
+      try {
+        if (this.property.life_time != 0) {
+          if (
+            this.property.depreciation_rate !=
+            ((1 / this.property.life_time) * 100).toFixed(2)
+          ) {
+            this.moreInfo.push(Resource.MessageValidate.DepreciationRateError);
+            this.checkValidate = false;
+            this.isShowDialogToastValid = true;
+            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+          }
+        } else if (this.property.life_time == 0 && this.property.depreciation_rate != 0) {
           this.moreInfo.push(Resource.MessageValidate.DepreciationRateError);
           this.checkValidate = false;
           this.isShowDialogToastValid = true;
           this.titleFormValid = Resource.TitleToast.TitleFormValidate;
         }
-      } else if (this.property.life_time == 0 && this.property.depreciation_rate != 0) {
-        this.moreInfo.push(Resource.MessageValidate.DepreciationRateError);
-        this.checkValidate = false;
-        this.isShowDialogToastValid = true;
-        this.titleFormValid = Resource.TitleToast.TitleFormValidate;
-      }
-      if (this.property.loss_year > this.property.cost) {
-        this.moreInfo.push(Resource.MessageValidate.ValidateLossYear);
-        this.checkValidate = false;
-        this.isShowDialogToastValid = true;
-        this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+        if (this.property.loss_year > this.property.cost) {
+          this.moreInfo.push(Resource.MessageValidate.ValidateLossYear);
+          this.checkValidate = false;
+          this.isShowDialogToastValid = true;
+          this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -930,16 +960,20 @@ export default {
      * Author: NVHThai (02/10/2022)
      */
     validateDuplicateCode() {
-      if (this.property.fixed_asset_code) {
-        var resultFind = this.propertyCodeList.find((code) =>
-          code.startsWith(this.property.fixed_asset_code)
-        );
-        if (resultFind) {
-          this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
-          this.checkValidate = false;
-          this.isShowDialogToastValid = true;
-          this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+      try {
+        if (this.property.fixed_asset_code) {
+          var resultFind = this.propertyCodeList.find((code) =>
+            code.startsWith(this.property.fixed_asset_code)
+          );
+          if (resultFind) {
+            this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
+            this.checkValidate = false;
+            this.isShowDialogToastValid = true;
+            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -948,18 +982,22 @@ export default {
      * Author: NVHThai (02/10/2022)
      */
     validateDuplicateCodeForEdit() {
-      if (this.property.fixed_asset_code == this.propertyCodeSelected) {
-        this.checkValidate == true;
-      } else if (this.property.fixed_asset_code) {
-        var resultFind = this.propertyCodeList.find((code) =>
-          code.startsWith(this.property.fixed_asset_code)
-        );
-        if (resultFind) {
-          this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
-          this.checkValidate = false;
-          this.isShowDialogToastValid = true;
-          this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+      try {
+        if (this.property.fixed_asset_code == this.propertyCodeSelected) {
+          this.checkValidate == true;
+        } else if (this.property.fixed_asset_code) {
+          var resultFind = this.propertyCodeList.find((code) =>
+            code.startsWith(this.property.fixed_asset_code)
+          );
+          if (resultFind) {
+            this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
+            this.checkValidate = false;
+            this.isShowDialogToastValid = true;
+            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
@@ -967,71 +1005,54 @@ export default {
      * Author: NVHThai (28/09/2022)
      */
     validateEmpty() {
-      this.toStringData();
-      if (
-        this.property.fixed_asset_code == null ||
-        this.property.fixed_asset_code == "" ||
-        this.property.fixed_asset_name == null ||
-        this.property.fixed_asset_name == "" ||
-        this.property.department_code == null ||
-        this.property.department_code == "" ||
-        this.property.fixed_asset_category_code == null ||
-        this.property.fixed_asset_category_code == "" ||
-        this.property.quantity == null ||
-        this.property.quantity == "" ||
-        this.property.cost == null ||
-        this.property.cost == "" ||
-        this.property.depreciation_rate == null ||
-        this.property.depreciation_rate == "" ||
-        this.property.life_time == null ||
-        this.property.life_time == "" ||
-        this.property.loss_year == null ||
-        this.property.loss_year == ""
-      ) {
-        this.checkValidate = false;
-        this.isShowDialogToastValid = true;
-        this.titleFormValid = Resource.TitleToast.TitleFormValidate;
-      } else {
-        this.checkValidate = true;
-      }
-      if (
-        this.property.fixed_asset_code == null ||
-        this.property.fixed_asset_code == ""
-      ) {
-        this.moreInfo.push(Resource.MessageValidate.AssetCode);
-      }
-      if (
-        this.property.fixed_asset_name == null ||
-        this.property.fixed_asset_name == ""
-      ) {
-        this.moreInfo.push(Resource.MessageValidate.AssetName);
-      }
-      if (this.property.department_code == null || this.property.department_code == "") {
-        this.moreInfo.push(Resource.MessageValidate.DepartmentCode);
-      }
-      if (
-        this.property.fixed_asset_category_code == null ||
-        this.property.fixed_asset_category_code == ""
-      ) {
-        this.moreInfo.push(Resource.MessageValidate.AssetCategoryCode);
-      }
-      if (this.property.quantity == null || this.property.quantity == "") {
-        this.moreInfo.push(Resource.MessageValidate.Quanlity);
-      }
-      if (this.property.cost == null || this.property.cost == "") {
-        this.moreInfo.push(Resource.MessageValidate.Cost);
-      }
-      if (
-        this.property.depreciation_rate == null ||
-        this.property.depreciation_rate == ""
-      ) {
-        this.moreInfo.push(Resource.MessageValidate.DepreciationRate);
-      }
-      if (this.property.life_time == null || this.property.life_time == "") {
-        this.moreInfo.push(Resource.MessageValidate.LifeTime);
-      }
-      if (this.property.loss_year == null || this.property.loss_year == "") {
-        this.moreInfo.push(Resource.MessageValidate.LossYear);
+      try {
+        this.fomartDataToString();
+        if (
+          !BaseMethod.checkValidEmpty(this.property.fixed_asset_code) ||
+          !BaseMethod.checkValidEmpty(this.property.fixed_asset_name) ||
+          !BaseMethod.checkValidEmpty(this.property.department_code) ||
+          !BaseMethod.checkValidEmpty(this.property.fixed_asset_category_code) ||
+          !BaseMethod.checkValidEmpty(this.property.quantity) ||
+          !BaseMethod.checkValidEmpty(this.property.cost) ||
+          !BaseMethod.checkValidEmpty(this.property.depreciation_rate) ||
+          !BaseMethod.checkValidEmpty(this.property.life_time) ||
+          !BaseMethod.checkValidEmpty(this.property.loss_year)
+        ) {
+          this.checkValidate = false;
+          this.isShowDialogToastValid = true;
+          this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+        } else {
+          this.checkValidate = true;
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.fixed_asset_code)) {
+          this.moreInfo.push(Resource.MessageValidate.AssetCode);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.fixed_asset_name)) {
+          this.moreInfo.push(Resource.MessageValidate.AssetName);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.department_code)) {
+          this.moreInfo.push(Resource.MessageValidate.DepartmentCode);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.fixed_asset_category_code)) {
+          this.moreInfo.push(Resource.MessageValidate.AssetCategoryCode);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.quantity)) {
+          this.moreInfo.push(Resource.MessageValidate.Quanlity);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.cost)) {
+          this.moreInfo.push(Resource.MessageValidate.Cost);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.depreciation_rate)) {
+          this.moreInfo.push(Resource.MessageValidate.DepreciationRate);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.life_time)) {
+          this.moreInfo.push(Resource.MessageValidate.LifeTime);
+        }
+        if (!BaseMethod.checkValidEmpty(this.property.loss_year)) {
+          this.moreInfo.push(Resource.MessageValidate.LossYear);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
@@ -1039,7 +1060,6 @@ export default {
   data() {
     return {
       tmpAssetCode: null,
-      message: null,
       checkInputValidate: false,
       checkValidate: false,
       // biến show khi backend trả về lỗi 401,404,500
@@ -1073,8 +1093,6 @@ export default {
 
       //tài sản
       property: {},
-      // mã loại tài sản
-      positions: {},
       //ẩn hiện cbxx
       isShowmComboboxContentAssetType: false,
       isShowmComboboxContentDepartment: false,
@@ -1095,6 +1113,31 @@ export default {
       ItemNameCategoryAsset: Resource.ItemName.ItemNameCategoryAsset,
 
       checkLossYear: true,
+
+
+
+      // Text sử dụng ở form detail
+      textAssetCode: Resource.TextVi.Detail.AssetCode,
+      textAssetName: Resource.TextVi.Detail.AssetName,
+      textAssetCategoryCode: Resource.TextVi.Detail.AssetCategoryCode,
+      textAssetCategoryName: Resource.TextVi.Detail.AssetCategoryName,
+      textAssetDepartmentCode: Resource.TextVi.Detail.AssetDepartmentCode,
+      textAssetDepartmentName: Resource.TextVi.Detail.AssetDepartmentName,
+      textCost: Resource.TextVi.Detail.Cost,
+      textBuyingDate: Resource.TextVi.Detail.BuyingDate,
+      textQuanlity: Resource.TextVi.Detail.Quanlity,
+      textTrackedYear: Resource.TextVi.Detail.TrackedYear,
+      textUsingDate: Resource.TextVi.Detail.UsingDate,
+      textDepreciationRate: Resource.TextVi.Detail.DepreciationRate,
+      textLifeTime: Resource.TextVi.Detail.LifeTime,
+      textLossYear: Resource.TextVi.Detail.LossYear,
+      textTooltipClose: Resource.TextVi.Tooltip.Close,
+      textPDepartmentCode:Resource.TextVi.PlaceHolder.DepartmentCode,
+      textPAssetCategoryCode:Resource.TextVi.PlaceHolder.AssetCategoryCode,
+      textPAssetName:Resource.TextVi.PlaceHolder.AssetName,
+      textBClose:Resource.TextVi.Button.Close,
+      textBSave:Resource.TextVi.Button.Save,
+      
     };
   },
 };

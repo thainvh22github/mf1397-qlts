@@ -145,6 +145,19 @@
 	height: 24px;
 
 }
+
+.m-icon-delete{
+	background: url('../../assets/icon/qlts-icon.png') no-repeat -419px -111px;
+	width: 18px;
+	height: 18px;
+}
+
+.m-icon-add{
+	background: url('../../assets/icon/qlts-icon.png') no-repeat -463px -419px;
+	width: 10px;
+	height: 10px;
+}
+
 .m-icon-duplicate{
     background: url('../../assets/icon/qlts-icon.png') no-repeat -244px -112px;
 	width: 24px;

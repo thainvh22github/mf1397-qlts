@@ -2,233 +2,160 @@
   <div class="m-content" id="content">
     <div class="m-toolbar">
       <div class="m-toolbar__search">
-        <m-input
-          type="text"
-          className="input__icon m-icon-search-input input--serch-proprety"
-          placeholder="Tìm kiếm tài sản"
-          v-model="keword"
-          tabindex="1"
-          @keypress.enter="searchInput(keword)"
-          @input="searchInputEmpty(keword)"
-        >
-        </m-input>
-
-        <m-combobox
-          css="ml-11"
-          type="text"
-          className="combobox__icon m-icon-cbb m-property-type"
-          placeholder="Loại tài sản"
-          v-model:fixed_asset_category_id="IDCategoryAsset"
-          tabindex="2"
-          :url="urlCategoryAsset"
-          :itemID="ItemIDCategoryAsset"
-          :itemCode="ItemNameCategoryAsset"
-        >
+        <el-tooltip :disabled="disabled" :content="textTolltipInputSearch" placement="top" show-after="400"
+          effect="customized">
+          <m-input type="text" className="input__icon m-icon-search-input input--serch-proprety"
+            :placeholder="textPInputSearch" v-model="keword" tabindex="1" @keydown.enter="searchInput(keword)"
+            @input="searchInputEmpty(keword)" id="searchAsset">
+          </m-input>
+        </el-tooltip>
+        <m-combobox css="ml-11" type="text" className="combobox__icon m-icon-cbb m-property-type"
+          :placeholder="textPComboboxAssetCategory" v-model:fixed_asset_category_id="IDCategoryAsset" tabindex="2"
+          :url="urlCategoryAsset" :itemID="ItemIDCategoryAsset" :itemCode="ItemNameCategoryAsset">
         </m-combobox>
 
-        <m-combobox
-          css="ml-11"
-          type="text"
-          className="combobox__icon m-icon-cbb m-property-type"
-          placeholder="Bộ phận sử dụng"
-          v-model:department_id="IDDepartment"
-          tabindex="3"
-          :url="urlDepartment"
-          :itemID="ItemIDDepartment"
-          :itemCode="ItemNameDepartment"
-        ></m-combobox>
+        <m-combobox css="ml-11" type="text" className="combobox__icon m-icon-cbb m-property-type"
+          :placeholder="textPComboboxDepartment" v-model:department_id="IDDepartment" tabindex="3" :url="urlDepartment"
+          :itemID="ItemIDDepartment" :itemCode="ItemNameDepartment"></m-combobox>
       </div>
 
       <div class="m-toolbar__btn">
-        <button
-          id="btnadd"
-          class="btn btn__icon m-icon-add-fff btn-add"
-          @keyup.insert="btnOpenFormAddOnclick"
-          @click="btnOpenFormAddOnclick"
-          tabindex="4"
-        >
-          Thêm tài sản
-        </button>
-
-        <el-tooltip
-          :disabled="disabled"
-          content="Xuất khẩu"
-          placement="bottom"
-          show-after="400"
-          effect="customized"
-        >
-          <button
-            class="ml-11 btn__toolbar m-icon-btn-export btn-export"
-            tabindex="5"
-          ></button>
+        <el-tooltip :disabled="disabled" :content="textTolltipBtnAdd" placement="top" show-after="400"
+          effect="customized">
+          <button id="btnadd" class="btn btn__icon m-icon-add-fff btn-add" @keyup.insert="btnOpenFormAddOnclick"
+            @click="btnOpenFormAddOnclick" tabindex="4">
+            {{textBtnAdd}}
+          </button>
         </el-tooltip>
-        <el-tooltip
-          :disabled="disabled"
-          content="Xóa"
-          placement="bottom"
-          show-after="400"
-          effect="customized"
-        >
-          <button
-            class="ml-11 btn__toolbar m-icon-btn-delete btn-delete"
-            @click="btnOpenToastDeleteOnclick()"
-            tabindex="6"
-          ></button>
+
+        <el-tooltip :disabled="disabled" :content="textTolltipBtnExport" placement="top" show-after="400"
+          effect="customized">
+          <button :class="{ disableBtn: disableBtn }" class="ml-11 btn__toolbar m-icon-btn-export btn-export"
+            tabindex="5"></button>
+        </el-tooltip>
+
+        <el-tooltip :disabled="disabled" :content="textTolltipBtnDelete" placement="top" show-after="400"
+          effect="customized">
+          <button :class="{ disableBtn: disableBtn }" class="ml-11 btn__toolbar m-icon-btn-delete btn-delete"
+            @click="btnOpenToastDeleteOnclick()" tabindex="6"></button>
         </el-tooltip>
       </div>
     </div>
 
     <div class="m-property-main-list">
       <div class="m-table">
-        <div class="m-property-list">
+        <div class="m-property-list" id="property-list">
           <table>
             <thead>
               <tr>
                 <th style="height: 37px; width: 85px" class="text-rigth m-boder-check">
-                  <el-tooltip
-                    :disabled="disabled"
-                    content="Chọn tất cả"
-                    placement="bottom"
-                    show-after="400"
-                    effect="customized"
-                  >
+                  <el-tooltip :disabled="disabled" :content="textTolltipCheckboxAll" placement="bottom" show-after="400"
+                    effect="customized">
                     <div class="m-check">
-                      <input
-                        class="m-checkbox"
-                        type="checkbox"
-                        @click="selectAllOnClick()"
-                      />
+                      <input class="m-checkbox" type="checkbox" @click="selectAllOnClick()" />
                     </div>
                   </el-tooltip>
 
-                  <el-tooltip
-                    :disabled="disabled"
-                    content="Số thứ tự"
-                    placement="bottom"
-                    show-after="400"
-                    effect="customized"
-                  >
+                  <el-tooltip :disabled="disabled" :content="textTolltipSTT" placement="bottom" show-after="400"
+                    effect="customized">
                     <div class="ml-17">
-                      <span>STT</span>
+                      <span>{{textSTT}}</span>
                     </div>
                   </el-tooltip>
                 </th>
 
-                <th style="width: 80px" class="text-left">Mã tài sản</th>
-                <th style="width: 150px; padding-left: 10px" class="text-left">
-                  Tên tài sản
+                <th style="width: 80px" class="text-left">{{textAssetCode}}</th>
+
+                <th style="width: 15%; padding-left: 10px" class="text-left">
+                  {{textAssetName}}
                 </th>
-                <th
-                  style="width: 175px; color: #001031; padding-left: 10px"
-                  class="text-left"
-                >
-                  Loại tài sản
+
+                <th style="width: 175px; color: #001031; padding-left: 10px" class="text-left">
+                  {{textAssetCategoryName}}
                 </th>
-                <th
-                  style="width: 140px; color: #001031; padding-left: 10px"
-                  class="text-left"
-                >
-                  Bộ phận sử dụng
+
+                <th style="width: 140px; color: #001031; padding-left: 10px" class="text-left">
+                  {{textAssetDepartmentName}}
                 </th>
-                <th
-                  style="width: 120px; color: #001031; padding-left: 10px"
-                  class="text-rigth"
-                >
-                  Số lượng
+
+                <th style="width: 7%; color: #001031; padding-left: 10px" class="text-rigth">
+                  {{textQuanlity}}
                 </th>
-                <th style="width: 130px; color: #001031" class="text-rigth">
-                  Nguyên giá
-                </th>
-                <th style="width: 130px; color: #001031" class="text-rigth">
-                  <el-tooltip
-                    :disabled="disabled"
-                    content="Hao mòn/ Khấu hao lũy kế"
-                    placement="bottom"
-                    show-after="400"
-                    effect="customized"
-                  >
-                    <span style="font-weight: 700">HM/KH lũy kế</span>
+
+                <th style="width: 12%; color: #001031" class="text-rigth">{{textCost}}</th>
+                <th style="width: 10%; color: #001031" class="text-rigth">
+                  <el-tooltip :disabled="disabled" :content="textTolltipLossCost" placement="bottom" show-after="400"
+                    effect="customized">
+                    <span style="font-weight: 700">{{textLossCost}}</span>
                   </el-tooltip>
                 </th>
-                <th
-                  style="width: 130px; color: #001031; padding-right: 5px"
-                  class="text-rigth"
-                >
-                  Giá trị còn lại
+                <th style="width: 11%; color: #001031; padding-right: 5px" class="text-rigth">
+                  {{textRemaining}}
                 </th>
-                <th style="width: 110px; color: #001031" class="text-center">
-                  Chức năng
-                </th>
+
+                <th style="width: 10%; color: #001031" class="text-center">{{textTool}}</th>
               </tr>
             </thead>
+
             <tbody>
-              <tr
-                :id="asset + index"
-                tabindex="4"
-                @keydown.down="nextEleMoveFocus()"
-                @keydown.up="prevEleMoveFocus()"
-                @keydown.enter="
+              <tr :id="asset + index" tabindex="4" @keydown.down="nextEleMoveFocus()" @keydown.up="prevEleMoveFocus()"
+                @keydown.delete.exact="
+                  deleteByKeyboard(
+                    property.fixed_asset_id,
+                    property.fixed_asset_code,
+                    property.fixed_asset_name
+                  )
+                " @keydown.ctrl.delete="
+                  deleteByKeyboard(
+                    property.fixed_asset_id,
+                    property.fixed_asset_code,
+                    property.fixed_asset_name
+                  )
+                " @keydown.enter="
                   editPropertyOnclick(property.fixed_asset_id, property.fixed_asset_code)
-                "
-                @mousedown="selectedRow(property.fixed_asset_id)"
-                @dblclick="
+                " @mousedown="selectedRow(property.fixed_asset_id)" @dblclick="
                   editPropertyOnclick(property.fixed_asset_id, property.fixed_asset_code)
-                "
-                :class="[
+                " @contextmenu="
+                  showContextMenu(
+                    $event,
+                    property.fixed_asset_id,
+                    property.fixed_asset_code,
+                    property.fixed_asset_name
+                  )
+                " @blur="hideContextMenu()" :class="[
                   { active: filterCheckbox(property.fixed_asset_id) },
+
                   { active: property.fixed_asset_id == tmpID },
-                ]"
-                v-for="(property, index) in propertys"
-                :key="property.fixed_asset_id"
-              >
+                ]" v-for="(property, index) in propertys" :key="property.fixed_asset_id">
                 <td style="width: 100px; height: 39px" class="text-rigth m-boder-check">
                   <div class="m-check">
-                    <input
-                      class="m-checkbox"
-                      type="checkbox"
-                      :value="property.fixed_asset_id"
-                      v-model="checkboxList"
+                    <input class="m-checkbox" type="checkbox" :value="property.fixed_asset_id" v-model="checkboxList"
                       @mousedown="
                         getNameProperty(
                           property.fixed_asset_code,
                           property.fixed_asset_name
                         )
-                      "
-                    />
+                      " />
                   </div>
-                  <span class="ml-17 text-center">{{ index + 1 }}</span>
+                  <span class="ml-24 text-center">{{ index + 1 }}</span>
                 </td>
                 <td class="text-left">{{ property.fixed_asset_code }}</td>
                 <td class="text-left ellipsis">
-                  <el-tooltip
-                    :disabled="disabled"
-                    :content="property.fixed_asset_name"
-                    show-after="400"
-                    placement="top"
-                    effect="customized"
-                  >
+                  <el-tooltip :disabled="disabled" :content="property.fixed_asset_name" show-after="400" placement="top"
+                    effect="customized">
                     <span>{{ property.fixed_asset_name }}</span>
                   </el-tooltip>
                 </td>
                 <td class="text-left ellipsis">
-                  <el-tooltip
-                    :disabled="disabled"
-                    :content="property.fixed_asset_category_name"
-                    show-after="400"
-                    placement="top"
-                    effect="customized"
-                  >
+                  <el-tooltip :disabled="disabled" :content="property.fixed_asset_category_name" show-after="400"
+                    placement="top" effect="customized">
                     <span>{{ property.fixed_asset_category_name }}</span>
                   </el-tooltip>
                 </td>
+
                 <td class="text-left ellipsis">
-                  <el-tooltip
-                    :disabled="disabled"
-                    :content="property.department_name"
-                    placement="top"
-                    show-after="400"
-                    effect="customized"
-                  >
+                  <el-tooltip :disabled="disabled" :content="property.department_name" placement="top" show-after="400"
+                    effect="customized">
                     <span>{{ property.department_name }}</span>
                   </el-tooltip>
                 </td>
@@ -236,97 +163,70 @@
                   {{ formartNumber(property.quantity) }}
                 </td>
                 <td class="text-rigth">{{ formartNumber(property.cost) }}</td>
+
                 <td class="text-rigth">
                   {{ formartNumber((property.cost * property.depreciation_rate) / 100) }}
                 </td>
                 <td class="text-rigth">
                   {{
-                    formartNumber(
-                      property.cost - (property.cost * property.depreciation_rate) / 100
-                    )
+                  formartNumber(
+                  property.cost - (property.cost * property.depreciation_rate) / 100
+                  )
                   }}
                 </td>
                 <td class="text-center">
-                  <el-tooltip
-                    :disabled="disabled"
-                    content="Sửa"
-                    placement="bottom"
-                    show-after="400"
-                    effect="customized"
-                  >
-                    <button
-                      class="m-icon-edit btn-edit"
-                      @click="
-                        editPropertyOnclick(
-                          property.fixed_asset_id,
-                          property.fixed_asset_code
-                        )
-                      "
-                    ></button>
+                  <el-tooltip :disabled="disabled" :content="textTolltipEdit" placement="bottom" show-after="400"
+                    effect="customized">
+                    <button class="m-icon-edit btn-edit" @click="
+                      editPropertyOnclick(
+                        property.fixed_asset_id,
+                    
+                        property.fixed_asset_code
+                      )
+                    "></button>
                   </el-tooltip>
-                  <el-tooltip
-                    :disabled="disabled"
-                    content="Nhân bản"
-                    placement="bottom"
-                    show-after="400"
-                  >
-                    <button
-                      class="m-icon-duplicate btn-duplicate"
-                      @click="duplicatePropertyOnclick(property.fixed_asset_id)"
-                    ></button>
+                  <el-tooltip :disabled="disabled" :content="textTolltipDuplicate" placement="bottom" show-after="400"
+                    effect="customized">
+                    <button class="m-icon-duplicate btn-duplicate"
+                      @click="duplicatePropertyOnclick(property.fixed_asset_id)"></button>
                   </el-tooltip>
                 </td>
+
+                <context-menu v-show="property.fixed_asset_id == valueID" :assetIDContext="assetIDContext"
+                  :pageY="pageY" :pageX="pageX">
+                </context-menu>
               </tr>
 
               <div></div>
             </tbody>
+
             <tbody v-if="emptyTable">
               <tr>
                 <td class="empty" colspan="10">
-                  <el-empty description="Không có dữ liệu"></el-empty>
+                  <el-empty :description="textEmply"></el-empty>
                 </td>
               </tr>
             </tbody>
 
-            <tfoot
-              class="m-bottom-table"
-              style="position: sticky; bottom: 0; background-color: #fff"
-            >
+            <tfoot class="m-bottom-table" style="position: sticky; bottom: 0; background-color: #fff">
               <td colspan="5">
                 <div class="m-table__bottom">
                   <div class="m-total-property">
-                    Tổng số: &nbsp;
-                    <span style="font-weight: 700">{{ totalCount }}</span
-                    >&nbsp; bản ghi
+                    {{textTotal}}: &nbsp;<span style="font-weight: 700">{{ totalCount }}</span>&nbsp; {{textRecord}}
                   </div>
+
                   <div class="m-combobox" style="margin-left: 15px">
                     <input type="text" class="combobox m-page" v-model="pageSize" />
 
-                    <button
-                      class="btn_combobox"
-                      @click="showCBBClick()"
-                      @blur="hideContentCbbBlur"
-                    >
+                    <button class="btn_combobox" @click="showCBBClick()" @blur="hideContentCbbBlur">
                       <div class="m-icon-dropdown"></div>
                     </button>
-
-                    <div
-                      class="m-combobox__content"
-                      style="
-                        bottom: 100%;
-                        height: 65px;
-                        font-size: 11px;
-                        margin-bottom: 2px;
-                      "
-                      v-show="isShowmComboboxPaging"
-                    >
+                    <div class="m-combobox__content"
+                      style=" bottom: 100%; height: 62px;font-size: 11px;margin-bottom: 2px;"
+                      v-show="isShowmComboboxPaging">
                       <div class="m-border">
-                        <span
-                          v-for="(pageSize, index) in listOptionPageSize"
-                          :key="index"
-                          class="m-option-cbb-paging"
-                          @mousedown="pageSizeClick(pageSize)"
-                        >
+                        <span v-for="(pageSize, index) in listOptionPageSize" :key="index" class="m-option-cbb-paging"
+                          @mousedown="pageSizeClick(pageSize)">
                           {{ pageSize }}
                         </span>
                       </div>
@@ -334,140 +234,89 @@
                   </div>
 
                   <div class="m-table__bottom--pagenavi">
-                    <el-tooltip
-                      :disabled="disabled"
-                      content="Trang trước"
-                      placement="top"
-                      effect="customized"
-                      show-after="400"
-                    >
-                      <button
-                        class="btn-pagenavi"
-                        @click="pageNumberPrevClick(this.pageNumber)"
-                      >
+                    <el-tooltip :disabled="disabled" :content="textPrev" placement="top" effect="customized"
+                      show-after="400">
+                      <button class="btn-pagenavi" @click="pageNumberPrevClick(this.pageNumber)">
                         <div class="m-icon-prev"></div>
                       </button>
                     </el-tooltip>
 
-                    <button
-                      class="btn-pagenavi"
-                      @click="pageNumberClick(1)"
-                      :class="{ btnpagenaviactive: pageNumber == 1 }"
-                    >
+                    <button class="btn-pagenavi" @click="pageNumberClick(1)"
+                      :class="{ btnpagenaviactive: pageNumber == 1 }">
                       <span>1</span>
                     </button>
-                    <button
-                      v-if="isShowNextPage"
-                      class="btn-pagenavi"
-                      @click="pageNumberClick(page)"
-                      :class="{ btnpagenaviactive: pageNumber == page }"
-                    >
+
+                    <button v-if="isShowNextPage" class="btn-pagenavi" @click="pageNumberClick(page)"
+                      :class="{ btnpagenaviactive: pageNumber == page }">
                       <span>{{ page }}</span>
                     </button>
 
                     <div class="ml-12" v-if="isShowThreeDot">...</div>
 
-                    <button
-                      v-if="isShowEndPage"
-                      class="btn-pagenavi"
-                      @click="pageNumberClick(this.endPageNumber)"
+                    <button v-if="isShowEndPage" class="btn-pagenavi" @click="pageNumberClick(this.endPageNumber)"
                       :class="{
                         btnpagenaviactive: pageNumber == this.endPageNumber,
-                      }"
-                    >
+                      }">
                       <span>{{ endPageNumber }}</span>
                     </button>
-                    <el-tooltip
-                      :disabled="disabled"
-                      content="Trang kế tiếp"
-                      placement="top"
-                      effect="customized"
-                      show-after="400"
-                    >
-                      <button
-                        class="btn-pagenavi"
-                        @click="pageNumberNextClick(pageNumber)"
-                      >
+
+                    <el-tooltip :disabled="disabled" :content="textNext" placement="top" effect="customized"
+                      show-after="400">
+                      <button class="btn-pagenavi" @click="pageNumberNextClick(pageNumber)">
                         <div class="m-icon-next"></div>
                       </button>
                     </el-tooltip>
                   </div>
                 </div>
               </td>
+
               <td class="text-rigth">
-                <el-tooltip
-                  :disabled="disabled"
-                  content="Số lượng"
-                  placement="top"
-                  effect="customized"
-                  show-after="400"
-                >
+                <el-tooltip :disabled="disabled" :content="textQuanlity" placement="top" effect="customized"
+                  show-after="400">
                   <span style="font-weight: 700">{{ formartNumber(totalQuantity) }}</span>
                 </el-tooltip>
               </td>
+
               <td class="text-rigth">
-                <el-tooltip
-                  :disabled="disabled"
-                  content="Nguyên giá"
-                  placement="top"
-                  effect="customized"
-                  show-after="400"
-                >
+                <el-tooltip :disabled="disabled" :content="textCost" placement="top" effect="customized"
+                  show-after="400">
                   <span style="font-weight: 700">{{ formartNumber(totalCost) }}</span>
                 </el-tooltip>
               </td>
+
               <td class="text-rigth">
-                <el-tooltip
-                  :disabled="disabled"
-                  content="Hao mòn khấu hao lũy kế"
-                  placement="top"
-                  effect="customized"
-                  show-after="400"
-                >
+                <el-tooltip :disabled="disabled" :content="textLossCost" placement="top" effect="customized"
+                  show-after="400">
                   <span style="font-weight: 700">{{ formartNumber(totalLoss) }}</span>
                 </el-tooltip>
               </td>
+
               <td class="text-rigth">
-                <el-tooltip
-                  :disabled="disabled"
-                  content="Giá trị còn lại"
-                  placement="top"
-                  effect="customized"
-                  show-after="400"
-                >
+                <el-tooltip :disabled="disabled" :content="textRemaining" placement="top" effect="customized"
+                  show-after="400">
                   <span style="font-weight: 700">{{
-                    formartNumber(totalCost - totalLoss)
+                  formartNumber(totalCost - totalLoss)
                   }}</span>
                 </el-tooltip>
               </td>
+
               <td></td>
             </tfoot>
           </table>
         </div>
       </div>
 
-      <PropertyDetail
-        v-if="isShowDialog"
-        :propertyIDSelected="propertyIDSelected"
-        :propertyCodeSelected="propertyCodeSelected"
-        :propertyCodeList="propertyCodeList"
-        :checkTitleForm="checkTitleForm"
-      />
+      <PropertyDetail v-if="isShowDialog" :propertyIDSelected="propertyIDSelected"
+        :propertyCodeSelected="propertyCodeSelected" :propertyCodeList="propertyCodeList"
+        :checkTitleForm="checkTitleForm" />
 
-      <ToastMessageException
-        v-show="isShowToastException"
-        :titleFormException="titleFormException"
-      />
-      <ToastMessageDelete
-        :titleFormDelete="titleFormDelete"
-        :totalCountAsset="totalCountAsset"
-        :tmpPropertyCode="tmpPropertyCode"
-        :tmpPropertyName="tmpPropertyName"
-        :checkboxList="checkboxList"
-        v-show="isDialogToastDelete"
-      />
-      <ToastMessageDone :titleToastDone="titleToastDone" v-show="isShowToastDone" />
+      <ToastMessageException v-if="isShowToastException" :titleFormException="titleFormException" />
+
+      <ToastMessageDelete :titleFormDelete="titleFormDelete" :totalCountAsset="totalCountAsset"
+        :tmpPropertyCode="tmpPropertyCode" :tmpPropertyName="tmpPropertyName" :checkboxList="checkboxList"
+        :assetIDContextDelete="assetIDContextDelete" v-if="isDialogToastDelete" />
     </div>
+
     <LoadDing v-show="isShowLoading" />
   </div>
 </template>
@@ -476,24 +325,24 @@
 import axios from "axios";
 import PropertyDetail from "./PropertyDetail.vue";
 import ToastMessageDelete from "../toast/ToastMessageDelete.vue";
-import ToastMessageDone from "../toast/ToastMessageDone.vue";
 import Enum from "../../lib/enum.js";
 import Resource from "@/lib/resource";
 import LoadDing from "../loading/LoadDing.vue";
 import MInput from "../../base/input/MInput.vue";
 import MCombobox from "@/base/combobox/MCombobox.vue";
 import ToastMessageException from "../toast/ToastMessageException.vue";
+import ContextMenu from "../contextmenu/ContextMenu.vue";
 export default {
   name: "PropertyList",
 
   components: {
     PropertyDetail,
     ToastMessageDelete,
-    ToastMessageDone,
     LoadDing,
     MInput,
     MCombobox,
     ToastMessageException,
+    ContextMenu,
   },
 
   /**
@@ -504,23 +353,8 @@ export default {
   },
 
   updated() {
-    /**
-     * Hàm lắng nghe sự kiện của bàn phím khi click vào nút insert
-     * Author NVHThai(29/09/2022)
-     */
-    try {
-      let me = this;
-      document.addEventListener("keyup", function (event) {
-        if (event.code == "Insert") {
-          me.btnOpenFormAddOnclick();
-        }
-        if (event.ctrlKey && event.code == "ArrowDown") {
-          document.getElementById(`asset0`).focus();
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.addEventListener();
+    this.contextMenu();
     /**
      * nếu page chỉ có 1 trang hoặc không có trang nào thì ẩn hết nút còn lại chỉ hiện trang 1
      * nếu page chỉ có 2 trang thì ẩn hết nút còn lại chỉ hiện trang 1 và 2
@@ -601,6 +435,74 @@ export default {
   },
 
   methods: {
+    deleteByKeyboard(valueID, valueCode, valueName) {
+      this.assetIDContext = valueID;
+      this.tmpPropertyCode = valueCode;
+      this.tmpPropertyName = valueName;
+      this.deleteByID(this.assetIDContext);
+    },
+
+    /**
+     * Hàm ẩn context menu mặc định
+     * Author: NVHThai (07/10/2022)
+     */
+    contextMenu() {
+      document.getElementById("property-list").oncontextmenu = function () {
+        return false;
+      };
+    },
+
+    /**
+     * Hàm ẩn context menu
+     * Author: NVHThai (07/10/2022)
+     */
+    hideContextMenu() {
+      this.valueID = null;
+    },
+
+    /**
+     * Hàm hiện context menu
+     * @param {guid} valueID: id tài sản
+     * @param {string} valueCode: mã tài sản
+     * @param {string} valueName: tên tài sản
+     * Author: NVHThai (07/10/2022)
+     */
+    showContextMenu(e, valueID, valueCode, valueName) {
+      this.assetIDContext = valueID;
+      this.pageX = e.pageX;
+      this.pageY = e.pageY;
+      if (this.valueID == valueID) {
+        this.valueID = null;
+      } else {
+        this.valueID = valueID;
+      }
+      this.tmpPropertyCode = valueCode;
+      this.tmpPropertyName = valueName;
+    },
+
+    /**
+     * Hàm lắng nghe sự kiện của bàn phím khi click vào nút insert
+     * Author NVHThai(29/09/2022)
+     */
+    addEventListener() {
+      try {
+        let me = this;
+        document.addEventListener("keydown", function (event) {
+          if (event.code == "Insert") {
+            me.btnOpenFormAddOnclick();
+          }
+          if (event.ctrlKey && event.code == "ArrowDown") {
+            document.getElementById(`asset0`).focus();
+          }
+          if (event.ctrlKey && event.code == "F3") {
+            document.getElementById("searchAsset").focus();
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     /**
      * Hàm blur thì sẽ ẩn form cbb
      * Author: NVHThai (14/09/2022)
@@ -610,32 +512,20 @@ export default {
     },
 
     /**
-     * Hàm show thông báo thành công
-     * Author: NVHThai (20/09/2022)
-     */
-    showToastDone() {
-      this.isShowToastDone = true;
-    },
-
-    /**
-     * Hàm ẩn thông báo thành công
-     * Author: NVHThai (20/09/2022)
-     */
-    hideToastDone() {
-      this.isShowToastDone = false;
-    },
-
-    /**
      * hàm tạo sự kiện cho nút prev trang ở paging, khi click vào sẽ đến trang trước đó
      * Author: NVHTHai (19/09/2022)
      * @param {int} pageNumber
      */
     pageNumberPrevClick(pageNumber) {
-      if (pageNumber > 1) {
-        this.pageNumber = pageNumber - 1;
-      }
-      if (pageNumber > 2) {
-        this.page = pageNumber - 1;
+      try {
+        if (pageNumber > 1) {
+          this.pageNumber = pageNumber - 1;
+        }
+        if (pageNumber > 2) {
+          this.page = pageNumber - 1;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -645,9 +535,13 @@ export default {
      * @param {int} pageNumber
      */
     pageNumberNextClick(pageNumber) {
-      if (pageNumber < this.endPageNumber) {
-        this.pageNumber = pageNumber + 1;
-        this.page = pageNumber + 1;
+      try {
+        if (pageNumber < this.endPageNumber) {
+          this.pageNumber = pageNumber + 1;
+          this.page = pageNumber + 1;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -657,12 +551,16 @@ export default {
      * @param {int} pageNumber
      */
     pageNumberClick(pageNumber) {
-      this.pageNumber = pageNumber;
-      if (pageNumber == 1) {
-        this.page = 2;
-      }
-      if (pageNumber == this.endPageNumber) {
-        this.page = this.endPageNumber - 1;
+      try {
+        this.pageNumber = pageNumber;
+        if (pageNumber == 1) {
+          this.page = 2;
+        }
+        if (pageNumber == this.endPageNumber) {
+          this.page = this.endPageNumber - 1;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -672,9 +570,13 @@ export default {
      *@param {int} pageSize
      */
     pageSizeClick(pageSize) {
-      this.pageSize = pageSize;
-      this.isShowmComboboxPaging = false;
-      this.pageNumber = 1;
+      try {
+        this.pageSize = pageSize;
+        this.isShowmComboboxPaging = false;
+        this.pageNumber = 1;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -693,12 +595,16 @@ export default {
      * @param {id} guid
      */
     filterCheckbox(id) {
-      for (let idcheck of this.checkboxList) {
-        if (idcheck == id) {
-          return true;
+      try {
+        for (let idcheck of this.checkboxList) {
+          if (idcheck == id) {
+            return true;
+          }
         }
+        return false;
+      } catch (error) {
+        console.log(error);
       }
-      return false;
     },
 
     /**
@@ -707,12 +613,15 @@ export default {
      * @param {int} number
      */
     formartNumber(number) {
-      if (number && !isNaN(number)) {
-        number = number.toFixed(0);
-
-        return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
-      } else {
-        return number;
+      try {
+        if (number && !isNaN(number)) {
+          number = number.toFixed(0);
+          return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+        } else {
+          return number;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -725,22 +634,39 @@ export default {
     },
 
     /**
+     * Xóa tài sản bảng context menu
+     * Author: NVHThai (07/10/2022)
+     * @param {*} valueID
+     */
+    deleteByID(valueID) {
+      this.assetIDContextDelete = valueID;
+      this.isDialogToastDelete = true;
+      this.titleFormDelete = Resource.TitleToast.titleFormDelete;
+    },
+
+    /**
      * Hàm để mở popup khi ấn vào nút xóa
      * Author: NVHThai (09/09/2022)
      */
     btnOpenToastDeleteOnclick() {
-      if (this.checkboxList.length == 1) {
-        this.totalCountAsset = 1;
-        this.isDialogToastDelete = true;
-        this.titleFormDelete = Resource.TitleToast.titleFormDelete;
-      } else if (this.checkboxList.length == 0) {
-        this.totalCountAsset = 0;
-        this.isShowToastException = true;
-        this.titleFormException = Resource.TitleToast.DeleteException;
-      } else {
-        this.totalCountAsset = this.checkboxList.length;
-        this.isDialogToastDelete = true;
-        this.titleFormDelete = Resource.TitleToast.titleFormDeletes;
+      try {
+        if (this.checkDataNotNull) {
+          if (this.checkboxList.length == 1) {
+            this.totalCountAsset = 1;
+            this.isDialogToastDelete = true;
+            this.titleFormDelete = Resource.TitleToast.titleFormDelete;
+          } else if (this.checkboxList.length == 0) {
+            this.totalCountAsset = 0;
+            this.isShowToastException = true;
+            this.titleFormException = Resource.TitleToast.DeleteException;
+          } else {
+            this.totalCountAsset = this.checkboxList.length;
+            this.isDialogToastDelete = true;
+            this.titleFormDelete = Resource.TitleToast.titleFormDeletes;
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -749,7 +675,11 @@ export default {
      * Author: NVHThai (30/09/2022)
      */
     deleteDataInCheckboxList() {
-      this.checkboxList.splice(0, 100);
+      try {
+        this.checkboxList.splice(0, 100);
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -783,9 +713,12 @@ export default {
             me.propertyCodeList = response.data.assetCodeList;
 
             if (me.totalCount == 0) {
+              this.disableBtn = true;
               this.emptyTable = true;
+              this.checkDataNotNull = false;
             } else {
               this.emptyTable = false;
+              this.disableBtn = false;
             }
             // lấy dữ liệu xong tắt trạng thái tải data
             this.isShowLoading = false;
@@ -804,10 +737,14 @@ export default {
      * @param {guid} property: id tài sản
      */
     editPropertyOnclick(propertyID, propertyCode) {
-      this.propertyIDSelected = propertyID;
-      this.propertyCodeSelected = propertyCode;
-      this.isShowDialog = true;
-      this.checkTitleForm = Enum.FormMode.Edit;
+      try {
+        this.propertyIDSelected = propertyID;
+        this.propertyCodeSelected = propertyCode;
+        this.isShowDialog = true;
+        this.checkTitleForm = Enum.FormMode.Edit;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -815,9 +752,13 @@ export default {
      * click vào thì mở form thêm tài sản và reset id tài sản
      */
     btnOpenFormAddOnclick() {
-      this.isShowDialog = true;
-      this.checkTitleForm = Enum.FormMode.Add;
-      this.propertyIDSelected = null;
+      try {
+        this.isShowDialog = true;
+        this.checkTitleForm = Enum.FormMode.Add;
+        this.propertyIDSelected = null;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -825,9 +766,13 @@ export default {
      * Author: nvhthai (31/08/2022)
      */
     duplicatePropertyOnclick(property) {
-      this.propertyIDSelected = property;
-      this.isShowDialog = true;
-      this.checkTitleForm = Enum.FormMode.Duplicate;
+      try {
+        this.propertyIDSelected = property;
+        this.isShowDialog = true;
+        this.checkTitleForm = Enum.FormMode.Duplicate;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -843,13 +788,17 @@ export default {
      *  Author: NVHThai (09/09/2022)
      */
     selectAllOnClick() {
-      this.checkboxList = [];
-      if (this.selectAll) {
-        for (let i in this.propertys) {
-          this.checkboxList.push(this.propertys[i].fixed_asset_id);
+      try {
+        this.checkboxList = [];
+        if (this.selectAll) {
+          for (let i in this.propertys) {
+            this.checkboxList.push(this.propertys[i].fixed_asset_id);
+          }
         }
+        this.selectAll = !this.selectAll;
+      } catch (error) {
+        console.log(error);
       }
-      this.selectAll = !this.selectAll;
     },
 
     /**
@@ -858,8 +807,12 @@ export default {
      * @param {string} keyword
      */
     searchInput(keyword) {
-      this.keword = keyword;
-      this.getDataAPI();
+      try {
+        this.keword = keyword;
+        this.getDataAPI();
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**
@@ -868,9 +821,13 @@ export default {
      * @param {string} keyword
      */
     searchInputEmpty(keyword) {
-      if (keyword == "") {
-        this.keword = "";
-        this.getDataAPI();
+      try {
+        if (keyword == "") {
+          this.keword = "";
+          this.getDataAPI();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -894,15 +851,23 @@ export default {
     },
 
     nextEleMoveFocus() {
-      if (this.focusName < this.pageSize) {
-        this.focusName = this.focusName + 1;
-        document.getElementById(`asset${this.focusName}`).focus();
+      try {
+        if (this.focusName < this.pageSize) {
+          this.focusName = this.focusName + 1;
+          document.getElementById(`asset${this.focusName}`).focus();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     prevEleMoveFocus() {
-      if (this.focusName > 0) {
-        this.focusName = this.focusName - 1;
-        document.getElementById(`asset${this.focusName}`).focus();
+      try {
+        if (this.focusName > 0) {
+          this.focusName = this.focusName - 1;
+          document.getElementById(`asset${this.focusName}`).focus();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
@@ -966,9 +931,6 @@ export default {
 
       // id để lấy id tài sản lớn nhất
       employeesID: null,
-
-      // toast message khi thành công
-      isShowToastDone: false,
 
       // mảng để lưu id tài sản
       checkboxList: [],
@@ -1035,11 +997,61 @@ export default {
       //page hiện tại
       page: 2,
 
+      // bảng trắng dữ liệu
       emptyTable: false,
 
-      asset: "asset",
-
       focusName: 0,
+
+      valueID: null,
+
+      //id tài sản trong contextmenu
+      assetIDContext: "",
+
+      //id tài sản để xóa trong contextmenu
+      assetIDContextDelete: "",
+
+      // disable nút toolbar
+      disableBtn: false,
+
+      // biến check khi có dữ liệu mới click được vào xóa và xuất khẩu
+      checkDataNotNull: true,
+
+      // Tọa độ chuột
+      pageY: null,
+      pageX: null,
+      //id để focus
+      asset:"asset",
+
+      //text sử dụng 
+      textBtnAdd: Resource.TextVi.List.BtnAdd,
+      textSTT: Resource.TextVi.List.STT,
+      textAssetCode: Resource.TextVi.List.AssetCode,
+      textAssetName: Resource.TextVi.List.AssetName,
+      textAssetCategoryName: Resource.TextVi.List.AssetCategoryName,
+      textAssetDepartmentName: Resource.TextVi.List.AssetDepartmentName,
+      textQuanlity: Resource.TextVi.List.Quanlity,
+      textCost: Resource.TextVi.List.Cost,
+      textLossCost: Resource.TextVi.List.LossCost,
+      textRemaining: Resource.TextVi.List.Remaining,
+      textTool: Resource.TextVi.List.Tool,
+      textEmply: Resource.TextVi.List.Emply,
+      textTotal: Resource.TextVi.List.Total,
+      textRecord: Resource.TextVi.List.Record,
+      textTolltipInputSearch: Resource.TextVi.Tooltip.InputSearch,
+      textTolltipBtnAdd: Resource.TextVi.Tooltip.BtnAdd,
+      textTolltipBtnExport: Resource.TextVi.Tooltip.BtnToolbarExport,
+      textTolltipBtnDelete: Resource.TextVi.Tooltip.BtnToolbarDelete,
+      textTolltipCheckboxAll: Resource.TextVi.Tooltip.CheckBoxAll,
+      textTolltipSTT: Resource.TextVi.Tooltip.STT,
+      textTolltipLossCost: Resource.TextVi.Tooltip.LossCost,
+      textTolltipEdit: Resource.TextVi.Tooltip.Edit,
+      textTolltipDuplicate: Resource.TextVi.Tooltip.Duplicate,
+      textNext: Resource.TextVi.Tooltip.Next,
+      textPrev: Resource.TextVi.Tooltip.Prev,
+      textPInputSearch: Resource.TextVi.PlaceHolder.InputSearch,
+      textPComboboxAssetCategory: Resource.TextVi.PlaceHolder.ComboboxAssetCategory,
+      textPComboboxDepartment: Resource.TextVi.PlaceHolder.ComboboxDepartment,
+
     };
   },
 };
