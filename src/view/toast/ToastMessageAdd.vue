@@ -29,6 +29,10 @@ export default {
   props: ["isDialogToastAttentionAdd", "isDialogToastAttentionEdit"],
 
   mounted() {
+    /**
+     * Focus vào nút close
+     * Author: NVHThai (09/10/2022)
+     */
     try {
       document.getElementById("btnClose").focus();
     } catch (error) {

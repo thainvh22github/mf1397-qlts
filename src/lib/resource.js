@@ -31,7 +31,8 @@ export default {
         titleFormDeletes:"tài sản đã được chọn. Bạn có muốn xóa các tài sản khỏi danh sách này không?",
         TitleFormValidate: "Dữ liệu đầu vào không hợp lệ",
         TitleFormAdd: "Bạn có muốn hủy bỏ khai báo tài sản này?",
-        TitleFormEdit: "Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này?"
+        TitleFormEdit: "Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này?",
+        TitleFormDone:"Lưu dữ liệu thành công",
     },
 
     TitleException:{
@@ -74,7 +75,7 @@ export default {
         LossYear:"Giá trị hao mòn không được phép để trống",
         AssetCodeDuplicate:"Mã tài sản đã tồn tại",
         DepreciationRateError:"Tỷ lệ hao mòn phải bằng 1/Số năm sử dụng",
-        ValidateLossYear:"Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá"
+        ValidateLossYear:"Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá",
     },
     
     TextVi:{
@@ -136,8 +137,7 @@ export default {
             Close: "Hủy",
             Save: "Lưu"
         },
-
-       
+        Loading:"Đang tải dữ liệu"
     }
     
 }

@@ -54,7 +54,13 @@ export default {
 
 <style scoped>
 @import url(../../css/details/toastdialog.css);
-
+.m-dialog-toast__attention--content{
+    margin-top: 20px !important;
+    text-align: end;
+}
+.m-dialog-valid{
+    margin-top: 10px !important;
+}
 .m-dialog-toast__attention-add {
     height: auto;
 }
@@ -69,7 +75,7 @@ export default {
 
 .m-dialog-valid-list {
     width: 100%;
-    height: 30px;
+    height: 28px;
     display: flex;
     align-items: center;
 }

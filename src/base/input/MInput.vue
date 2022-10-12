@@ -1,7 +1,7 @@
 <template>
   <input :type="type" class="input" :class="[className, { borderred: borderRed }]" :placeholder="placeholder"
     :tabindex="tabindex" :value="modelValue" @input="(event) => $emit('update:modelValue', event.target.value)"
-    @blur="validateInputBlur()" :style="style" :id="focusInput" />
+    @blur="validateInputBlur()" :style="style" :id="focusInput"/>
 </template>
 
 <script>
@@ -39,9 +39,8 @@ export default {
      */
     checkInputValidate: function (value) {
       if (value == true && this.modelValue != "0") {
-        if (this.modelValue == null || this.modelValue == "") {
+        if (this.modelValue == null || this.modelValue == '') {
           this.borderRed = true;
-          
         }
       }
 
@@ -64,7 +63,7 @@ export default {
      */
     validateInputBlur() {
       if (this.modelValue != "0") {
-        if (this.modelValue == null || this.modelValue == "") {
+        if (this.modelValue == null || this.modelValue == '') {
           this.borderRed = true;
         }
       }

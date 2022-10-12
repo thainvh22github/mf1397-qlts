@@ -1,10 +1,8 @@
-import Enum from "./enum";
-import Resource from "./resource";
-
 /**
  * Kiểm tra xem dữ liệu đầu vào có null không
  * @param {string} value 
  * @returns : nếu mà rỗng thì trả về false ngược lại trả về true
+ * Author: NVHThai (10/10/2020)  
  */
 function checkValidEmpty(value) {
     if (value == null || value.trim() == "") {
@@ -15,13 +13,23 @@ function checkValidEmpty(value) {
     }
 }
 
-
+/**
+ * Chuyển các dạng int float.. thành string
+ * @param {int, float. . .} value : gía trị số truyền vào
+ * @returns : Giá trị là chuỗi
+ * Author: NVHThai (10/10/2020)  
+ */
 function forMartDataToString(value) {
     if (value != null) {
         return value.toString(10);
     }
 }
 
+/**
+ * Hàm lấy ngày tháng năm hiện tại
+ * @returns : về chuỗi năm tháng ngày
+ * Author: NVHThai (10/10/2020)  
+ */
 function getCurrentDate() {
     let curDate = new Date();
     let day = curDate.getDate();
@@ -29,15 +37,26 @@ function getCurrentDate() {
     let month = curDate.getMonth() + 1;
     month = month < 10 ? `0${month}` : day;
     let fullYear = curDate.getFullYear();
-    return `${fullYear}-${month}-${day}`;
+    return `${fullYear}-${month-1}-${day}`;
 }
 
+/**
+* Hàm lấy năm hiện tại
+* @returns : năm hiện tại
+* Author: NVHThai (10/10/2020)  
+*/
 function getCurrentFullYear() {
     let curDate = new Date();
     let fullYear = curDate.getFullYear();
     return fullYear;
 }
 
+/**
+* Hàm chỉ cho nhập số
+* @param {$event} e 
+* @returns : cho nhập số là true
+* Author: NVHThai (10/10/2020)  
+*/
 function inputOnlyNumber(e) {
     if (
         (e.keyCode > 9 && e.keyCode < 37) ||
@@ -54,44 +73,7 @@ function inputOnlyNumber(e) {
     return false;
 }
 
-/**
-     * Hàm xử lý exception gửi về từ backend hiện ra cho người dùng
-     * Author: NVHThai(26/09/2022)
-     * @param {int} status: trạng thái bên backend trả về
-     * @param {arr} moreInfo: Mảng các lỗi do người dùng nhập thiếu từ backend trả về
-     * @param {string} userMsg: Lỗi từ backend trả về hiển thị cho người dùng
-     */
-function handleException(status, moreInfo, userMsg) {
-    try {
-        switch (status) {
-            case Enum.StatusCode.BADREQUEST:
-                this.moreInfo = moreInfo;
-                this.titleFormValid = userMsg;
-                this.isShowDialogToastValid = true;
-                break;
-            case Enum.StatusCode.FORBIDDEN:
-                this.titleFormException = Resource.TitleException.FORBIDDEN;
-                this.isShowDialogToastException = true;
-                break;
-            case Enum.StatusCode.NOTFOUND:
-                this.titleFormException = Resource.TitleException.NOTFOUND;
-                this.isShowDialogToastException = true;
-                break;
-            case Enum.StatusCode.UNAUTHORIZED:
-                this.titleFormException = Resource.TitleException.UNAUTHORIZED;
-                this.isShowDialogToastException = true;
-                break;
-            case Enum.StatusCode.NTERNALSERVERERROR:
-                this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
-                this.isShowDialogToastException = true;
-                break;
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 export default {
-    checkValidEmpty, forMartDataToString, getCurrentDate, getCurrentFullYear, inputOnlyNumber,handleException
+    checkValidEmpty, forMartDataToString, getCurrentDate, getCurrentFullYear, inputOnlyNumber,
 }

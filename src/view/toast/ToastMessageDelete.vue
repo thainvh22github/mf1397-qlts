@@ -13,7 +13,8 @@
           <div tabindex="203" id="tmp"></div>
           <div class="btn btn__outline" tabindex="204" id="btnClose" @keyup.enter="btnCloseToastDeleteOnclick()"
             @click="btnCloseToastDeleteOnclick()">{{textBtnClose}}</div>
-          <div class="ml-8 btn" tabindex="205" @keydown="loopFocus()" @keyup.enter="btnDelete()" @click="btnDelete()">
+          <div class="ml-8 btn" tabindex="205" @keydown.tab="loopFocus()" @keyup.enter="btnDelete()"
+            @click="btnDelete()">
             {{textBtnDelete}}</div>
         </div>
       </div>

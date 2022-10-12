@@ -1,7 +1,7 @@
 <template>
   <div class="m-combobox" :class="css">
     <el-tooltip :content="nameInputs" placement="top" show-after="400" effect="customized"
-      :disabled="nameInputs == null || nameInputs == ''">
+      :disabled="nameInputs == null || nameInputs.trim() == ''">
       <input id="inputcombobox" :type="type" class="combobox" :class="[className, { borderred: borderRed }]"
         :placeholder="placeholder" v-model="nameInputs" :tabindex="tabindex" @click="btnOpenShowCombobox"
         @blur="validateInputBlur(nameInputs)" @keydown="addValueNameInput($event)" @keydown.enter="btnOpenShowCombobox"
@@ -120,7 +120,7 @@ export default {
       }
     },
     addValueNameInput(e) {
-      if (e.keyCode == 32) {
+      if (e.keyCode == 32 && this.nameInputs.trim() != "") {
         this.nameInputs = this.nameInputs + " ";
       }
     },

@@ -18,15 +18,16 @@
         <div class="mt-20 m-propertycode-propertyname" style="display: flex">
           <div class="m-propertycode" style="width: 32%">
             <div class="m-text">{{ textAssetCode }} <span style="color: red">*</span></div>
-              <m-input type="text" focusInput="propertycode" className="mt-8 w-100 m-input-propertycode" v-model="property.fixed_asset_code"
-                tabindex="101" :checkInputValidate="checkInputValidate">
-              </m-input>
+            <m-input type="text" focusInput="propertycode" className="mt-8 w-100 m-input-propertycode"
+              v-model="property.fixed_asset_code" tabindex="101" :checkInputValidate="checkInputValidate"
+              maxlength="30">
+            </m-input>
           </div>
 
           <div class="m-propertyname" style="width: calc(68% - 16px); margin-left: 16px">
             <div class="m-text">{{ textAssetName }} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-propertyname" v-model="property.fixed_asset_name"
-              tabindex="102" :checkInputValidate="checkInputValidate" :placeholder=textPAssetName>
+              tabindex="102" :checkInputValidate="checkInputValidate" :placeholder=textPAssetName maxlength="255">
             </m-input>
           </div>
         </div>
@@ -88,11 +89,11 @@
             <div class="m-text">{{textQuanlity}} <span style="color: red">*</span></div>
 
             <div class="m-input-amount">
-              <m-input type="number" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
-                style="text-align: right; padding-right: 40px" @keydown="validateNumber($event)"
-                :checkInputValidate="checkInputValidate" min="0">
+              <m-input type="text" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
+                :value="formartNumber(property.quantity)" style="text-align: right; padding-right: 40px"
+                @keydown="validateNumber($event)" @input="showValueQuanlity()" :checkInputValidate="checkInputValidate"
+                min="0" maxlength="20" @keydown.up="onclickStepAmount(0)" @keydown.down="onclickStepAmount(1)">
               </m-input>
-
               <div class="m-drop">
                 <button class="btn__up" @click="onclickStepAmount(0)">
                   <div class="m-icon-dropup"></div>
@@ -107,17 +108,18 @@
           <div class="m-cost" style="width: 32%; margin-left: 16px">
             <div class="m-text">{{textCost}} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-cost" :value="formartNumber(property.cost)"
-              v-model="property.cost" tabindex="106" style="text-align: right" @input="showValueCost()"
-              @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate">
+              v-model="property.cost" tabindex="106" style="text-align: right"
+              @input="showValueNumber(property.cost,textCost)" @keydown="validateNumber($event)"
+              :checkInputValidate="checkInputValidate" maxlength="20">
             </m-input>
           </div>
 
           <div class="m-longevity" style="width: calc(36% - 32px); margin-left: 16px">
-            <div class="m-text">{{DepreciationRate}} <span style="color: red">*</span></div>
+            <div class="m-text">{{textDepreciationRate}} <span style="color: red">*</span></div>
             <m-input type="text" className="mt-8 w-100 m-input-longevity"
               :value="formartRate(property.depreciation_rate)" v-model="property.depreciation_rate" tabindex="107"
               style="text-align: right" @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate"
-              @input="changeValueLossYear()"></m-input>
+              @input="changeValueLossYear()" maxlength="20"></m-input>
           </div>
         </div>
 
@@ -137,7 +139,7 @@
             </el-date-picker>
           </div>
           <div class="m-trackingyear" style="width: calc(36% - 32px); margin-left: 16px">
-            <div class="m-text">Năm theo dõi</div>
+            <div class="m-text">{{textTrackedYear}}</div>
             <m-input type="text" className="mt-8 w-100 input__disable m-input-trackingyear"
               v-model="property.tracked_year" readonly style="text-align: right">
             </m-input>
@@ -148,14 +150,16 @@
           <div class="m-lossrate" style="width: 32%">
             <div class="m-text">{{textLifeTime}} <span style="color: red">*</span></div>
             <div class="m-input-lossrate">
-              <m-input type="number" className="mt-8 w-100" v-model="property.life_time" tabindex="110"
-                style="text-align: right; padding-right: 40px" :checkInputValidate="checkInputValidate">
+              <m-input type="text" className="mt-8 w-100" v-model="property.life_time" tabindex="110"
+                @input="showValueNumber(property.life_time,textLifeTime)" style="text-align: right; padding-right: 40px"
+                :checkInputValidate="checkInputValidate" maxlength="20" @keydown.up="onclickStepLifeTime(0)"
+                @keydown.down="onclickStepLifeTime(1)" @keydown="validateNumber($event)">
               </m-input>
               <div class="m-drop">
-                <button class="btn__up" v-on:click="onclickStepLossRate(0)">
+                <button class="btn__up" @click="onclickStepLifeTime(0)">
                   <div class="m-icon-dropup"></div>
                 </button>
-                <button class="btn__down" v-on:click="onclickStepLossRate(1)">
+                <button class="btn__down" @click="onclickStepLifeTime(1)">
                   <div class="m-icon-down"></div>
                 </button>
               </div>
@@ -163,11 +167,13 @@
           </div>
 
           <div class="m-lossyear" style="width: 32%; margin-left: 16px">
-            <div class="m-text">{{textDepreciationRate}} <span style="color: red">*</span>
+            <div class="m-text">{{textLossYear}} <span style="color: red">*</span>
             </div>
             <m-input type="text" className="mt-8 w-100 input m-input-lossyear"
               :value="formartNumber(property.loss_year)" v-model="property.loss_year" tabindex="111"
-              style="text-align: right" :checkInputValidate="checkInputValidate" @input="showValueLossYear()"></m-input>
+              style="text-align: right" :checkInputValidate="checkInputValidate"
+              @input="showValueNumber(property.loss_year, textLossYear)" maxlength="30"
+              @keydown="validateNumber($event)"></m-input>
           </div>
         </div>
       </div>
@@ -176,7 +182,7 @@
         <button class="btn btn-close" tabindex="112" @click="btnCloseFormOnclick">
           {{textBClose}}
         </button>
-        <button class="btn btn-save" tabindex="113"  @keydown.tab="loopFocus" @click="btnSaveFormOnclick">
+        <button class="btn btn-save" tabindex="113" @keydown.tab="loopFocus" @click="btnSaveFormOnclick">
           {{textBSave}}
         </button>
       </div>
@@ -276,7 +282,7 @@ export default {
      * Hàm để khi hết trang thêm thì focus qoay lại
      * Author: NVHThai (03/10/2022)
      */
-    loopFocus(){
+    loopFocus() {
       document.getElementById("btnX").focus();
     },
 
@@ -397,22 +403,31 @@ export default {
     },
 
     /**
-     * Hàm nhập số giá trị hao mòn năm vào ô thì tự format số
+     * Hàm nhập số giá trị vào ô thì tự format số
      * Author: NVHThai (27/09/2022)
      */
-
-    showValueLossYear() {
+    showValueNumber(value, check) {
       try {
-        this.checkLossYear = false;
-        let lossYear = this.property.loss_year;
-        if (lossYear != 0) {
-          let tmpCost = lossYear.replace(/[^0-9]/g, "");
-          let showCost = this.formartNumber(tmpCost);
-          this.property.loss_year = showCost;
+        if (BaseMethod.checkValidEmpty(value)) {
+          let tmpValue = this.formartNumber(value.replace(/[^0-9]/g, ""));
+          switch (check) {
+            case this.textLossYear:
+              this.property.loss_year = tmpValue;
+              break;
+            case this.textLifeTime:
+              this.property.life_time = tmpValue;
+              break;
+            case this.textCost:
+              this.property.cost = tmpValue;
+              this.solveLossYear();
+              break;
+          }
         }
       } catch (error) {
         console.log(error);
       }
+
+
     },
 
     /**
@@ -423,23 +438,6 @@ export default {
       this.solveLossYear();
     },
 
-    /**
-     * Hàm nhập số tiền vào ô thì tự format số
-     * Author: NVHThai (27/09/2022)
-     */
-    showValueCost() {
-      try {
-        let cost = this.property.cost;
-        if (cost != 0) {
-          let tmpCost = cost.replace(/[^0-9]/g, "");
-          let showCost = this.formartNumber(tmpCost);
-          this.property.cost = showCost;
-        }
-        this.solveLossYear();
-      } catch (error) {
-        console.log(error);
-      }
-    },
     /**
      * Hàm formart số
      * Author: NVHTHai (12/09/2022)
@@ -470,8 +468,9 @@ export default {
           .then((response) => {
             me.property.fixed_asset_code = response.data;
           })
-          .catch((error) => {
-            console.log("Error: ", error);
+          .catch((response) => {
+            console.log("response: ", response.response.status);
+            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
           });
       } catch (error) {
         console.log(error);
@@ -491,14 +490,14 @@ export default {
           .get(`${Resource.Url.Asset}/${propertyID}`)
           .then((response) => {
             me.property = response.data;
-
             // Lấy mã tài sản lớn nhất nếu là form nhân bản còn sửa thì không
             if (me.checkTitleForm == Enum.FormMode.Duplicate) {
               me.getApiPropertyMaxCode();
             }
           })
-          .catch((error) => {
-            console.log("Error: ", error);
+          .catch((response) => {
+            console.log("response: ", response.response.status);
+            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
           });
       } catch (error) {
         console.log(error);
@@ -513,7 +512,6 @@ export default {
     postApiProperty() {
       let me = this;
       try {
-        // gọi api để lấy dữ liệu sử dụng axios
         axios
           .post(Resource.Url.Asset, me.property)
           .then((response) => {
@@ -527,7 +525,7 @@ export default {
               // hiện thông báo thêm thành công
               ElNotification({
                 duration: 1500,
-                message: "Lưu dữ liệu thành công",
+                message: `${this.textDDone}`,
                 position: "bottom-right",
                 type: "success",
               });
@@ -535,11 +533,7 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            BaseMethod.handleException(
-              response.response.status,
-              response.response.data.moreInfo,
-              response.response.data.userMsg
-            );
+            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
           });
       } catch (error) {
         console.log(error);
@@ -558,7 +552,7 @@ export default {
         axios
           .put(`${Resource.Url.Asset}/${me.propertyIDSelected}`, me.property)
           .then((response) => {
-            if (response.status == Enum.StatusCode.CREATED) {
+            if (response.status == Enum.StatusCode.OK) {
               //đóng form add
               this.btnDetroyToastAttentionAddOnclick();
 
@@ -568,7 +562,7 @@ export default {
               // hiện thông báo thêm thành công
               ElNotification({
                 duration: 1500,
-                message: "Lưu dữ liệu thành công",
+                message: `${this.textDDone}`,
                 position: "bottom-right",
                 type: "success",
               });
@@ -576,11 +570,7 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(
-              response.response.status,
-              response.response.data.moreInfo,
-              response.response.data.userMsg
-            );
+            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
           });
       } catch (error) {
         console.log(error);
@@ -633,9 +623,7 @@ export default {
         this.checkInputValidate = true;
         if (this.checkTitleForm == Enum.FormMode.Add) {
           this.isShowToastAdd = true;
-        } else if (this.checkTitleForm == Enum.FormMode.Edit) {
-          this.isShowToastEdit = true;
-        } else if (this.checkTitleForm == Enum.FormMode.Duplicate) {
+        } else if (this.checkTitleForm == Enum.FormMode.Edit || this.checkTitleForm == Enum.FormMode.Duplicate) {
           this.isShowToastEdit = true;
         }
       } catch (error) {
@@ -700,25 +688,27 @@ export default {
       this.$parent.hideFormAdd();
     },
 
+    formatQuantity() {
+      this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
+    },
+
     /**
-     * Hàm tính toán valueLossRate
+     * Hàm tính toán số năm sử dụng
      * Author: NVHThai (10/09/2022)
      * @param {*} check
      */
-    onclickStepLossRate(check) {
+    onclickStepLifeTime(check) {
       try {
         switch (check) {
           case 0:
-            this.property.life_time = parseInt(this.property.life_time) + 1;
-            this.property.life_time =
-              parseInt(this.property.life_time) < 10
-                ? `0${parseInt(this.property.life_time)}`
-                : parseInt(this.property.life_time);
+            if (this.property.life_time == undefined) { this.property.life_time = "01" }
+            else {
+              this.property.life_time = parseInt(this.property.life_time) + 1;
+              this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
+            }
             break;
           case 1:
-            if (this.property.life_time < 1) {
-              break;
-            } else {
+            if (this.property.life_time > 0) {
               this.property.life_time = parseInt(this.property.life_time) - 1;
               this.property.life_time =
                 parseInt(this.property.life_time) < 10
@@ -741,23 +731,18 @@ export default {
       try {
         switch (check) {
           case 0:
-            this.property.quantity = parseInt(this.property.quantity) + 1;
-            this.property.quantity =
-              parseInt(this.property.quantity) < 10
-                ? `0${parseInt(this.property.quantity)}`
-                : parseInt(this.property.quantity);
+            if (this.property.quantity == undefined) { this.property.quantity = "01" }
+            else {
+              this.property.quantity = parseInt(this.property.quantity) + 1;
+              this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
+            }
             break;
           case 1:
-            if (this.property.quantity < 1) {
-              break;
-            } else {
+            if (this.property.quantity > 0) {
               this.property.quantity = parseInt(this.property.quantity) - 1;
-              this.property.quantity =
-                parseInt(this.property.quantity) < 10
-                  ? `0${parseInt(this.property.quantity)}`
-                  : parseInt(this.property.quantity);
-              break;
+              this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
             }
+            break;
         }
       } catch (error) {
         console.log(error);
@@ -827,8 +812,10 @@ export default {
         } else {
           this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
         }
-        if (this.property.quantity != null) {
-          this.property.quantity = parseInt(this.property.quantity);
+        if (typeof this.property.quantity == "number") {
+          this.property.quantity = parseFloat(this.property.quantity);
+        } else {
+          this.property.quantity = parseFloat(this.property.quantity.replace(/[^0-9]/g, ""));
         }
         if (this.property.life_time != null) {
           this.property.life_time = parseInt(this.property.life_time);
@@ -1080,7 +1067,7 @@ export default {
       //giá trị số lượng
       valueAmount: 0,
 
-      //
+      // 
       valueLossRate: 0,
 
       //ngày hiện tại
@@ -1132,12 +1119,12 @@ export default {
       textLifeTime: Resource.TextVi.Detail.LifeTime,
       textLossYear: Resource.TextVi.Detail.LossYear,
       textTooltipClose: Resource.TextVi.Tooltip.Close,
-      textPDepartmentCode:Resource.TextVi.PlaceHolder.DepartmentCode,
-      textPAssetCategoryCode:Resource.TextVi.PlaceHolder.AssetCategoryCode,
-      textPAssetName:Resource.TextVi.PlaceHolder.AssetName,
-      textBClose:Resource.TextVi.Button.Close,
-      textBSave:Resource.TextVi.Button.Save,
-      
+      textPDepartmentCode: Resource.TextVi.PlaceHolder.DepartmentCode,
+      textPAssetCategoryCode: Resource.TextVi.PlaceHolder.AssetCategoryCode,
+      textPAssetName: Resource.TextVi.PlaceHolder.AssetName,
+      textBClose: Resource.TextVi.Button.Close,
+      textBSave: Resource.TextVi.Button.Save,
+      textDDone: Resource.TitleToast.TitleFormDone,
     };
   },
 };

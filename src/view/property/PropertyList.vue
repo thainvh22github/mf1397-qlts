@@ -2,13 +2,11 @@
   <div class="m-content" id="content">
     <div class="m-toolbar">
       <div class="m-toolbar__search">
-        <el-tooltip :disabled="disabled" :content="textTolltipInputSearch" placement="top" show-after="400"
-          effect="customized">
-          <m-input type="text" className="input__icon m-icon-search-input input--serch-proprety"
-            :placeholder="textPInputSearch" v-model="keword" tabindex="1" @keydown.enter="searchInput(keword)"
-            @input="searchInputEmpty(keword)" id="searchAsset">
-          </m-input>
-        </el-tooltip>
+
+        <m-input type="text" className="input__icon m-icon-search-input input--serch-proprety"
+          :placeholder="textPInputSearch" v-model="keword" tabindex="1" @keydown.enter="searchInput(keword)"
+          @input="searchInputEmpty(keword)" id="searchAsset">
+        </m-input>
         <m-combobox css="ml-11" type="text" className="combobox__icon m-icon-cbb m-property-type"
           :placeholder="textPComboboxAssetCategory" v-model:fixed_asset_category_id="IDCategoryAsset" tabindex="2"
           :url="urlCategoryAsset" :itemID="ItemIDCategoryAsset" :itemCode="ItemNameCategoryAsset">
@@ -89,7 +87,7 @@
                     <span style="font-weight: 700">{{textLossCost}}</span>
                   </el-tooltip>
                 </th>
-                <th style="width: 11%; color: #001031; padding-right: 5px" class="text-rigth">
+                <th style="width: 11%; color: #001031" class="text-rigth">
                   {{textRemaining}}
                 </th>
 
@@ -192,8 +190,8 @@
                   </el-tooltip>
                 </td>
 
-                <context-menu v-show="property.fixed_asset_id == valueID" :assetIDContext="assetIDContext"
-                  :pageY="pageY" :pageX="pageX">
+                <context-menu v-show="property.fixed_asset_id == valueID" :tmpPropertyCode="tmpPropertyCode"
+                  :assetIDContext="assetIDContext" :pageY="pageY" :pageX="pageX">
                 </context-menu>
               </tr>
 
@@ -216,8 +214,7 @@
                   </div>
 
                   <div class="m-combobox" style="margin-left: 15px">
-                    <input type="text" class="combobox m-page" v-model="pageSize" />
-
+                    <input type="text" class="combobox m-page" v-model="pageSize" readonly/>
                     <button class="btn_combobox" @click="showCBBClick()" @blur="hideContentCbbBlur">
                       <div class="m-icon-dropdown"></div>
                     </button>
@@ -236,24 +233,24 @@
                   <div class="m-table__bottom--pagenavi">
                     <el-tooltip :disabled="disabled" :content="textPrev" placement="top" effect="customized"
                       show-after="400">
-                      <button class="btn-pagenavi" @click="pageNumberPrevClick(this.pageNumber)">
+                      <button class="btn-pagenavi" @click="pageNumberClick(this.pageNumber,textPrev)">
                         <div class="m-icon-prev"></div>
                       </button>
                     </el-tooltip>
 
-                    <button class="btn-pagenavi" @click="pageNumberClick(1)"
+                    <button class="btn-pagenavi" @click="pageNumberClick(1,1)"
                       :class="{ btnpagenaviactive: pageNumber == 1 }">
                       <span>1</span>
                     </button>
 
-                    <button v-if="isShowNextPage" class="btn-pagenavi" @click="pageNumberClick(page)"
+                    <button v-if="isShowNextPage" class="btn-pagenavi" @click="pageNumberClick(page,1)"
                       :class="{ btnpagenaviactive: pageNumber == page }">
                       <span>{{ page }}</span>
                     </button>
 
                     <div class="ml-12" v-if="isShowThreeDot">...</div>
 
-                    <button v-if="isShowEndPage" class="btn-pagenavi" @click="pageNumberClick(this.endPageNumber)"
+                    <button v-if="isShowEndPage" class="btn-pagenavi" @click="pageNumberClick(this.endPageNumber,1)"
                       :class="{
                         btnpagenaviactive: pageNumber == this.endPageNumber,
                       }">
@@ -262,7 +259,7 @@
 
                     <el-tooltip :disabled="disabled" :content="textNext" placement="top" effect="customized"
                       show-after="400">
-                      <button class="btn-pagenavi" @click="pageNumberNextClick(pageNumber)">
+                      <button class="btn-pagenavi" @click="pageNumberClick(pageNumber,textNext)">
                         <div class="m-icon-next"></div>
                       </button>
                     </el-tooltip>
@@ -315,6 +312,7 @@
       <ToastMessageDelete :titleFormDelete="titleFormDelete" :totalCountAsset="totalCountAsset"
         :tmpPropertyCode="tmpPropertyCode" :tmpPropertyName="tmpPropertyName" :checkboxList="checkboxList"
         :assetIDContextDelete="assetIDContextDelete" v-if="isDialogToastDelete" />
+      <ToastMessageValid v-if="isShowDialogToastValid" :moreInfo="moreInfo" :titleFormValid="titleFormValid" />
     </div>
 
     <LoadDing v-show="isShowLoading" />
@@ -331,6 +329,7 @@ import LoadDing from "../loading/LoadDing.vue";
 import MInput from "../../base/input/MInput.vue";
 import MCombobox from "@/base/combobox/MCombobox.vue";
 import ToastMessageException from "../toast/ToastMessageException.vue";
+import ToastMessageValid from "../toast/ToastMessageValid.vue";
 import ContextMenu from "../contextmenu/ContextMenu.vue";
 export default {
   name: "PropertyList",
@@ -343,11 +342,9 @@ export default {
     MCombobox,
     ToastMessageException,
     ContextMenu,
+    ToastMessageValid,
   },
 
-  /**
-   * created
-   */
   created() {
     this.getDataAPI();
   },
@@ -435,6 +432,13 @@ export default {
   },
 
   methods: {
+    /**
+     * Hàm delete khi dùng bàn phím click vào ctrl delete hoặc delete
+     * @param {guid} valueID : id của tài sản
+     * @param {string} valueCode : mã tài sản
+     * @param {string} valueName : tên tài sản
+     * Author: NVHTHai (29/09/2022)
+     */
     deleteByKeyboard(valueID, valueCode, valueName) {
       this.assetIDContext = valueID;
       this.tmpPropertyCode = valueCode;
@@ -512,52 +516,29 @@ export default {
     },
 
     /**
-     * hàm tạo sự kiện cho nút prev trang ở paging, khi click vào sẽ đến trang trước đó
+     * hàm tạo sự kiện cho nút ở paging
      * Author: NVHTHai (19/09/2022)
-     * @param {int} pageNumber
+     * @param {int} pageNumber : trang hiện tại
+     * @param {string} check : kiểm tra xem đang click vào đâu
      */
-    pageNumberPrevClick(pageNumber) {
+    pageNumberClick(pageNumber, check) {
       try {
-        if (pageNumber > 1) {
-          this.pageNumber = pageNumber - 1;
-        }
-        if (pageNumber > 2) {
-          this.page = pageNumber - 1;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
-     * hàm tạo sự kiện cho nút next trang ở paging, khi click vào sẽ đến trang tiếp theo
-     * Author: NVHTHai (19/09/2022)
-     * @param {int} pageNumber
-     */
-    pageNumberNextClick(pageNumber) {
-      try {
-        if (pageNumber < this.endPageNumber) {
-          this.pageNumber = pageNumber + 1;
-          this.page = pageNumber + 1;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
-     * Hàm chọn trang 1, 2
-     * Author: NVHTHai (19/09/2022)
-     * @param {int} pageNumber
-     */
-    pageNumberClick(pageNumber) {
-      try {
-        this.pageNumber = pageNumber;
-        if (pageNumber == 1) {
-          this.page = 2;
-        }
-        if (pageNumber == this.endPageNumber) {
-          this.page = this.endPageNumber - 1;
+        switch (check) {
+          case this.textPrev:
+            if (pageNumber > 1) { this.pageNumber = pageNumber - 1; }
+            if (pageNumber > 2) { this.page = pageNumber - 1; }
+            break;
+          case this.textNext:
+            if (pageNumber < this.endPageNumber) {
+              this.pageNumber = pageNumber + 1;
+              this.page = pageNumber + 1;
+            }
+            break;
+          case 1:
+            this.pageNumber = pageNumber;
+            if (pageNumber == 1) {this.page = 2;}
+            if (pageNumber == this.endPageNumber) {this.page = this.endPageNumber - 1;}
+            break;
         }
       } catch (error) {
         console.log(error);
@@ -723,8 +704,9 @@ export default {
             // lấy dữ liệu xong tắt trạng thái tải data
             this.isShowLoading = false;
           })
-          .catch((error) => {
-            console.log("Error: ", error);
+          .catch((response) => {
+            console.log("response: ", response.response.status);
+            me.handleException( response.response.status,response.response.data.moreInfo,response.response.data.userMsg);
           });
       } catch (error) {
         console.log(error);
@@ -850,6 +832,10 @@ export default {
       this.tmpPropertyName = propertyName;
     },
 
+    /**
+     * Hàm focus vào thẻ tr khi ấn nút xuống
+     * Author: NVHThai (24/09/2022)
+     */
     nextEleMoveFocus() {
       try {
         if (this.focusName < this.pageSize) {
@@ -860,6 +846,11 @@ export default {
         console.log(error);
       }
     },
+
+    /**
+     * Hàm focus vào thẻ tr khi ấn nút lên
+     * Author: NVHThai (24/09/2022)
+     */
     prevEleMoveFocus() {
       try {
         if (this.focusName > 0) {
@@ -870,6 +861,44 @@ export default {
         console.log(error);
       }
     },
+
+    /**
+     * Hàm xử lý exception gửi về từ backend hiện ra cho người dùng
+     * Author: NVHThai(26/09/2022)
+     * @param {int} status: trạng thái bên backend trả về
+     * @param {arr} moreInfo: Mảng các lỗi do người dùng nhập thiếu từ backend trả về
+     * @param {string} userMsg: Lỗi từ backend trả về hiển thị cho người dùng
+     */
+    handleException(status, moreInfo, userMsg) {
+      try {
+        switch (status) {
+          case Enum.StatusCode.BADREQUEST:
+            this.moreInfo = moreInfo;
+            this.titleFormValid = userMsg;
+            this.isShowDialogToastValid = true;
+            break;
+          case Enum.StatusCode.FORBIDDEN:
+            this.titleFormException = Resource.TitleException.FORBIDDEN;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.NOTFOUND:
+            this.titleFormException = Resource.TitleException.NOTFOUND;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.UNAUTHORIZED:
+            this.titleFormException = Resource.TitleException.UNAUTHORIZED;
+            this.isShowDialogToastException = true;
+            break;
+          case Enum.StatusCode.NTERNALSERVERERROR:
+            this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
+            this.isShowDialogToastException = true;
+            break;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
   },
   data() {
     return {
@@ -1003,7 +1032,8 @@ export default {
       focusName: 0,
 
       valueID: null,
-
+      // biến show khi backend trả về lỗi 400
+      isShowDialogToastValid: false,
       //id tài sản trong contextmenu
       assetIDContext: "",
 
@@ -1020,7 +1050,7 @@ export default {
       pageY: null,
       pageX: null,
       //id để focus
-      asset:"asset",
+      asset: "asset",
 
       //text sử dụng 
       textBtnAdd: Resource.TextVi.List.BtnAdd,
@@ -1037,7 +1067,6 @@ export default {
       textEmply: Resource.TextVi.List.Emply,
       textTotal: Resource.TextVi.List.Total,
       textRecord: Resource.TextVi.List.Record,
-      textTolltipInputSearch: Resource.TextVi.Tooltip.InputSearch,
       textTolltipBtnAdd: Resource.TextVi.Tooltip.BtnAdd,
       textTolltipBtnExport: Resource.TextVi.Tooltip.BtnToolbarExport,
       textTolltipBtnDelete: Resource.TextVi.Tooltip.BtnToolbarDelete,
@@ -1064,7 +1093,6 @@ export default {
 .el-empty {
   background-color: #fff !important;
 }
-
 .empty {
   background-color: #fff !important;
 }

@@ -22,7 +22,7 @@
 <script>
 export default {
   name: "ContextMenu",
-  props: ["assetIDContext", "pageY", "pageX"],
+  props: ["assetIDContext", "pageY", "pageX","tmpPropertyCode"],
 
   watch: {
     /**
@@ -65,7 +65,7 @@ export default {
      */
     openEdit() {
       try {
-        this.$parent.editPropertyOnclick(this.assetIDContext);
+        this.$parent.editPropertyOnclick(this.assetIDContext, this.tmpPropertyCode);
         this.$parent.hideContextMenu();
       } catch (error) {
         console.log(error);
