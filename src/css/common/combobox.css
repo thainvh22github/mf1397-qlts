@@ -13,6 +13,7 @@
     border-radius: 2.5px;
     background-position: 6px center;
     padding-right: 30px !important;
+    background-repeat: no-repeat;
 }
 
 .combobox:focus{
@@ -42,18 +43,16 @@
     background-position: 5px center;
 }
 .btn_combobox{
-    position: absolute;
-    width: 0;
-    height: 0;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
     border: none;
     outline: none;
     background-position: center center;
     box-sizing: border-box;
     right:1px;
-    top:1px;
+    top:-34px;
     border-radius: 2.5px;
-    background-color: #fff;
 }
 
 
@@ -79,7 +78,6 @@
 }
 .m-combobox{
     position: relative;
-   
 }
 .m-option-cbb{
     height: 36px;

@@ -1,0 +1,29 @@
+.m-login {
+    .el-input__wrapper {
+        height: 44px !important;
+        width: 305px !important;
+        border: 1px solid #afafaf;
+        outline: none !important;
+        overflow: hidden;
+        box-shadow: none !important;
+
+    }
+    .el-select .el-input.is-focus .el-input__wrapper{
+        box-shadow: none !important;
+    }
+    .el-input__wrapper:hover{
+        border: 1px solid #0062CC;
+        box-shadow: none !important;
+
+    }
+    .el-input__wrapper:focus{
+        border: 1px solid #0062CC !important;
+        outline: none !important;
+
+    }
+    .el-input__wrapper:active{
+        border: 1px solid #0062CC !important;
+        outline: none !important;
+
+    }
+}

@@ -13,10 +13,10 @@
         class="combobox"
         :class="[className, { borderred: borderRed }]"
         :placeholder="placeholder"
-        v-model="nameInputs"
+        :value="showValue"
         :tabindex="tabindex"
         @click="btnOpenShowCombobox"
-        @blur="validateInputBlur(nameInputs)"
+        @blur="hideContentCbbBlur()"
         @keydown="addValueNameInput($event)"
         @keydown.enter="btnOpenShowCombobox"
         @input="filterData(nameInputs)"
@@ -38,26 +38,12 @@
           v-for="(item, index) in items"
           :key="item[itemID]"
           class="m-option-cbb max-line"
-          @mousedown="
-            onClickCbb(
-              item[itemID],
-              item[itemCode],
-              item[itemName],
-              item.depreciation_rate,
-              item.life_time
-            )
-          "
+          @mousedown="onClickCbb(item[itemID], item[itemCode], item[itemName])"
           :class="{ active: item[itemCode] == this.nameInputs }"
           @keydown.down="nextEleMoveFocus()"
           @keydown.up="prevEleMoveFocus()"
           @keydown.enter="
-            onClickCbb(
-              item[itemID],
-              item[itemCode],
-              item[itemName],
-              item.depreciation_rate,
-              item.life_time
-            )
+            onClickCbb(item[itemID], item[itemCode], item[itemName])
           "
         >
           <el-tooltip
@@ -77,17 +63,15 @@
     </div>
   </div>
 </template>
-
-<script>
-import axios from "axios";
+  
+  <script>
+  import axios from 'axios';
 export default {
   name: "MCombobox",
   props: [
     "type",
     "className",
     "placeholder",
-    "depreciation_rate",
-    "life_time",
     "url",
     "itemID",
     "itemName",
@@ -97,10 +81,9 @@ export default {
     "styleContent",
     "showValue",
     "checkInputValidate",
-    "nameAsset",
   ],
-  created() {
-    // lấy dữ liệu từ api cho cbx
+
+  created(){
     this.getDataCombobox();
   },
   updated() {
@@ -108,33 +91,9 @@ export default {
      * Khi điền thông tin vào input thì sẽ hết border đỏ
      * Author: NVHThai (21/09/2022)
      */
-    if (this.nameInputs) {
-      this.borderRed = false;
-    }
-  },
-
-  watch: {
-    /**
-     * Hàm theo dõi các mã: nếu thay đổi thì hiển thị lên input
-     * Author: NVHThai (25/09/2022)
-     * @param {string} value
-     */
-    showValue: function (value) {
-      this.nameInputs = value;
-    },
-
-    /**
-     * Hàm theo dõi khi mà click vào nút lưu thì validate dữ liệu
-     * @param {boolean} value: nếu value là true thì đã ấn lưu
-     * Author: NVHThai (30/09/2022)
-     */
-    checkInputValidate: function (value) {
-      if (value == true && this.nameInputs != "0") {
-        if (this.nameInputs == null || this.nameInputs == "") {
-          this.borderRed = true;
-        }
-      }
-    },
+    // if (this.nameInputs) {
+    //   this.borderRed = false;
+    // }
   },
 
   methods: {
@@ -152,53 +111,61 @@ export default {
         document.getElementById(`${this.itemCode}${this.focus}`).focus();
       }
     },
-    addValueNameInput(e) {
-      if (e.keyCode == 32 && this.nameInputs.trim() != "") {
-        this.nameInputs = this.nameInputs + " ";
-      }
-    },
-    filterData(value) {
-      this.keword = value;
-      this.getDataCombobox();
 
-      if (value == "") {
-        this.$emit(`update:${this.itemID}`, value);
-        this.$parent.getDataAPI();
-      }
-    },
+    // addValueNameInput(e) {
+    //   if (e.keyCode == 32 && this.nameInputs.trim() != "") {
+    //     this.nameInputs = this.nameInputs + " ";
+    //   }
+    // },
 
-    /**
-     * validate dữ liệu
-     * Author: NVHThai (21/09/2022)
-     */
-    validateInputBlur(nameInputs) {
-      if (!nameInputs) {
-        this.borderRed = true;
-      }
-      this.isShowmComboboxContent = false;
-    },
+
+    // filterData(value) {
+    //   this.keword = value;
+    //   this.getDataCombobox();
+    //   if (value == "") {
+    //     this.$emit(`update:${this.itemID}`, value);
+    //     this.$parent.getDataAPI();
+    //   }
+    // },
 
     /**
      * Hàm hiện dữ liệu ở cbb loại tài sản
      * Author: NVHThai (19/09/2022)
      */
-    onClickCbb(ID, code, name, depreciationRate, lifeTime) {
+    onClickCbb(ID, code, name) {
       this.isShowmComboboxContent = false;
       this.nameInputs = code;
-
       try {
         this.$emit(`update:${this.itemID}`, ID);
-        this.$emit(`update:${this.itemCode}`, code);
+        this.$emit(`update:budget_name`, code);
         this.$emit(`update:${this.itemName}`, name);
-        this.$emit(`update:depreciation_rate`, depreciationRate);
-        this.$emit(`update:life_time`, lifeTime);
-        this.$parent.changeValueLossYear();
-        this.$parent.sloveDepreciationRateToString();
         this.focus = 0;
       } catch (error) {
         console.log(error);
       }
     },
+
+    /**
+     * Author: nvhthai (01/09/2022)
+     * Lấy dữ liệu cbb
+     */
+    getDataCombobox() {
+      let me = this;
+      try {
+        // gọi api để lấy dữ liệu sử dụng axios
+        axios
+          .get("https://localhost:44380/api/v1/Fund")
+          .then((response) => {
+            me.items = response.data;
+          })
+          .catch((error) => {
+            console.log("Error: ", error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     /**
      * Hàm click vào thì nội dung cbx hiện ra
      *  Author: NVHThai (08/09/2022)
@@ -214,33 +181,6 @@ export default {
     hideContentCbbBlur() {
       this.isShowmComboboxContent = false;
     },
-
-    /**
-     * Author: nvhthai (01/09/2022)
-     * Lấy dữ liệu cbb
-     */
-    getDataCombobox() {
-      let me = this;
-      try {
-        // gọi api để lấy dữ liệu sử dụng axios
-        axios
-          .get(`${this.url}?keyword=${me.keword}`)
-          .then((response) => {
-            me.items = response.data;
-            me.dataList = response.data;
-            if (me.dataList.length == 0) {
-              this.emptyList = true;
-            } else {
-              this.emptyList = false;
-            }
-          })
-          .catch((error) => {
-            console.log("Error: ", error);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    },
   },
 
   data() {
@@ -249,17 +189,17 @@ export default {
       nameInputs: null,
       nameInput: null,
       borderRed: false,
-      dataList: [],
       keword: "",
       focus: 0,
       tmpData: [],
       emptyList: false,
+      items:{}
     };
   },
 };
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .max-line {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -290,3 +230,4 @@ export default {
   justify-content: center;
 }
 </style>
+  

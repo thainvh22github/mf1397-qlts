@@ -1,0 +1,171 @@
+.m-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .edit-form-detail {
+        position: absolute;
+        background-color: #fff;
+        width: 70%;
+        max-width: 700px;
+        height: 600px;
+        border-radius: 4px;
+
+        .header {
+            height: 65px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span {
+                font-size: 20px;
+                font-weight: 700;
+                margin-left: 20px;
+            }
+
+            button {
+                height: 24px;
+                width: 24px;
+                outline: none;
+                border: none;
+                margin-right: 20px;
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            height: calc(100% - 65px - 50px);
+            width: 100%;
+
+            .content__header {
+                height: 65px;
+                width: calc(100% - 40px);
+                margin-left: 20px;
+            }
+
+            .content__mid {
+                height: calc(100% - 130px);
+                width: calc(100% - 40px);
+                margin-left: 20px;
+
+                .title {
+                    font-weight: 700;
+                    margin-top: 20px;
+                }
+
+                .text {
+                    margin-top: 20px;
+                }
+
+                .content__mid--main {
+                    height: calc(100% - 65px);
+                    width: 100%;
+                    display: flex;
+                    .m-input {
+                        height: 100%;
+                        .content__mid--top {
+                            display: flex;
+                            align-items: center;
+                            .comboboxs{
+                                margin-top: 8px;
+                                width: 60%;
+                            }
+                            .cost{
+                                margin-top: 8px;
+                                width: 35%;
+                                margin-left: 15px;
+                            }
+                            .icon{
+                                cursor: pointer;
+                                margin-left: 15px;
+                                margin-top: 5px;
+                            }
+                        }
+                    }
+                    .m-btn{
+                        height: 100%;
+                        width: 30%;
+                        .toolbar{
+                            height: 36px;
+                            width: calc(100% - 20px);
+                            margin-left: 20px;
+                            display: flex;
+                            align-items: center;
+                            cursor: pointer;
+                        }
+                        
+                    }
+                }
+            }
+            .content__bottom {
+                height: 65px;
+                width: calc(70% - 30px);
+                margin-left: 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+        }
+
+        .bottom {
+            height: 50px;
+            background-color: #e5e5e5;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+
+            .btn-save {
+                margin-right: 20px;
+            }
+
+            .btn-close {
+                background-color: #fff;
+                margin-right: 10px;
+                color: #000;
+            }
+
+            .btn-close:hover {
+                background-color: #0582A2;
+                margin-right: 10px;
+                color: #fff;
+
+            }
+        }
+    }
+
+
+    .el-input__wrapper {
+        height: 36px !important;
+        width: 305px !important;
+        border: 1px solid #afafaf;
+        outline: none !important;
+        overflow: hidden;
+        box-shadow: none !important;
+        border-radius: 2.5px !important;
+    }
+
+    .el-select .el-input.is-focus .el-input__wrapper {
+        box-shadow: none !important;
+    }
+
+    .el-input__wrapper:hover {
+        border: 1px solid #0062CC;
+        box-shadow: none !important;
+
+    }
+
+    .el-input__wrapper:focus {
+        border: 1px solid #0062CC !important;
+        outline: none !important;
+
+    }
+
+    .el-input__wrapper:active {
+        border: 1px solid #0062CC !important;
+        outline: none !important;
+
+    }
+}

@@ -1,5 +1,5 @@
 <template>
-  <TheMenu />
+  <TheMenu/>
   <div class="m-view" :style="styleView">
     <TheHeader />
     <TheContent />
@@ -7,12 +7,13 @@
 </template>
 
 <script>
-import TheMenu from "../src/components/TheMenu.vue";
-import TheHeader from "../src/components/TheHeader.vue";
-import TheContent from "../src/components/TheContent.vue";
-import { collapsed, toggleSidebar, sidebarWidth } from "./lib/state/state.js";
+import TheMenu from "./TheMenu.vue";
+import TheHeader from "./TheHeader.vue";
+import TheContent from "./TheContent.vue";
+import { collapsed, toggleSidebar, sidebarWidth } from "../lib/state/state";
+
 export default {
-  name: "App",
+  name: "TheView",
   components: {
     TheMenu,
     TheHeader,
@@ -32,6 +33,7 @@ export default {
     },
   },
 
+
   data() {
     return {
       styleView: "",
@@ -40,6 +42,6 @@ export default {
 };
 </script>
 
-<style>
-@import url(./css/common/common.css);
+<style scoped>
+@import url(../css/common/common.css);
 </style>

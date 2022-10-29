@@ -190,6 +190,12 @@
 	height: 20px;
 }
 
+.m-icon-xdetail{
+	background: url('../../assets/icon/qlts-icon.png') no-repeat -375px -287px;
+	width: 20px;
+	height: 20px;
+}
+
 .m-icon-sidebar{
 	background-image: url(../../assets/icon/back.png);
     background-repeat: no-repeat;
@@ -243,4 +249,110 @@
 	background: url('../../assets/icon/qlts-icon.png') no-repeat -158px -293px;
 	width: 11px;
 	height: 7px;
+}
+
+.m-icon-change-password{
+	background: url('../../assets/icon/qlts-icon.png') no-repeat -67px -556px;
+	width: 18px;
+	height: 8px;
+}
+
+.m-icon-access-QLTSV1{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -463px -597px;
+	width: 17px;
+	height: 14px;
+}
+.m-icon-customer-survey{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -23px -68px;
+	width: 18px;
+	height: 18px;
+}
+.m-icon-logout{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -112px -553px;
+	width: 15px;
+	height: 15px;
+}
+.m-icon-infomations{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -23px -23px;
+	width: 18px;
+	height: 18px;
+}
+
+.m-icon-asset-up{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -110px -420px;
+	width: 20px;
+	height: 15px;
+}
+
+.m-icon-asset-ngang{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -22px -421px;
+	width: 20px;
+	height: 14px;
+}
+
+.m-icon-asset-up-dropdown{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -158px -249px;
+	width: 12px;
+	height: 7px;
+}
+
+
+.m-icon-print{
+	background-image: url('../../assets/icon/print-icon.png');
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.m-icon-3dot{
+	background-image: url('../../assets/icon/3cham.png');
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+
+.m-icon-delete-red{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -463px -111px;
+	width: 18px;
+	height: 18px;
+}
+
+.m-icon-plus{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -375px -419px;
+	width: 18px;
+	height: 18px;
+}
+
+.m-icon-minus{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -375px -463px;
+	width: 18px;
+	height: 18px;
+}
+
+
+.m-icon-hide{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -66px -375px;
+	width: 20px;
+	height: 15px;
+}
+
+.m-icon-show{
+	background: url('https://demoqltsapp.misacdn.net/ui/dist/images/qlts-icon.svg') no-repeat -22px -377px;
+	width: 20px;
+	height: 15px;
+}
+
+.m-icon-zoom{
+	background-image: url('../../assets/icon/zoom.png');
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.m-icon-zoom-out{
+	background-image: url('../../assets/icon/zoom-out.png');
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
 }

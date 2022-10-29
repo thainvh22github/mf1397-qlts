@@ -1,9 +1,9 @@
 .m-menu {
     position: relative;
     box-sizing: border-box;
-
-
     .m-sidebar {
+        overflow: auto;
+        height: calc(100% - 40px);
         .m-logo {
             width: 100%;
             height: 50px;
@@ -44,12 +44,38 @@
             transition: 0.2s linear;
         }
 
-        .active {
-            background-color: #1aa4c8;
-            opacity: 1 !important;
+        .m-asset-menu-detail {
+            width: auto;
+            margin: 0 11px;
+            background-color: #33455B;
+            color: #fff;
+
+            .m-option-menu-detail {
+                height: 40px;
+                opacity: .54;
+                cursor: pointer;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                margin-top: 3px;
+
+                span{
+                    margin-left: 45px;
+                }
+            }
+
+
+            .m-option-menu-detail:hover {
+                background-color: #1aa4c8;
+                opacity: 1 !important;
+                transition: 0.2s linear;
+            }
         }
+
+
     }
 
+    
     .m-btn-sidebar {
         position: absolute;
         height: 40px;
@@ -58,7 +84,7 @@
         display: flex;
         align-items: center;
         border-top: 2px solid #34465C;
-        box-sizing: border-box;
+        box-sizing: border-box; 
 
 
         .btn-sidebar {
@@ -83,10 +109,14 @@
         }
     }
 
+    
     .rotate-180 {
         transform: rotate(180deg);
         transition: 0.5s linear;
     }
+    
 
-  
+   
 }
+
+

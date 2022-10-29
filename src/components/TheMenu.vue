@@ -7,7 +7,13 @@
         </span>
         <span v-else style="display: flex; align-items: center">
           <div class="m-icon-logo"></div>
-          <span style="color: #fff; font-size: 20px; margin-left: 11px; font-weight: 800"
+          <span
+            style="
+              color: #fff;
+              font-size: 20px;
+              margin-left: 11px;
+              font-weight: 800;
+            "
             >MISA QLTS</span
           >
         </span>
@@ -40,7 +46,7 @@
         </span>
       </div>
 
-      <div class="m-option active">
+      <router-link class="m-option m-asset-menu active" to="/property-list">
         <span v-if="collapsed">
           <div class="tooltip-arrow ml-13 m-icon-prorety">
             <span class="tooltiptext-arrow">Tài sản</span>
@@ -49,8 +55,18 @@
         <span v-else style="display: flex; align-items: center">
           <div class="ml-13 m-icon-prorety"></div>
           <div>Tài sản</div>
-          <div class="m-icon-dropdown-menu"></div>
+          <div class="m-icon-dropdown-menu" @click="showDetailAsset"></div>
         </span>
+      </router-link>
+      <div v-show="isShowDetailAssetMenu" class="m-asset-menu-detail">
+        <router-link class="m-option-menu-detail" to="/up-asset-list"><span style="color: #fff;">Ghi tăng</span></router-link>
+        <div class="m-option-menu-detail"><span>Thay đổi thông tin</span></div>
+        <div class="m-option-menu-detail"><span>Đánh giá lại</span></div>
+        <div class="m-option-menu-detail"><span>Tính hao mòn</span></div>
+        <div class="m-option-menu-detail"><span>Điều chuyển tài sản</span></div>
+        <div class="m-option-menu-detail"><span>Ghi giảm</span></div>
+        <div class="m-option-menu-detail"><span>Kiểm kê</span></div>
+        <div class="m-option-menu-detail"><span>Khác</span></div>
       </div>
 
       <div
@@ -82,7 +98,11 @@
         </span>
       </div>
 
-      <div class="m-option" @mouseover="toolMouseOver" @mouseleave="toolMouseLeave">
+      <div
+        class="m-option"
+        @mouseover="toolMouseOver"
+        @mouseleave="toolMouseLeave"
+      >
         <span v-if="collapsed">
           <div
             class="tooltip-arrow ml-13"
@@ -129,11 +149,18 @@
         </span>
       </div>
 
-      <div class="m-option" @mouseover="searchMouseOver" @mouseleave="searchMouseLeave">
+      <div
+        class="m-option"
+        @mouseover="searchMouseOver"
+        @mouseleave="searchMouseLeave"
+      >
         <span v-if="collapsed">
           <div
             class="tooltip-arrow ml-13"
-            :class="{ miconsearch: miconsearch, miconsearchactive: miconsearchactive }"
+            :class="{
+              miconsearch: miconsearch,
+              miconsearchactive: miconsearchactive,
+            }"
           >
             <span class="tooltiptext-arrow">Tra cứu</span>
           </div>
@@ -141,17 +168,27 @@
         <span v-else style="display: flex; align-items: center">
           <div
             class="ml-13"
-            :class="{ miconsearch: miconsearch, miconsearchactive: miconsearchactive }"
+            :class="{
+              miconsearch: miconsearch,
+              miconsearchactive: miconsearchactive,
+            }"
           ></div>
           <div>Tra cứu</div>
           <div class="m-icon-dropdown-menu"></div>
         </span>
       </div>
-      <div class="m-option" @mouseover="reportMouseOver" @mouseleave="reportMouseLeave">
+      <div
+        class="m-option"
+        @mouseover="reportMouseOver"
+        @mouseleave="reportMouseLeave"
+      >
         <span v-if="collapsed">
           <div
             class="tooltip-arrow ml-13"
-            :class="{ miconreport: miconreport, miconreportactive: miconreportactive }"
+            :class="{
+              miconreport: miconreport,
+              miconreportactive: miconreportactive,
+            }"
           >
             <span class="tooltiptext-arrow">Báo cáo</span>
           </div>
@@ -159,7 +196,10 @@
         <span v-else style="display: flex; align-items: center">
           <div
             class="ml-13"
-            :class="{ miconreport: miconreport, miconreportactive: miconreportactive }"
+            :class="{
+              miconreport: miconreport,
+              miconreportactive: miconreportactive,
+            }"
           ></div>
           <div>Báo cáo</div>
           <div class="m-icon-dropdown-menu"></div>
@@ -199,6 +239,7 @@ export default {
     collapsed: function (value) {
       if (value) {
         this.textTooltipSidebar = Resource.State.Zoom;
+        this.isShowDetailAssetMenu = false;
       } else {
         this.textTooltipSidebar = Resource.State.UnZoom;
       }
@@ -206,6 +247,14 @@ export default {
   },
 
   methods: {
+    /**
+     * Hàm mở form chi thiết của tài sản
+     * Author: NVHThai (19/10/2022)
+     */
+    showDetailAsset() {
+      this.isShowDetailAssetMenu = !this.isShowDetailAssetMenu;
+    },
+
     /**
      * Hover vào thay đổi icon tổng quát
      * Author NVHThai (14/09/2022)
@@ -342,6 +391,8 @@ export default {
       // icon báo cáo
       miconreport: true,
       miconreportactive: false,
+
+      isShowDetailAssetMenu:false,
     };
   },
 };

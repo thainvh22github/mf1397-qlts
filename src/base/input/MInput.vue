@@ -43,8 +43,6 @@ export default {
           this.borderRed = true;
         }
       }
-
-      this.focusInputs();
     },
   },
   methods: {

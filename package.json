@@ -17,6 +17,9 @@
     "v-tooltip": "^2.1.3",
     "vue": "^3.2.13",
     "vue-axios": "^3.4.1",
+    "vue-drag-resize": "^1.5.4",
+    "vue-router": "^4.1.5",
+    "vue-sessionstorage": "^1.0.0",
     "vue-single-select": "^1.1.0"
   },
   "devDependencies": {

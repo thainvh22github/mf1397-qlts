@@ -2,40 +2,89 @@
   <div class="m-content" id="content">
     <div class="m-toolbar">
       <div class="m-toolbar__search">
-
-        <m-input type="text" className="input__icon m-icon-search-input input--serch-proprety"
-          :placeholder="textPInputSearch" v-model="keword" tabindex="1" @keydown.enter="searchInput(keword)"
-          @input="searchInputEmpty(keword)" id="searchAsset">
+        <m-input
+          type="text"
+          className="input__icon m-icon-search-input input--serch-proprety"
+          :placeholder="textPInputSearch"
+          v-model="keword"
+          tabindex="1"
+          @keydown.enter="searchInput(keword)"
+          @input="searchInputEmpty(keword)"
+          id="searchAsset"
+        >
         </m-input>
-        <m-combobox css="ml-11" type="text" className="combobox__icon m-icon-cbb m-property-type"
-          :placeholder="textPComboboxAssetCategory" v-model:fixed_asset_category_id="IDCategoryAsset" tabindex="2"
-          :url="urlCategoryAsset" :itemID="ItemIDCategoryAsset" :itemCode="ItemNameCategoryAsset">
+        <m-combobox
+          css="ml-11"
+          type="text"
+          className="combobox__icon m-icon-cbb m-property-type"
+          :placeholder="textPComboboxAssetCategory"
+          v-model:fixed_asset_category_id="IDCategoryAsset"
+          tabindex="2"
+          :url="urlCategoryAsset"
+          :itemID="ItemIDCategoryAsset"
+          :itemCode="ItemNameCategoryAsset"
+        >
         </m-combobox>
 
-        <m-combobox css="ml-11" type="text" className="combobox__icon m-icon-cbb m-property-type"
-          :placeholder="textPComboboxDepartment" v-model:department_id="IDDepartment" tabindex="3" :url="urlDepartment"
-          :itemID="ItemIDDepartment" :itemCode="ItemNameDepartment"></m-combobox>
+        <m-combobox
+          css="ml-11"
+          type="text"
+          className="combobox__icon m-icon-cbb m-property-type"
+          :placeholder="textPComboboxDepartment"
+          v-model:department_id="IDDepartment"
+          tabindex="3"
+          :url="urlDepartment"
+          :itemID="ItemIDDepartment"
+          :itemCode="ItemNameDepartment"
+        ></m-combobox>
       </div>
 
       <div class="m-toolbar__btn">
-        <el-tooltip :disabled="disabled" :content="textTolltipBtnAdd" placement="top" show-after="400"
-          effect="customized">
-          <button id="btnadd" class="btn btn__icon m-icon-add-fff btn-add" @keyup.insert="btnOpenFormAddOnclick"
-            @click="btnOpenFormAddOnclick" tabindex="4">
-            {{textBtnAdd}}
+        <el-tooltip
+          :disabled="disabled"
+          :content="textTolltipBtnAdd"
+          placement="top"
+          show-after="400"
+          effect="customized"
+        >
+          <button
+            id="btnadd"
+            class="btn btn__icon m-icon-add-fff btn-add"
+            @keyup.insert="btnOpenFormAddOnclick"
+            @click="btnOpenFormAddOnclick"
+            tabindex="4"
+          >
+            {{ textBtnAdd }}
           </button>
         </el-tooltip>
 
-        <el-tooltip :disabled="disabled" :content="textTolltipBtnExport" placement="top" show-after="400"
-          effect="customized">
-          <button :class="{ disableBtn: disableBtn }" class="ml-11 btn__toolbar m-icon-btn-export btn-export"
-            tabindex="5"></button>
+        <el-tooltip
+          :disabled="disabled"
+          :content="textTolltipBtnExport"
+          placement="top"
+          show-after="400"
+          effect="customized"
+        >
+          <button
+            class="ml-11 btn__toolbar m-icon-btn-export btn-export"
+            tabindex="5"
+            @click="btnExport"
+          ></button>
         </el-tooltip>
 
-        <el-tooltip :disabled="disabled" :content="textTolltipBtnDelete" placement="top" show-after="400"
-          effect="customized">
-          <button :class="{ disableBtn: disableBtn }" class="ml-11 btn__toolbar m-icon-btn-delete btn-delete"
-            @click="btnOpenToastDeleteOnclick()" tabindex="6"></button>
+        <el-tooltip
+          :disabled="disabled"
+          :content="textTolltipBtnDelete"
+          placement="top"
+          show-after="400"
+          effect="customized"
+        >
+          <button
+            :class="{ disableBtn: disableBtn }"
+            class="ml-11 btn__toolbar m-icon-btn-delete btn-delete"
+            @click="btnOpenToastDeleteOnclick()"
+            tabindex="6"
+          ></button>
         </el-tooltip>
       </div>
     </div>
@@ -46,114 +95,191 @@
           <table>
             <thead>
               <tr>
-                <th style="height: 37px; width: 85px" class="text-rigth m-boder-check">
-                  <el-tooltip :disabled="disabled" :content="textTolltipCheckboxAll" placement="bottom" show-after="400"
-                    effect="customized">
+                <th
+                  style="height: 37px; width: 85px"
+                  class="text-rigth m-boder-check"
+                >
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="textTolltipCheckboxAll"
+                    placement="bottom"
+                    show-after="400"
+                    effect="customized"
+                  >
                     <div class="m-check">
-                      <input class="m-checkbox" type="checkbox" @click="selectAllOnClick()" />
+                      <input
+                        class="m-checkbox"
+                        type="checkbox"
+                        @click="selectAllOnClick()"
+                      />
                     </div>
                   </el-tooltip>
 
-                  <el-tooltip :disabled="disabled" :content="textTolltipSTT" placement="bottom" show-after="400"
-                    effect="customized">
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="textTolltipSTT"
+                    placement="bottom"
+                    show-after="400"
+                    effect="customized"
+                  >
                     <div class="ml-17">
-                      <span>{{textSTT}}</span>
+                      <span>{{ textSTT }}</span>
                     </div>
                   </el-tooltip>
                 </th>
 
-                <th style="width: 80px" class="text-left">{{textAssetCode}}</th>
+                <th style="width: 80px" class="text-left">
+                  {{ textAssetCode }}
+                </th>
 
                 <th style="width: 15%; padding-left: 10px" class="text-left">
-                  {{textAssetName}}
+                  {{ textAssetName }}
                 </th>
 
-                <th style="width: 175px; color: #001031; padding-left: 10px" class="text-left">
-                  {{textAssetCategoryName}}
+                <th
+                  style="width: 175px; color: #001031; padding-left: 10px"
+                  class="text-left"
+                >
+                  {{ textAssetCategoryName }}
                 </th>
 
-                <th style="width: 140px; color: #001031; padding-left: 10px" class="text-left">
-                  {{textAssetDepartmentName}}
+                <th
+                  style="width: 140px; color: #001031; padding-left: 10px"
+                  class="text-left"
+                >
+                  {{ textAssetDepartmentName }}
                 </th>
 
-                <th style="width: 7%; color: #001031; padding-left: 10px" class="text-rigth">
-                  {{textQuanlity}}
+                <th
+                  style="width: 7%; color: #001031; padding-left: 10px"
+                  class="text-rigth"
+                >
+                  {{ textQuanlity }}
                 </th>
 
-                <th style="width: 12%; color: #001031" class="text-rigth">{{textCost}}</th>
+                <th style="width: 7%; color: #001031" class="text-rigth">
+                  {{ textCost }}
+                </th>
                 <th style="width: 10%; color: #001031" class="text-rigth">
-                  <el-tooltip :disabled="disabled" :content="textTolltipLossCost" placement="bottom" show-after="400"
-                    effect="customized">
-                    <span style="font-weight: 700">{{textLossCost}}</span>
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="textTolltipLossCost"
+                    placement="bottom"
+                    show-after="400"
+                    effect="customized"
+                  >
+                    <span style="font-weight: 700">{{ textLossCost }}</span>
                   </el-tooltip>
                 </th>
-                <th style="width: 11%; color: #001031" class="text-rigth">
-                  {{textRemaining}}
+                <th style="width: 8%; color: #001031" class="text-rigth">
+                  {{ textRemaining }}
                 </th>
-
-                <th style="width: 10%; color: #001031" class="text-center">{{textTool}}</th>
+                <th style="width: 12%; color: #001031" class="text-center">
+                  Trạng thái
+                </th>
+                <th style="width: 8%; color: #001031" class="text-center">
+                  {{ textTool }}
+                </th>
               </tr>
             </thead>
 
             <tbody>
-              <tr :id="asset + index" tabindex="4" @keydown.down="nextEleMoveFocus()" @keydown.up="prevEleMoveFocus()"
+              <tr
+                :id="asset + index"
+                tabindex="4"
+                @mousedown.ctrl="ctrlOnClick(property, property.fixed_asset_id)"
+                @keydown.down="nextEleMoveFocus()"
+                @keydown.up="prevEleMoveFocus()"
                 @keydown.delete.exact="
                   deleteByKeyboard(
                     property.fixed_asset_id,
                     property.fixed_asset_code,
                     property.fixed_asset_name
                   )
-                " @keydown.ctrl.delete="
+                "
+                @keydown.ctrl.delete="
                   deleteByKeyboard(
                     property.fixed_asset_id,
                     property.fixed_asset_code,
                     property.fixed_asset_name
                   )
-                " @keydown.enter="
-                  editPropertyOnclick(property.fixed_asset_id, property.fixed_asset_code)
-                " @mousedown="selectedRow(property.fixed_asset_id)" @dblclick="
-                  editPropertyOnclick(property.fixed_asset_id, property.fixed_asset_code)
-                " @contextmenu="
+                "
+                @keydown.enter="
+                  editPropertyOnclick(
+                    property.fixed_asset_id,
+                    property.fixed_asset_code
+                  )
+                "
+                @mousedown.exact="selectedRow(property.fixed_asset_id)"
+                @dblclick="
+                  editPropertyOnclick(
+                    property.fixed_asset_id,
+                    property.fixed_asset_code
+                  )
+                "
+                @contextmenu="
                   showContextMenu(
                     $event,
                     property.fixed_asset_id,
                     property.fixed_asset_code,
                     property.fixed_asset_name
                   )
-                " @blur="hideContextMenu()" :class="[
+                "
+                @blur="hideContextMenu()"
+                :class="[
                   { active: filterCheckbox(property.fixed_asset_id) },
 
                   { active: property.fixed_asset_id == tmpID },
-                ]" v-for="(property, index) in propertys" :key="property.fixed_asset_id">
-                <td style="width: 100px; height: 39px" class="text-rigth m-boder-check">
+                ]"
+                v-for="(property, index) in propertys"
+                :key="property.fixed_asset_id"
+              >
+                <td
+                  style="width: 100px; height: 39px"
+                  class="text-rigth m-boder-check"
+                >
                   <div class="m-check">
-                    <input class="m-checkbox" type="checkbox" :value="property.fixed_asset_id" v-model="checkboxList"
-                      @mousedown="
-                        getNameProperty(
-                          property.fixed_asset_code,
-                          property.fixed_asset_name
-                        )
-                      " />
+                    <input
+                      class="m-checkbox"
+                      type="checkbox"
+                      :value="property"
+                      v-model="checkboxList"
+                    />
                   </div>
                   <span class="ml-24 text-center">{{ index + 1 }}</span>
                 </td>
                 <td class="text-left">{{ property.fixed_asset_code }}</td>
                 <td class="text-left ellipsis">
-                  <el-tooltip :disabled="disabled" :content="property.fixed_asset_name" show-after="400" placement="top"
-                    effect="customized">
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="property.fixed_asset_name"
+                    show-after="400"
+                    placement="top"
+                    effect="customized"
+                  >
                     <span>{{ property.fixed_asset_name }}</span>
                   </el-tooltip>
                 </td>
                 <td class="text-left ellipsis">
-                  <el-tooltip :disabled="disabled" :content="property.fixed_asset_category_name" show-after="400"
-                    placement="top" effect="customized">
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="property.fixed_asset_category_name"
+                    show-after="400"
+                    placement="top"
+                    effect="customized"
+                  >
                     <span>{{ property.fixed_asset_category_name }}</span>
                   </el-tooltip>
                 </td>
 
                 <td class="text-left ellipsis">
-                  <el-tooltip :disabled="disabled" :content="property.department_name" placement="top" show-after="400"
-                    effect="customized">
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="property.department_name"
+                    placement="top"
+                    show-after="400"
+                    effect="customized"
+                  >
                     <span>{{ property.department_name }}</span>
                   </el-tooltip>
                 </td>
@@ -163,35 +289,61 @@
                 <td class="text-rigth">{{ formartNumber(property.cost) }}</td>
 
                 <td class="text-rigth">
-                  {{ formartNumber((property.cost * property.depreciation_rate) / 100) }}
+                  {{
+                    formartNumber(
+                      (property.cost * property.depreciation_rate) / 100
+                    )
+                  }}
                 </td>
                 <td class="text-rigth">
                   {{
-                  formartNumber(
-                  property.cost - (property.cost * property.depreciation_rate) / 100
-                  )
+                    formartNumber(
+                      property.cost -
+                        (property.cost * property.depreciation_rate) / 100
+                    )
                   }}
                 </td>
+                <td class="text-center">{{ checkStatus(property.active) }}</td>
                 <td class="text-center">
-                  <el-tooltip :disabled="disabled" :content="textTolltipEdit" placement="bottom" show-after="400"
-                    effect="customized">
-                    <button class="m-icon-edit btn-edit" @click="
-                      editPropertyOnclick(
-                        property.fixed_asset_id,
-                    
-                        property.fixed_asset_code
-                      )
-                    "></button>
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="textTolltipEdit"
+                    placement="bottom"
+                    show-after="400"
+                    effect="customized"
+                  >
+                    <button
+                      class="m-icon-edit btn-edit"
+                      @click="
+                        editPropertyOnclick(
+                          property.fixed_asset_id,
+
+                          property.fixed_asset_code
+                        )
+                      "
+                    ></button>
                   </el-tooltip>
-                  <el-tooltip :disabled="disabled" :content="textTolltipDuplicate" placement="bottom" show-after="400"
-                    effect="customized">
-                    <button class="m-icon-duplicate btn-duplicate"
-                      @click="duplicatePropertyOnclick(property.fixed_asset_id)"></button>
+                  <el-tooltip
+                    :disabled="disabled"
+                    :content="textTolltipDuplicate"
+                    placement="bottom"
+                    show-after="400"
+                    effect="customized"
+                  >
+                    <button
+                      class="m-icon-duplicate btn-duplicate"
+                      @click="duplicatePropertyOnclick(property.fixed_asset_id)"
+                    ></button>
                   </el-tooltip>
                 </td>
 
-                <context-menu v-show="property.fixed_asset_id == valueID" :tmpPropertyCode="tmpPropertyCode"
-                  :assetIDContext="assetIDContext" :pageY="pageY" :pageX="pageX">
+                <context-menu
+                  v-show="property.fixed_asset_id == valueID"
+                  :tmpPropertyCode="tmpPropertyCode"
+                  :assetIDContext="assetIDContext"
+                  :pageY="pageY"
+                  :pageX="pageX"
+                >
                 </context-menu>
               </tr>
 
@@ -206,24 +358,50 @@
               </tr>
             </tbody>
 
-            <tfoot class="m-bottom-table" style="position: sticky; bottom: 0; background-color: #fff">
+            <tfoot
+              class="m-bottom-table"
+              style="position: sticky; bottom: 0; background-color: #fff"
+            >
               <td colspan="5">
                 <div class="m-table__bottom">
                   <div class="m-total-property">
-                    {{textTotal}}: &nbsp;<span style="font-weight: 700">{{ totalCount }}</span>&nbsp; {{textRecord}}
+                    {{ textTotal }}: &nbsp;<span style="font-weight: 700">{{
+                      totalCount
+                    }}</span
+                    >&nbsp; {{ textRecord }}
                   </div>
 
                   <div class="m-combobox" style="margin-left: 15px">
-                    <input type="text" class="combobox m-page" v-model="pageSize" readonly/>
-                    <button class="btn_combobox" @click="showCBBClick()" @blur="hideContentCbbBlur">
+                    <input
+                      type="text"
+                      class="combobox m-page"
+                      v-model="pageSize"
+                      readonly
+                    />
+                    <button
+                      class="btn_combobox"
+                      @click="showCBBClick()"
+                      @blur="hideContentCbbBlur"
+                    >
                       <div class="m-icon-dropdown"></div>
                     </button>
-                    <div class="m-combobox__content"
-                      style=" bottom: 100%; height: 62px;font-size: 11px;margin-bottom: 2px;"
-                      v-show="isShowmComboboxPaging">
+                    <div
+                      class="m-combobox__content"
+                      style="
+                        bottom: 100%;
+                        height: 62px;
+                        font-size: 11px;
+                        margin-bottom: 2px;
+                      "
+                      v-show="isShowmComboboxPaging"
+                    >
                       <div class="m-border">
-                        <span v-for="(pageSize, index) in listOptionPageSize" :key="index" class="m-option-cbb-paging"
-                          @mousedown="pageSizeClick(pageSize)">
+                        <span
+                          v-for="(pageSize, index) in listOptionPageSize"
+                          :key="index"
+                          class="m-option-cbb-paging"
+                          @mousedown="pageSizeClick(pageSize)"
+                        >
                           {{ pageSize }}
                         </span>
                       </div>
@@ -231,35 +409,62 @@
                   </div>
 
                   <div class="m-table__bottom--pagenavi">
-                    <el-tooltip :disabled="disabled" :content="textPrev" placement="top" effect="customized"
-                      show-after="400">
-                      <button class="btn-pagenavi" @click="pageNumberClick(this.pageNumber,textPrev)">
+                    <el-tooltip
+                      :disabled="disabled"
+                      :content="textPrev"
+                      placement="top"
+                      effect="customized"
+                      show-after="400"
+                    >
+                      <button
+                        class="btn-pagenavi"
+                        @click="pageNumberClick(this.pageNumber, textPrev)"
+                      >
                         <div class="m-icon-prev"></div>
                       </button>
                     </el-tooltip>
 
-                    <button class="btn-pagenavi" @click="pageNumberClick(1,1)"
-                      :class="{ btnpagenaviactive: pageNumber == 1 }">
+                    <button
+                      class="btn-pagenavi"
+                      @click="pageNumberClick(1, 1)"
+                      :class="{ btnpagenaviactive: pageNumber == 1 }"
+                    >
                       <span>1</span>
                     </button>
 
-                    <button v-if="isShowNextPage" class="btn-pagenavi" @click="pageNumberClick(page,1)"
-                      :class="{ btnpagenaviactive: pageNumber == page }">
+                    <button
+                      v-if="isShowNextPage"
+                      class="btn-pagenavi"
+                      @click="pageNumberClick(page, 1)"
+                      :class="{ btnpagenaviactive: pageNumber == page }"
+                    >
                       <span>{{ page }}</span>
                     </button>
 
                     <div class="ml-12" v-if="isShowThreeDot">...</div>
 
-                    <button v-if="isShowEndPage" class="btn-pagenavi" @click="pageNumberClick(this.endPageNumber,1)"
+                    <button
+                      v-if="isShowEndPage"
+                      class="btn-pagenavi"
+                      @click="pageNumberClick(this.endPageNumber, 1)"
                       :class="{
                         btnpagenaviactive: pageNumber == this.endPageNumber,
-                      }">
+                      }"
+                    >
                       <span>{{ endPageNumber }}</span>
                     </button>
 
-                    <el-tooltip :disabled="disabled" :content="textNext" placement="top" effect="customized"
-                      show-after="400">
-                      <button class="btn-pagenavi" @click="pageNumberClick(pageNumber,textNext)">
+                    <el-tooltip
+                      :disabled="disabled"
+                      :content="textNext"
+                      placement="top"
+                      effect="customized"
+                      show-after="400"
+                    >
+                      <button
+                        class="btn-pagenavi"
+                        @click="pageNumberClick(pageNumber, textNext)"
+                      >
                         <div class="m-icon-next"></div>
                       </button>
                     </el-tooltip>
@@ -268,31 +473,57 @@
               </td>
 
               <td class="text-rigth">
-                <el-tooltip :disabled="disabled" :content="textQuanlity" placement="top" effect="customized"
-                  show-after="400">
-                  <span style="font-weight: 700">{{ formartNumber(totalQuantity) }}</span>
-                </el-tooltip>
-              </td>
-
-              <td class="text-rigth">
-                <el-tooltip :disabled="disabled" :content="textCost" placement="top" effect="customized"
-                  show-after="400">
-                  <span style="font-weight: 700">{{ formartNumber(totalCost) }}</span>
-                </el-tooltip>
-              </td>
-
-              <td class="text-rigth">
-                <el-tooltip :disabled="disabled" :content="textLossCost" placement="top" effect="customized"
-                  show-after="400">
-                  <span style="font-weight: 700">{{ formartNumber(totalLoss) }}</span>
-                </el-tooltip>
-              </td>
-
-              <td class="text-rigth">
-                <el-tooltip :disabled="disabled" :content="textRemaining" placement="top" effect="customized"
-                  show-after="400">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="textQuanlity"
+                  placement="top"
+                  effect="customized"
+                  show-after="400"
+                >
                   <span style="font-weight: 700">{{
-                  formartNumber(totalCost - totalLoss)
+                    formartNumber(totalQuantity)
+                  }}</span>
+                </el-tooltip>
+              </td>
+
+              <td class="text-rigth">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="textCost"
+                  placement="top"
+                  effect="customized"
+                  show-after="400"
+                >
+                  <span style="font-weight: 700">{{
+                    formartNumber(totalCost)
+                  }}</span>
+                </el-tooltip>
+              </td>
+
+              <td class="text-rigth">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="textLossCost"
+                  placement="top"
+                  effect="customized"
+                  show-after="400"
+                >
+                  <span style="font-weight: 700">{{
+                    formartNumber(totalLoss)
+                  }}</span>
+                </el-tooltip>
+              </td>
+
+              <td class="text-rigth">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="textRemaining"
+                  placement="top"
+                  effect="customized"
+                  show-after="400"
+                >
+                  <span style="font-weight: 700">{{
+                    formartNumber(totalCost - totalLoss)
                   }}</span>
                 </el-tooltip>
               </td>
@@ -303,16 +534,37 @@
         </div>
       </div>
 
-      <PropertyDetail v-if="isShowDialog" :propertyIDSelected="propertyIDSelected"
-        :propertyCodeSelected="propertyCodeSelected" :propertyCodeList="propertyCodeList"
-        :checkTitleForm="checkTitleForm" />
+      <PropertyDetail
+        v-if="isShowDialog"
+        :propertyIDSelected="propertyIDSelected"
+        :propertyCodeSelected="propertyCodeSelected"
+        :propertyCodeList="propertyCodeList"
+        :checkTitleForm="checkTitleForm"
+      />
 
-      <ToastMessageException v-if="isShowToastException" :titleFormException="titleFormException" />
+      <ToastMessageException
+        v-if="isShowToastException"
+        :titleFormException="titleFormException"
+        :code="code"
+        :text="text"
+      />
 
-      <ToastMessageDelete :titleFormDelete="titleFormDelete" :totalCountAsset="totalCountAsset"
-        :tmpPropertyCode="tmpPropertyCode" :tmpPropertyName="tmpPropertyName" :checkboxList="checkboxList"
-        :assetIDContextDelete="assetIDContextDelete" v-if="isDialogToastDelete" />
-      <ToastMessageValid v-if="isShowDialogToastValid" :moreInfo="moreInfo" :titleFormValid="titleFormValid" />
+      <ToastMessageDelete
+        :titleFormDelete="titleFormDelete"
+        :totalCountAsset="totalCountAsset"
+        :tmpPropertyCode="tmpPropertyCode"
+        :tmpPropertyName="tmpPropertyName"
+        :checkboxList="checkboxList"
+        :assetIDContextDelete="assetIDContextDelete"
+        v-if="isDialogToastDelete"
+        :checkContextMenu="checkContextMenu"
+        :isShowAsset="isShowAsset"
+      />
+      <ToastMessageValid
+        v-if="isShowDialogToastValid"
+        :moreInfo="moreInfo"
+        :titleFormValid="titleFormValid"
+      />
     </div>
 
     <LoadDing v-show="isShowLoading" />
@@ -331,6 +583,7 @@ import MCombobox from "@/base/combobox/MCombobox.vue";
 import ToastMessageException from "../toast/ToastMessageException.vue";
 import ToastMessageValid from "../toast/ToastMessageValid.vue";
 import ContextMenu from "../contextmenu/ContextMenu.vue";
+import BaseMethod from "../../lib/baseMethod";
 export default {
   name: "PropertyList",
 
@@ -346,9 +599,13 @@ export default {
   },
 
   created() {
+    if (sessionStorage.getItem("checkSesstion") == null) {
+      this.$router.push("/");
+    }
+  },
+  mounted() {
     this.getDataAPI();
   },
-
   updated() {
     this.addEventListener();
     this.contextMenu();
@@ -433,6 +690,74 @@ export default {
 
   methods: {
     /**
+     * Hàm kiểm tra trạng thái sử dụng cửa tài sản
+     * NVHThai (27/10/2022)
+     */
+    checkStatus(status) {
+      if (status == 0) {
+        return "Chưa ghi tăng";
+      } else {
+        return "Đã ghi tăng";
+      }
+    },
+
+    /**
+     * Hàm dùng ctrl để xóa nhiều
+     * @param {*} value
+     * @param {*} id
+     * Author: NVHThai (18/10/2022)
+     */
+    ctrlOnClick(value, id) {
+      if (id) {
+        this.checkboxList.push(value);
+        this.checkboxList = this.checkboxList.filter(
+          (c) =>
+            this.checkboxList.indexOf(c) == this.checkboxList.lastIndexOf(c)
+        );
+      }
+    },
+
+    /**
+     * Hàm thay đổi giá trị của kiểm tra contextmenu
+     * Author: NVHThai (17/10/2022)
+     */
+    onChangeCheckContextMenu() {
+      this.checkContextMenu = false;
+    },
+
+    /**
+     * Hàm xuất dữ liệu ra file excell
+     * Author: NVHThai (17/10/2022)
+     */
+    btnExport() {
+      let me = this;
+      try {
+        // trước khi load dữ liệu thì hiện trạng thái tải data
+        this.isShowLoading = true;
+        // gọi api để lấy dữ liệu sử dụng axios
+        axios
+          .get("https://localhost:44380/api/v1/Assets/export")
+          .then((response) => {
+            console.log(response);
+            let url = response.request.responseURL; // đường dẫn tải file
+            window.open(url);
+            // lấy dữ liệu xong tắt trạng thái tải data
+            this.isShowLoading = false;
+          })
+          .catch((response) => {
+            console.log("response: ", response.response.status);
+            me.handleException(
+              response.response.status,
+              response.response.data.moreInfo,
+              response.response.data.userMsg
+            );
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
      * Hàm delete khi dùng bàn phím click vào ctrl delete hoặc delete
      * @param {guid} valueID : id của tài sản
      * @param {string} valueCode : mã tài sản
@@ -482,6 +807,7 @@ export default {
       }
       this.tmpPropertyCode = valueCode;
       this.tmpPropertyName = valueName;
+      this.checkContextMenu = true;
     },
 
     /**
@@ -525,8 +851,12 @@ export default {
       try {
         switch (check) {
           case this.textPrev:
-            if (pageNumber > 1) { this.pageNumber = pageNumber - 1; }
-            if (pageNumber > 2) { this.page = pageNumber - 1; }
+            if (pageNumber > 1) {
+              this.pageNumber = pageNumber - 1;
+            }
+            if (pageNumber > 2) {
+              this.page = pageNumber - 1;
+            }
             break;
           case this.textNext:
             if (pageNumber < this.endPageNumber) {
@@ -536,8 +866,12 @@ export default {
             break;
           case 1:
             this.pageNumber = pageNumber;
-            if (pageNumber == 1) {this.page = 2;}
-            if (pageNumber == this.endPageNumber) {this.page = this.endPageNumber - 1;}
+            if (pageNumber == 1) {
+              this.page = 2;
+            }
+            if (pageNumber == this.endPageNumber) {
+              this.page = this.endPageNumber - 1;
+            }
             break;
         }
       } catch (error) {
@@ -578,7 +912,7 @@ export default {
     filterCheckbox(id) {
       try {
         for (let idcheck of this.checkboxList) {
-          if (idcheck == id) {
+          if (idcheck.fixed_asset_id == id) {
             return true;
           }
         }
@@ -594,16 +928,7 @@ export default {
      * @param {int} number
      */
     formartNumber(number) {
-      try {
-        if (number && !isNaN(number)) {
-          number = number.toFixed(0);
-          return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
-        } else {
-          return number;
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      return BaseMethod.formartNumber(number);
     },
 
     /**
@@ -630,12 +955,23 @@ export default {
      * Author: NVHThai (09/09/2022)
      */
     btnOpenToastDeleteOnclick() {
+      this.isShowAsset = true;
       try {
         if (this.checkDataNotNull) {
           if (this.checkboxList.length == 1) {
-            this.totalCountAsset = 1;
-            this.isDialogToastDelete = true;
-            this.titleFormDelete = Resource.TitleToast.titleFormDelete;
+            if (this.checkboxList[0].active == 1) {
+              this.isShowToastException = true;
+              this.code=this.checkboxList[0].fixed_asset_code;
+              this.text="đã phát sinh chứng từ";
+            } else {
+              this.totalCountAsset = 1;
+              this.isDialogToastDelete = true;
+              this.getNameProperty(
+                this.checkboxList[0].fixed_asset_code,
+                this.checkboxList[0].fixed_asset_name
+              );
+              this.titleFormDelete = Resource.TitleToast.titleFormDelete;
+            }
           } else if (this.checkboxList.length == 0) {
             this.totalCountAsset = 0;
             this.isShowToastException = true;
@@ -691,7 +1027,6 @@ export default {
             me.totalCost = response.data.cost;
             me.totalLoss = response.data.loss;
             me.totalQuantity = response.data.quantity;
-            me.propertyCodeList = response.data.assetCodeList;
 
             if (me.totalCount == 0) {
               this.disableBtn = true;
@@ -706,7 +1041,11 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException( response.response.status,response.response.data.moreInfo,response.response.data.userMsg);
+            me.handleException(
+              response.response.status,
+              response.response.data.moreInfo,
+              response.response.data.userMsg
+            );
           });
       } catch (error) {
         console.log(error);
@@ -890,7 +1229,8 @@ export default {
             this.isShowDialogToastException = true;
             break;
           case Enum.StatusCode.NTERNALSERVERERROR:
-            this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
+            this.titleFormException =
+              Resource.TitleException.NTERNALSERVERERROR;
             this.isShowDialogToastException = true;
             break;
         }
@@ -898,10 +1238,11 @@ export default {
         console.log(error);
       }
     },
-
   },
   data() {
     return {
+      //kiểm tra xem context menu hay không
+      checkContextMenu: false,
       //tổng số bản ghi đc chọn
       totalCountAsset: null,
       //tiêu đề popup exception
@@ -961,8 +1302,11 @@ export default {
       // id để lấy id tài sản lớn nhất
       employeesID: null,
 
-      // mảng để lưu id tài sản
+      // mảng để lưu tài sản
       checkboxList: [],
+
+      // mảng để lưu id tài sản
+      checkboxID: [],
 
       propertyCodeList: [],
 
@@ -1046,13 +1390,15 @@ export default {
       // biến check khi có dữ liệu mới click được vào xóa và xuất khẩu
       checkDataNotNull: true,
 
+      checkCtr: false,
+
       // Tọa độ chuột
       pageY: null,
       pageX: null,
       //id để focus
       asset: "asset",
 
-      //text sử dụng 
+      //text sử dụng
       textBtnAdd: Resource.TextVi.List.BtnAdd,
       textSTT: Resource.TextVi.List.STT,
       textAssetCode: Resource.TextVi.List.AssetCode,
@@ -1078,21 +1424,20 @@ export default {
       textNext: Resource.TextVi.Tooltip.Next,
       textPrev: Resource.TextVi.Tooltip.Prev,
       textPInputSearch: Resource.TextVi.PlaceHolder.InputSearch,
-      textPComboboxAssetCategory: Resource.TextVi.PlaceHolder.ComboboxAssetCategory,
+      textPComboboxAssetCategory:
+        Resource.TextVi.PlaceHolder.ComboboxAssetCategory,
       textPComboboxDepartment: Resource.TextVi.PlaceHolder.ComboboxDepartment,
-
     };
   },
 };
 </script>
 
-<style>
+<style scoped>
 @import url(../../css/details/propertylist.css);
-@import url(../../css/common/customdatepicker.css);
-
 .el-empty {
   background-color: #fff !important;
 }
+
 .empty {
   background-color: #fff !important;
 }

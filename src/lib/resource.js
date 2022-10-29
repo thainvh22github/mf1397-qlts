@@ -28,11 +28,13 @@ export default {
         Duplicate:'Nhân bản',
         DeleteException:"Vui lòng chọn tài sản cần xóa",
         titleFormDelete:"Bạn có muốn xóa tài sản",
+        titleFormDeleteLicense:"Bạn có muốn xóa chứng từ có mã",
         titleFormDeletes:"tài sản đã được chọn. Bạn có muốn xóa các tài sản khỏi danh sách này không?",
         TitleFormValidate: "Dữ liệu đầu vào không hợp lệ",
         TitleFormAdd: "Bạn có muốn hủy bỏ khai báo tài sản này?",
         TitleFormEdit: "Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này?",
         TitleFormDone:"Lưu dữ liệu thành công",
+        TitleExceptionLicense:"Chọn ít nhất 1 tài sản"
     },
 
     TitleException:{
@@ -137,7 +139,11 @@ export default {
             Close: "Hủy",
             Save: "Lưu"
         },
-        Loading:"Đang tải dữ liệu"
+        Loading:"Đang tải dữ liệu",
+        Format:{
+            FormatDate:"DD/MM/YYYY",
+            ValueFormatDate:"YYYY-MM-DD"
+        }
     }
     
 }

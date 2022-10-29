@@ -1,6 +1,10 @@
 <template>
-  <div class="m-dialog" @keydown.ctrl.f8="btnSaveFormOnclick()" @keydown.ctrl.f9="btnCloseFormOnclick()"
-    @keydown.esc="btnCloseFormOnclick()">
+  <div
+    class="m-dialog"
+    @keydown.ctrl.f8="btnSaveFormOnclick()"
+    @keydown.ctrl.f9="btnCloseFormOnclick()"
+    @keydown.esc="btnCloseFormOnclick()"
+  >
     <div id="formadd" class="m-form-add">
       <div class="m-form-add__detail">
         <div class="m-form-add__header">
@@ -8,8 +12,18 @@
             {{ titleForm }}
           </div>
 
-          <el-tooltip :content="textTooltipClose" placement="top" show-after="400" effect="customized">
-            <button id="btnX" class="btn-x" @click="btnCloseFormOnclick" tabindex="100">
+          <el-tooltip
+            :content="textTooltipClose"
+            placement="top"
+            show-after="400"
+            effect="customized"
+          >
+            <button
+              id="btnX"
+              class="btn-x"
+              @click="btnCloseFormOnclick"
+              tabindex="100"
+            >
               <div class="m-icon-x"></div>
             </button>
           </el-tooltip>
@@ -17,68 +31,148 @@
 
         <div class="mt-20 m-propertycode-propertyname" style="display: flex">
           <div class="m-propertycode" style="width: 32%">
-            <div class="m-text">{{ textAssetCode }} <span style="color: red">*</span></div>
-            <m-input type="text" focusInput="propertycode" className="mt-8 w-100 m-input-propertycode"
-              v-model="property.fixed_asset_code" tabindex="101" :checkInputValidate="checkInputValidate"
-              maxlength="30">
+            <div class="m-text">
+              {{ textAssetCode }} <span style="color: red">*</span>
+            </div>
+            <m-input
+              type="text"
+              focusInput="propertycode"
+              className="mt-8 w-100 m-input-propertycode"
+              :class="{ input__disable: disable }"
+              :readonly="disable"
+              v-model="property.fixed_asset_code"
+              tabindex="101"
+              :checkInputValidate="checkInputValidate"
+              maxlength="20"
+            >
             </m-input>
           </div>
 
-          <div class="m-propertyname" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">{{ textAssetName }} <span style="color: red">*</span></div>
-            <m-input type="text" className="mt-8 w-100 m-input-propertyname" v-model="property.fixed_asset_name"
-              tabindex="102" :checkInputValidate="checkInputValidate" :placeholder=textPAssetName maxlength="255">
+          <div
+            class="m-propertyname"
+            style="width: calc(68% - 16px); margin-left: 16px"
+          >
+            <div class="m-text">
+              {{ textAssetName }} <span style="color: red">*</span>
+            </div>
+            <m-input
+              type="text"
+              className="mt-8 w-100 m-input-propertyname"
+              v-model="property.fixed_asset_name"
+              tabindex="102"
+              :checkInputValidate="checkInputValidate"
+              :placeholder="textPAssetName"
+              maxlength="255"
+            >
             </m-input>
           </div>
         </div>
 
         <div class="mt-15 m-positioncode-positionname" style="display: flex">
           <div class="m-positioncode" style="width: 32%">
-            <div class="m-text">{{textAssetDepartmentCode}} <span style="color: red">*</span></div>
+            <div class="m-text">
+              {{ textAssetDepartmentCode }} <span style="color: red">*</span>
+            </div>
 
-            <m-combobox css="mt-8" type="text" className="m-property-positioncode w-100"
-              :placeholder=textPDepartmentCode :showValue="property.department_code"
-              v-model:department_id="property.department_id" v-model:department_code="property.department_code"
-              v-model:department_name="property.department_name" tabindex="103" :url="urlDepartment"
-              :itemID="ItemIDDepartment" :itemName="ItemNameDepartment" :itemCode="ItemCodeDepartment"
-              styleContent="height-150" :checkInputValidate="checkInputValidate">
+            <m-combobox
+              css="mt-8"
+              type="text"
+              className="m-property-positioncode w-100"
+              :placeholder="textPDepartmentCode"
+              :showValue="property.department_code"
+              v-model:department_id="property.department_id"
+              v-model:department_code="property.department_code"
+              v-model:department_name="property.department_name"
+              tabindex="103"
+              :url="urlDepartment"
+              :itemID="ItemIDDepartment"
+              :itemName="ItemNameDepartment"
+              :itemCode="ItemCodeDepartment"
+              styleContent="height-150"
+              :checkInputValidate="checkInputValidate"
+            >
             </m-combobox>
           </div>
 
-          <div class="m-positionname" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">{{textAssetDepartmentName}}</div>
+          <div
+            class="m-positionname"
+            style="width: calc(68% - 16px); margin-left: 16px"
+          >
+            <div class="m-text">{{ textAssetDepartmentName }}</div>
 
-            <el-tooltip :content="property.department_name" :disabled="property.department_name == null" placement="top"
-              show-after="400" effect="customized">
-              <m-input type="text" className="mt-8 w-100 input__disable m-input-positionname"
-                v-model="property.department_name" readonly>
+            <el-tooltip
+              :content="property.department_name"
+              :disabled="property.department_name == null"
+              placement="top"
+              show-after="400"
+              effect="customized"
+            >
+              <m-input
+                type="text"
+                className="mt-8 w-100 input__disable m-input-positionname"
+                v-model="property.department_name"
+                readonly
+              >
               </m-input>
             </el-tooltip>
           </div>
         </div>
 
-        <div class="mt-15 m-propertycodetype-propertynametype" style="display: flex">
+        <div
+          class="mt-15 m-propertycodetype-propertynametype"
+          style="display: flex"
+        >
           <div class="m-propertycodetype" style="width: 32%">
-            <div class="m-text">{{textAssetCategoryCode}} <span style="color: red">*</span></div>
+            <div class="m-text">
+              {{ textAssetCategoryCode }} <span style="color: red">*</span>
+            </div>
 
-            <m-combobox css="mt-8" type="text" className="m-property-propertycodetype w-100"
-              :placeholder="textPAssetCategoryCode" :showValue="property.fixed_asset_category_code"
+            <m-combobox
+              css="mt-8"
+              type="text"
+              className="m-property-propertycodetype w-100"
+              :placeholder="textPAssetCategoryCode"
+              :showValue="property.fixed_asset_category_code"
               v-model:fixed_asset_category_id="property.fixed_asset_category_id"
-              v-model:fixed_asset_category_code="property.fixed_asset_category_code"
-              v-model:fixed_asset_category_name="property.fixed_asset_category_name"
-              v-model:depreciation_rate="property.depreciation_rate" v-model:life_time="property.life_time"
-              tabindex="104" :url="urlCategoryAsset" :itemID="ItemIDCategoryAsset" :itemCode="ItemCodeCategoryAsset"
-              :itemName="ItemNameCategoryAsset" styleContent="height-150" :checkInputValidate="checkInputValidate">
+              v-model:fixed_asset_category_code="
+                property.fixed_asset_category_code
+              "
+              v-model:fixed_asset_category_name="
+                property.fixed_asset_category_name
+              "
+              v-model:depreciation_rate="property.depreciation_rate"
+              v-model:life_time="property.life_time"
+              tabindex="104"
+              :url="urlCategoryAsset"
+              :itemID="ItemIDCategoryAsset"
+              :itemCode="ItemCodeCategoryAsset"
+              :itemName="ItemNameCategoryAsset"
+              styleContent="height-150"
+              :checkInputValidate="checkInputValidate"
+              
+            >
             </m-combobox>
           </div>
 
-          <div class="m-propertynametype" style="width: calc(68% - 16px); margin-left: 16px">
-            <div class="m-text">{{textAssetCategoryName}} </div>
+          <div
+            class="m-propertynametype"
+            style="width: calc(68% - 16px); margin-left: 16px"
+          >
+            <div class="m-text">{{ textAssetCategoryName }}</div>
 
-            <el-tooltip :content="property.fixed_asset_category_name" placement="top" show-after="400"
-              effect="customized" :disabled="property.fixed_asset_category_name == null">
-              <m-input type="text" className="mt-8 w-100 input__disable m-input-propertynametype"
-                v-model="property.fixed_asset_category_name" readonly>
+            <el-tooltip
+              :content="property.fixed_asset_category_name"
+              placement="top"
+              show-after="400"
+              effect="customized"
+              :disabled="property.fixed_asset_category_name == null"
+            >
+              <m-input
+                type="text"
+                className="mt-8 w-100 input__disable m-input-propertynametype"
+                v-model="property.fixed_asset_category_name"
+                readonly
+              >
               </m-input>
             </el-tooltip>
           </div>
@@ -86,13 +180,28 @@
 
         <div class="mt-15 m-amount-cost-longevity" style="display: flex">
           <div class="m-amount" style="width: 32%">
-            <div class="m-text">{{textQuanlity}} <span style="color: red">*</span></div>
+            <div class="m-text">
+              {{ textQuanlity }} <span style="color: red">*</span>
+            </div>
 
             <div class="m-input-amount">
-              <m-input type="text" className="mt-8 w-100" v-model="property.quantity" tabindex="105"
-                :value="formartNumber(property.quantity)" style="text-align: right; padding-right: 40px"
-                @keydown="validateNumber($event)" @input="showValueQuanlity()" :checkInputValidate="checkInputValidate"
-                min="0" maxlength="20" @keydown.up="onclickStepAmount(0)" @keydown.down="onclickStepAmount(1)">
+              <m-input
+                type="text"
+                className="mt-8 w-100"
+                v-model="property.quantity"
+                tabindex="105"
+                :value="formartNumber(property.quantity)"
+                style="text-align: right; padding-right: 40px"
+                @keydown="validateNumber($event)"
+                @input="showValueQuanlity()"
+                :checkInputValidate="checkInputValidate"
+                min="0"
+                maxlength="25"
+                @keydown.up="onclickStepAmount(0)"
+                @keydown.down="onclickStepAmount(1)"
+                :class="{ input__disable: disable }"
+                :readonly="disable"
+              >
               </m-input>
               <div class="m-drop">
                 <button class="btn__up" @click="onclickStepAmount(0)">
@@ -106,54 +215,125 @@
           </div>
 
           <div class="m-cost" style="width: 32%; margin-left: 16px">
-            <div class="m-text">{{textCost}} <span style="color: red">*</span></div>
-            <m-input type="text" className="mt-8 w-100 m-input-cost" :value="formartNumber(property.cost)"
-              v-model="property.cost" tabindex="106" style="text-align: right"
-              @input="showValueNumber(property.cost,textCost)" @keydown="validateNumber($event)"
-              :checkInputValidate="checkInputValidate" maxlength="20">
+            <div class="m-text">
+              {{ textCost }} <span style="color: red">*</span>
+            </div>
+            <m-input
+              type="text"
+              className="mt-8 w-100 m-input-cost"
+              :value="formartNumber(property.cost)"
+              v-model="property.cost"
+              tabindex="106"
+              style="text-align: right"
+              @input="showValueNumber(property.cost, textCost)"
+              @keydown="validateNumber($event)"
+              :checkInputValidate="checkInputValidate"
+              maxlength="25"
+              :class="{ input__disable: disable }"
+              :readonly="disable"
+            >
             </m-input>
           </div>
 
-          <div class="m-longevity" style="width: calc(36% - 32px); margin-left: 16px">
-            <div class="m-text">{{textDepreciationRate}} <span style="color: red">*</span></div>
-            <m-input type="text" className="mt-8 w-100 m-input-longevity"
-              :value="formartRate(property.depreciation_rate)" v-model="property.depreciation_rate" tabindex="107"
-              style="text-align: right" @keydown="validateNumber($event)" :checkInputValidate="checkInputValidate"
-              @input="changeValueLossYear()" maxlength="20"></m-input>
+          <div
+            class="m-longevity"
+            style="width: calc(36% - 32px); margin-left: 16px"
+          >
+            <div class="m-text">
+              {{ textDepreciationRate }} <span style="color: red">*</span>
+            </div>
+            <m-input
+              type="text"
+              className="mt-8 w-100 m-input-longevity"
+              :value="formartRate(property.depreciation_rate)"
+              v-model="property.depreciation_rate"
+              tabindex="107"
+              style="text-align: right"
+              @keydown="validateNumber($event)"
+              :checkInputValidate="checkInputValidate"
+              @input="changeValueLossYear()"
+              maxlength="20"
+              :class="{ input__disable: disable }"
+              :readonly="disable" 
+            ></m-input>
           </div>
         </div>
 
-        <div class="mt-15 m-buyingdate-usingdate-trackingyear" style="display: flex">
+        <div
+          class="mt-15 m-buyingdate-usingdate-trackingyear"
+          style="display: flex"
+        >
           <div class="m-buyingdate" style="width: 32%">
-            <div class="m-text">{{textBuyingDate}} <span style="color: red">*</span></div>
-            <el-date-picker v-model="property.purchase_date" type="date" popper-class="custom-date-picker"
-              class="mt-8 w-100 m-input-buyingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD" tabindex="108">
+            <div class="m-text">
+              {{ textBuyingDate }} <span style="color: red">*</span>
+            </div>
+            <el-date-picker
+              v-model="property.purchase_date"
+              type="date"
+              popper-class="custom-date-picker"
+              class="mt-8 w-100 m-input-buyingdate"
+              :format="elDateFormat"
+              :value-format="elDateValueFormat"
+              tabindex="108"
+              :readonly="disable"
+            >
             </el-date-picker>
           </div>
 
           <div class="m-usingdate" style="width: 32%; margin-left: 16px">
-            <div class="m-text">{{textUsingDate}} <span style="color: red">*</span>
+            <div class="m-text">
+              {{ textUsingDate }} <span style="color: red">*</span>
             </div>
-            <el-date-picker v-model="property.production_date" type="date" popper-class="custom-date-picker"
-              class="mt-8 w-100 m-input-usingdate" format="DD/MM/YYYY" value-format="YYYY-MM-DD" tabindex="109">
+            <el-date-picker
+              v-model="property.production_date"
+              type="date"
+              popper-class="custom-date-picker"
+              class="mt-8 w-100 m-input-usingdate"
+              :format="elDateFormat"
+              :value-format="elDateValueFormat"
+              tabindex="109"
+              :readonly="disable"
+            >
             </el-date-picker>
           </div>
-          <div class="m-trackingyear" style="width: calc(36% - 32px); margin-left: 16px">
-            <div class="m-text">{{textTrackedYear}}</div>
-            <m-input type="text" className="mt-8 w-100 input__disable m-input-trackingyear"
-              v-model="property.tracked_year" readonly style="text-align: right">
+          <div
+            class="m-trackingyear"
+            style="width: calc(36% - 32px); margin-left: 16px"
+          >
+            <div class="m-text">{{ textTrackedYear }}</div>
+            <m-input
+              type="text"
+              className="mt-8 w-100 input__disable m-input-trackingyear"
+              v-model="property.tracked_year"
+              readonly
+              style="text-align: right"
+              
+            >
             </m-input>
           </div>
         </div>
 
         <div class="mt-15 m-lossrate-lossyear" style="display: flex">
           <div class="m-lossrate" style="width: 32%">
-            <div class="m-text">{{textLifeTime}} <span style="color: red">*</span></div>
+            <div class="m-text">
+              {{ textLifeTime }} <span style="color: red">*</span>
+            </div>
             <div class="m-input-lossrate">
-              <m-input type="text" className="mt-8 w-100" v-model="property.life_time" tabindex="110"
-                @input="showValueNumber(property.life_time,textLifeTime)" style="text-align: right; padding-right: 40px"
-                :checkInputValidate="checkInputValidate" maxlength="20" @keydown.up="onclickStepLifeTime(0)"
-                @keydown.down="onclickStepLifeTime(1)" @keydown="validateNumber($event)">
+              <m-input
+                type="text"
+                className="mt-8 w-100"
+                v-model="property.life_time"
+                tabindex="110"
+                @input="showValueNumber(property.life_time, textLifeTime)"
+                style="text-align: right; padding-right: 40px"
+                :checkInputValidate="checkInputValidate"
+                maxlength="20"
+                @keydown.up="onclickStepLifeTime(0)"
+                @keydown.down="onclickStepLifeTime(1)"
+                @keydown="validateNumber($event)"
+                :class="{ input__disable: disable }"
+              :readonly="disable"
+              >
               </m-input>
               <div class="m-drop">
                 <button class="btn__up" @click="onclickStepLifeTime(0)">
@@ -167,31 +347,53 @@
           </div>
 
           <div class="m-lossyear" style="width: 32%; margin-left: 16px">
-            <div class="m-text">{{textLossYear}} <span style="color: red">*</span>
+            <div class="m-text">
+              {{ textLossYear }} <span style="color: red">*</span>
             </div>
-            <m-input type="text" className="mt-8 w-100 input m-input-lossyear"
-              :value="formartNumber(property.loss_year)" v-model="property.loss_year" tabindex="111"
-              style="text-align: right" :checkInputValidate="checkInputValidate"
-              @input="showValueNumber(property.loss_year, textLossYear)" maxlength="30"
-              @keydown="validateNumber($event)"></m-input>
+            <m-input
+              type="text"
+              className="mt-8 w-100 input m-input-lossyear"
+              :value="formartNumber(property.loss_year)"
+              v-model="property.loss_year"
+              tabindex="111"
+              style="text-align: right"
+              :checkInputValidate="checkInputValidate"
+              @input="showValueNumber(property.loss_year, textLossYear)"
+              maxlength="30"
+              @keydown="validateNumber($event)"
+              :class="{ input__disable: disable }"
+              :readonly="disable"
+            ></m-input>
           </div>
         </div>
       </div>
 
       <div class="m-form-add__bottom">
-        <button class="btn btn-close" tabindex="112" @click="btnCloseFormOnclick">
-          {{textBClose}}
+        <button
+          class="btn btn-close"
+          tabindex="113"
+          @keydown.tab="loopFocus"
+          @click="btnCloseFormOnclick"
+        >
+          {{ textBClose }}
         </button>
-        <button class="btn btn-save" tabindex="113" @keydown.tab="loopFocus" @click="btnSaveFormOnclick">
-          {{textBSave}}
+        <button class="btn btn-save" tabindex="112" @click="btnSaveFormOnclick">
+          {{ textBSave }}
         </button>
       </div>
     </div>
 
     <ToastMessageAdd v-if="isShowToastAdd" />
     <ToastMessageEdit v-if="isShowToastEdit" :checkTitleForm="checkTitleForm" />
-    <ToastMessageValid v-if="isShowDialogToastValid" :moreInfo="moreInfo" :titleFormValid="titleFormValid" />
-    <ToastMessageException v-show="isShowDialogToastException" :titleFormException="titleFormException" />
+    <ToastMessageValid
+      v-if="isShowDialogToastValid"
+      :moreInfo="moreInfo"
+      :titleFormValid="titleFormValid"
+    />
+    <ToastMessageException
+      v-show="isShowDialogToastException"
+      :titleFormException="titleFormException"
+    />
   </div>
 </template>
 
@@ -227,19 +429,17 @@ export default {
   ],
 
   updated() {
-    this.getCurrentDate();
     this.validateMax();
+    this.getCurrentDate();
   },
+
   watch: {
     messageValid: function (value) {
       this.moreInfo.push(value);
     },
   },
-  mounted() {
-    if (this.property.fixed_asset_code != null) {
-      this.tmpAssetCode = this.property.fixed_asset_code;
-    }
 
+  mounted() {
     /**
      * Kiểm tra formMode đầu vào
      * Author: NVHThai (09/09/2022)
@@ -287,41 +487,11 @@ export default {
     },
 
     /**
-     * Hàm sử lý tỷ lệ hao mòn dấu chấm thành dấu phẩy vd 6.67 thành 6,67
-     * Author: NVHThai (03/10/2022)
-     */
-    sloveDepreciationRateToString() {
-      try {
-        if (this.property.depreciation_rate != null) {
-          let arrayStrig = this.property.depreciation_rate.toString(10).split(".");
-          if (arrayStrig[1] != null) {
-            this.property.depreciation_rate = arrayStrig[0] + "," + arrayStrig[1];
-          } else {
-            this.property.depreciation_rate = arrayStrig[0];
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
      * Hàm sử lý dấu phẩy thành dấu chấm vd 6,67 thành 6.67
      * Author: NVHThai (03/10/2022)
      */
     formartRate(number) {
-      try {
-        if (number != null) {
-          let arrayStrig = number.toString(10).split(".");
-          if (arrayStrig[1] != null) {
-            return arrayStrig[0] + "," + arrayStrig[1];
-          } else {
-            return arrayStrig[0];
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      return BaseMethod.formartRate(number);
     },
 
     /**
@@ -331,9 +501,12 @@ export default {
     sloveDepreciationRateToNumber() {
       try {
         if (this.property.depreciation_rate != null) {
-          let arrayStrig = this.property.depreciation_rate.toString(10).split(",");
+          let arrayStrig = this.property.depreciation_rate
+            .toString(10)
+            .split(",");
           if (arrayStrig[1] != null) {
-            this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
+            this.property.depreciation_rate =
+              arrayStrig[0] + "." + arrayStrig[1];
           } else {
             this.property.depreciation_rate = arrayStrig[0];
           }
@@ -349,9 +522,15 @@ export default {
     solveLossYear() {
       try {
         this.sloveDepreciationRateToNumber();
-        if (this.property.depreciation_rate != null && this.property.cost == 0) {
+        if (
+          this.property.depreciation_rate != null &&
+          this.property.cost == 0
+        ) {
           this.property.loss_year = "0";
-        } else if (this.property.depreciation_rate == 0 && this.property.cost != null) {
+        } else if (
+          this.property.depreciation_rate == 0 &&
+          this.property.cost != null
+        ) {
           this.property.loss_year = "0";
         } else if (
           this.property.depreciation_rate == null ||
@@ -362,20 +541,28 @@ export default {
           this.property.loss_year = null;
         } else if (typeof this.property.cost == "number") {
           this.property.cost = parseFloat(this.property.cost);
-          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+          this.property.depreciation_rate = parseFloat(
+            this.property.depreciation_rate
+          );
           this.property.loss_year = (
             (this.property.depreciation_rate * this.property.cost) /
             100
-          ).toString(10);
-          this.sloveDepreciationRateToString();
+          )
+            .toFixed(0)
+            .toString(10);
         } else if (typeof this.property.cost == "string") {
-          this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
-          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
+          this.property.cost = parseFloat(
+            this.property.cost.replace(/[^0-9]/g, "")
+          );
+          this.property.depreciation_rate = parseFloat(
+            this.property.depreciation_rate
+          );
           this.property.loss_year = (
             (this.property.depreciation_rate * this.property.cost) /
             100
-          ).toString(10);
-          this.sloveDepreciationRateToString();
+          )
+            .toFixed(0)
+            .toString(10);
         }
       } catch (error) {
         console.log(error);
@@ -426,8 +613,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-
-
     },
 
     /**
@@ -444,15 +629,7 @@ export default {
      * @param {int} number
      */
     formartNumber(number) {
-      try {
-        if (number && !isNaN(number)) {
-          return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
-        } else {
-          return number;
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      return BaseMethod.formartNumber(number);
     },
 
     /**
@@ -470,7 +647,10 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+            me.handleException(
+              response.response.status,
+              response.response.data.userMsg
+            );
           });
       } catch (error) {
         console.log(error);
@@ -490,6 +670,11 @@ export default {
           .get(`${Resource.Url.Asset}/${propertyID}`)
           .then((response) => {
             me.property = response.data;
+
+            if (me.property.active == 1) {
+              this.disable = true;
+            }
+
             // Lấy mã tài sản lớn nhất nếu là form nhân bản còn sửa thì không
             if (me.checkTitleForm == Enum.FormMode.Duplicate) {
               me.getApiPropertyMaxCode();
@@ -497,7 +682,10 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+            me.handleException(
+              response.response.status,
+              response.response.data.userMsg
+            );
           });
       } catch (error) {
         console.log(error);
@@ -533,7 +721,10 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+            me.handleException(
+              response.response.status,
+              response.response.data.userMsg
+            );
           });
       } catch (error) {
         console.log(error);
@@ -570,7 +761,10 @@ export default {
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
-            me.handleException(response.response.status, response.response.data.moreInfo, response.response.data.userMsg);
+            me.handleException(
+              response.response.status,
+              response.response.data.userMsg
+            );
           });
       } catch (error) {
         console.log(error);
@@ -584,12 +778,12 @@ export default {
      * @param {arr} moreInfo: Mảng các lỗi do người dùng nhập thiếu từ backend trả về
      * @param {string} userMsg: Lỗi từ backend trả về hiển thị cho người dùng
      */
-    handleException(status, moreInfo, userMsg) {
+    handleException(status, userMsg) {
       try {
         switch (status) {
           case Enum.StatusCode.BADREQUEST:
-            this.moreInfo = moreInfo;
-            this.titleFormValid = userMsg;
+            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
+            this.moreInfo[0] = userMsg;
             this.isShowDialogToastValid = true;
             break;
           case Enum.StatusCode.FORBIDDEN:
@@ -605,7 +799,8 @@ export default {
             this.isShowDialogToastException = true;
             break;
           case Enum.StatusCode.NTERNALSERVERERROR:
-            this.titleFormException = Resource.TitleException.NTERNALSERVERERROR;
+            this.titleFormException =
+              Resource.TitleException.NTERNALSERVERERROR;
             this.isShowDialogToastException = true;
             break;
         }
@@ -623,7 +818,10 @@ export default {
         this.checkInputValidate = true;
         if (this.checkTitleForm == Enum.FormMode.Add) {
           this.isShowToastAdd = true;
-        } else if (this.checkTitleForm == Enum.FormMode.Edit || this.checkTitleForm == Enum.FormMode.Duplicate) {
+        } else if (
+          this.checkTitleForm == Enum.FormMode.Edit ||
+          this.checkTitleForm == Enum.FormMode.Duplicate
+        ) {
           this.isShowToastEdit = true;
         }
       } catch (error) {
@@ -648,7 +846,7 @@ export default {
     },
 
     /**
-     * Thay đổi để theo dõi input 
+     * Thay đổi để theo dõi input
      *  Author: NVHThai (26/09/2022)
      */
     changeCheckInputValidate() {
@@ -689,7 +887,10 @@ export default {
     },
 
     formatQuantity() {
-      this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
+      this.property.life_time =
+        parseInt(this.property.life_time) < 10
+          ? `0${parseInt(this.property.life_time)}`
+          : parseInt(this.property.life_time);
     },
 
     /**
@@ -701,10 +902,14 @@ export default {
       try {
         switch (check) {
           case 0:
-            if (this.property.life_time == undefined) { this.property.life_time = "01" }
-            else {
+            if (this.property.life_time == undefined) {
+              this.property.life_time = "01";
+            } else {
               this.property.life_time = parseInt(this.property.life_time) + 1;
-              this.property.life_time = parseInt(this.property.life_time) < 10 ? `0${parseInt(this.property.life_time)}` : parseInt(this.property.life_time);
+              this.property.life_time =
+                parseInt(this.property.life_time) < 10
+                  ? `0${parseInt(this.property.life_time)}`
+                  : parseInt(this.property.life_time);
             }
             break;
           case 1:
@@ -731,16 +936,23 @@ export default {
       try {
         switch (check) {
           case 0:
-            if (this.property.quantity == undefined) { this.property.quantity = "01" }
-            else {
+            if (this.property.quantity == undefined) {
+              this.property.quantity = "01";
+            } else {
               this.property.quantity = parseInt(this.property.quantity) + 1;
-              this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
+              this.property.quantity =
+                parseInt(this.property.quantity) < 10
+                  ? `0${parseInt(this.property.quantity)}`
+                  : parseInt(this.property.quantity);
             }
             break;
           case 1:
             if (this.property.quantity > 0) {
               this.property.quantity = parseInt(this.property.quantity) - 1;
-              this.property.quantity = parseInt(this.property.quantity) < 10 ? `0${parseInt(this.property.quantity)}` : parseInt(this.property.quantity);
+              this.property.quantity =
+                parseInt(this.property.quantity) < 10
+                  ? `0${parseInt(this.property.quantity)}`
+                  : parseInt(this.property.quantity);
             }
             break;
         }
@@ -756,8 +968,12 @@ export default {
     getCurrentDate() {
       try {
         if (this.checkTitleForm == Enum.FormMode.Add) {
-          this.property.purchase_date = BaseMethod.getCurrentDate();
-          this.property.production_date = BaseMethod.getCurrentDate();
+          if (this.property.purchase_date == null) {
+            this.property.purchase_date = BaseMethod.getCurrentDate();
+          }
+          if (this.property.production_date == null) {
+            this.property.production_date = BaseMethod.getCurrentDate();
+          }
           this.property.tracked_year = BaseMethod.getCurrentFullYear();
         }
       } catch (error) {
@@ -770,7 +986,8 @@ export default {
      *  Author: NVHThai (08/09/2022)
      */
     btnOpenShowComboboxDepartment() {
-      this.isShowmComboboxContentDepartment = !this.isShowmComboboxContentDepartment;
+      this.isShowmComboboxContentDepartment =
+        !this.isShowmComboboxContentDepartment;
     },
 
     /**
@@ -778,7 +995,8 @@ export default {
      *  Author: NVHThai (08/09/2022)
      */
     btnOpenShowComboboxAssetType() {
-      this.isShowmComboboxContentAssetType = !this.isShowmComboboxContentAssetType;
+      this.isShowmComboboxContentAssetType =
+        !this.isShowmComboboxContentAssetType;
     },
 
     /**
@@ -807,32 +1025,27 @@ export default {
      */
     handleInsertData() {
       try {
-        if (typeof this.property.cost == "number") {
-          this.property.cost = parseFloat(this.property.cost);
-        } else {
-          this.property.cost = parseFloat(this.property.cost.replace(/[^0-9]/g, ""));
+        if (
+          this.checkTitleForm == Enum.FormMode.Add ||
+          this.checkTitleForm == Enum.FormMode.Duplicate
+        ) {
+          this.property.budget = `[{"budget_id":"c96554d4-5222-11ed-840b-2047473a275d","budget_code":"B0001","budget_name":"Nguồn ngân sách tỉnh","mount":${this.property.cost}}]`;
         }
-        if (typeof this.property.quantity == "number") {
-          this.property.quantity = parseFloat(this.property.quantity);
-        } else {
-          this.property.quantity = parseFloat(this.property.quantity.replace(/[^0-9]/g, ""));
-        }
-        if (this.property.life_time != null) {
-          this.property.life_time = parseInt(this.property.life_time);
-        }
-        if (this.property.depreciation_rate != null) {
-          //xử lý , thành .
-          let arrayStrig = this.property.depreciation_rate.split(",");
-          this.property.depreciation_rate = arrayStrig[0] + "." + arrayStrig[1];
-          this.property.depreciation_rate = parseFloat(this.property.depreciation_rate);
-        }
-        if (typeof this.property.loss_year == "number") {
-          this.property.loss_year = parseFloat(this.property.loss_year);
-        } else {
-          this.property.loss_year = parseFloat(
-            this.property.loss_year.replace(/[^0-9]/g, "")
-          );
-        }
+        this.property.cost = BaseMethod.handleDataToNumberTypeFloat(
+          this.property.cost
+        );
+        this.property.quantity = BaseMethod.handleDataToNumberTypeFloat(
+          this.property.quantity
+        );
+        this.property.life_time = BaseMethod.handleDataToNumberTypeFloat(
+          this.property.life_time
+        );
+        this.property.loss_year = BaseMethod.handleDataToNumberTypeFloat(
+          this.property.loss_year
+        );
+        this.property.depreciation_rate = parseFloat(
+          this.property.depreciation_rate
+        );
       } catch (error) {
         console.log(error);
       }
@@ -845,10 +1058,18 @@ export default {
     fomartDataToString() {
       try {
         this.property.cost = BaseMethod.forMartDataToString(this.property.cost);
-        this.property.quantity = BaseMethod.forMartDataToString(this.property.quantity);
-        this.property.life_time = BaseMethod.forMartDataToString(this.property.life_time);
-        this.property.depreciation_rate = BaseMethod.forMartDataToString(this.property.depreciation_rate);
-        this.property.loss_year = BaseMethod.forMartDataToString(this.property.loss_year);
+        this.property.quantity = BaseMethod.forMartDataToString(
+          this.property.quantity
+        );
+        this.property.life_time = BaseMethod.forMartDataToString(
+          this.property.life_time
+        );
+        this.property.depreciation_rate = BaseMethod.forMartDataToString(
+          this.property.depreciation_rate
+        );
+        this.property.loss_year = BaseMethod.forMartDataToString(
+          this.property.loss_year
+        );
       } catch (error) {
         console.log(error);
       }
@@ -873,7 +1094,6 @@ export default {
         if (this.checkValidate == true) {
           switch (this.checkTitleForm) {
             case Enum.FormMode.Add:
-              this.validateDuplicateCode();
               if (this.checkValidate == true) {
                 this.handleInsertData();
                 this.validateDetail();
@@ -883,7 +1103,6 @@ export default {
               }
               break;
             case Enum.FormMode.Edit:
-              this.validateDuplicateCodeForEdit();
               if (this.checkValidate == true) {
                 this.handleInsertData();
                 this.validateDetail();
@@ -893,7 +1112,6 @@ export default {
               }
               break;
             case Enum.FormMode.Duplicate:
-              this.validateDuplicateCode();
               if (this.checkValidate == true) {
                 this.handleInsertData();
                 this.validateDetail();
@@ -925,7 +1143,10 @@ export default {
             this.isShowDialogToastValid = true;
             this.titleFormValid = Resource.TitleToast.TitleFormValidate;
           }
-        } else if (this.property.life_time == 0 && this.property.depreciation_rate != 0) {
+        } else if (
+          this.property.life_time == 0 &&
+          this.property.depreciation_rate != 0
+        ) {
           this.moreInfo.push(Resource.MessageValidate.DepreciationRateError);
           this.checkValidate = false;
           this.isShowDialogToastValid = true;
@@ -943,51 +1164,6 @@ export default {
     },
 
     /**
-     * Hàm validate mã tài sản xem có tồn tại không cho form thêm và nhân bản
-     * Author: NVHThai (02/10/2022)
-     */
-    validateDuplicateCode() {
-      try {
-        if (this.property.fixed_asset_code) {
-          var resultFind = this.propertyCodeList.find((code) =>
-            code.startsWith(this.property.fixed_asset_code)
-          );
-          if (resultFind) {
-            this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
-            this.checkValidate = false;
-            this.isShowDialogToastValid = true;
-            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
-     * Hàm validate mã tài sản xem có tồn tại không cho sửa
-     * Author: NVHThai (02/10/2022)
-     */
-    validateDuplicateCodeForEdit() {
-      try {
-        if (this.property.fixed_asset_code == this.propertyCodeSelected) {
-          this.checkValidate == true;
-        } else if (this.property.fixed_asset_code) {
-          var resultFind = this.propertyCodeList.find((code) =>
-            code.startsWith(this.property.fixed_asset_code)
-          );
-          if (resultFind) {
-            this.moreInfo.push(Resource.MessageValidate.AssetCodeDuplicate);
-            this.checkValidate = false;
-            this.isShowDialogToastValid = true;
-            this.titleFormValid = Resource.TitleToast.TitleFormValidate;
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    /**
      * Validate dữ liệu xem trường nào null hoặc rỗng, mã tài sản có trùng không
      * Author: NVHThai (28/09/2022)
      */
@@ -998,7 +1174,9 @@ export default {
           !BaseMethod.checkValidEmpty(this.property.fixed_asset_code) ||
           !BaseMethod.checkValidEmpty(this.property.fixed_asset_name) ||
           !BaseMethod.checkValidEmpty(this.property.department_code) ||
-          !BaseMethod.checkValidEmpty(this.property.fixed_asset_category_code) ||
+          !BaseMethod.checkValidEmpty(
+            this.property.fixed_asset_category_code
+          ) ||
           !BaseMethod.checkValidEmpty(this.property.quantity) ||
           !BaseMethod.checkValidEmpty(this.property.cost) ||
           !BaseMethod.checkValidEmpty(this.property.depreciation_rate) ||
@@ -1020,7 +1198,9 @@ export default {
         if (!BaseMethod.checkValidEmpty(this.property.department_code)) {
           this.moreInfo.push(Resource.MessageValidate.DepartmentCode);
         }
-        if (!BaseMethod.checkValidEmpty(this.property.fixed_asset_category_code)) {
+        if (
+          !BaseMethod.checkValidEmpty(this.property.fixed_asset_category_code)
+        ) {
           this.moreInfo.push(Resource.MessageValidate.AssetCategoryCode);
         }
         if (!BaseMethod.checkValidEmpty(this.property.quantity)) {
@@ -1067,12 +1247,13 @@ export default {
       //giá trị số lượng
       valueAmount: 0,
 
-      // 
+      //
       valueLossRate: 0,
 
-      //ngày hiện tại
-      productionDate: null,
-      purchaseDate: null,
+      //kiểu ngày tháng năm
+      elDateFormat: Resource.TextVi.Format.FormatDate,
+      elDateValueFormat: Resource.TextVi.Format.ValueFormatDate,
+
       //năm hiện tại
       curYear: null,
 
@@ -1101,8 +1282,6 @@ export default {
 
       checkLossYear: true,
 
-
-
       // Text sử dụng ở form detail
       textAssetCode: Resource.TextVi.Detail.AssetCode,
       textAssetName: Resource.TextVi.Detail.AssetName,
@@ -1125,6 +1304,8 @@ export default {
       textBClose: Resource.TextVi.Button.Close,
       textBSave: Resource.TextVi.Button.Save,
       textDDone: Resource.TitleToast.TitleFormDone,
+
+      disable: false,
     };
   },
 };
@@ -1132,4 +1313,5 @@ export default {
 
 <style scoped>
 @import url(../../css/details/propertydetail.css);
+@import url(../../css/common/customdatepicker.css);
 </style>

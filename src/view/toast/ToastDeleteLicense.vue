@@ -2,11 +2,8 @@
     <div class="m-toast-main">
         <div class="m-dialog-toast-attention-add">
             <div class="m-dialog-toast__attention-add">
-                <!-- <div v-if="" class="m-dialog-toast__attention--content m-icon-warning">
-                    <span>{{titleFormException}}</span>
-                </div> -->
                 <div class="m-dialog-toast__attention--content m-icon-warning">
-                    <span>{{titleFormException}}</span>
+                    Tài sản có mã <span>{{ToastMessageLicense}}</span> đã phát sinh chứng từ
                 </div>
                 <div class="m-dialog-toast__attention--btn">
                     <div class="ml-8 btn" tabindex="211" id="btnClose" @keydown="btnClose()" @click="btnClose()">{{textBtnClose}}</div>
@@ -19,8 +16,8 @@
 <script>
 import Resource from "@/lib/resource";
 export default {
-    name: "ToastMessageException",
-    props: ['titleFormException','code','name'],
+    name: "ToastMessageLicense",
+    props: ['ToastMessageLicense'],
     mounted() {
         /**
          * Focus vào btnClose khi mở form add

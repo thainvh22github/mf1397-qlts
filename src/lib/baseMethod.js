@@ -5,7 +5,10 @@
  * Author: NVHThai (10/10/2020)  
  */
 function checkValidEmpty(value) {
-    if (value == null || value.trim() == "") {
+    if (value == null) {
+        return false;
+    }
+    else if(value.trim() == ""){
         return false;
     }
     else {
@@ -35,9 +38,18 @@ function getCurrentDate() {
     let day = curDate.getDate();
     day = day < 10 ? `0${day}` : day;
     let month = curDate.getMonth() + 1;
-    month = month < 10 ? `0${month}` : day;
+    month = month < 10 ? `0${month}` : month;
     let fullYear = curDate.getFullYear();
-    return `${fullYear}-${month-1}-${day}`;
+    return `${fullYear}-${month}-${day}`;
+}
+
+function formartDate(dateSrc) {
+    let date = new Date(dateSrc),
+        year = date.getFullYear().toString(),
+        month = (date.getMonth() + 1).toString().padStart(2, '0'),
+        day = date.getDate().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year}`;
 }
 
 /**
@@ -73,7 +85,95 @@ function inputOnlyNumber(e) {
     return false;
 }
 
+/**
+ * Hàm sử lý dấu chấm thành dấu phẩy vd 6.67 thành 6,67
+ * Author: NVHThai (03/10/2022)
+ */
+function formartRate(number) {
+    try {
+        if (number != null) {
+            let arrayStrig = number.toString(10).split(".");
+            if (arrayStrig[1] != null) {
+                return arrayStrig[0] + "," + arrayStrig[1];
+            } else {
+                return arrayStrig[0];
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
+/**
+ * Hàm sử lý dấu phẩy thành dấu chấm vd 6,67 thành 6.67
+ * Author: NVHThai (03/10/2022)
+ */
+function formartRateToNumber(number) {
+    try {
+        if (number != null) {
+            let arrayStrig = number.toString(10).split(",");
+            if (arrayStrig[1] != null) {
+                return arrayStrig[0] + "." + arrayStrig[1];
+            } else {
+                return arrayStrig[0];
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+* Hàm formart số có dấu .
+* Author: NVHTHai (12/09/2022)
+* @param {int} number
+*/
+function formartNumber(number) {
+    try {
+        if (number && !isNaN(number)) {
+            return number.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+        } else {
+            return number;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+* Hàm formart chuỗi thành kiểu float
+* Author: NVHTHai (12/09/2022)
+* @param {float} numberFloat
+*/
+function handleDataToNumberTypeFloat(numberFloat) {
+    try {
+        if (typeof numberFloat == "number") {
+            return parseFloat(numberFloat);
+        } else {
+            return parseFloat(numberFloat.replace(/[^0-9]/g, ""));
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+* Hàm formart chuỗi thành kiểu int
+* Author: NVHTHai (12/09/2022)
+* @param {int} numberInt
+*/
+function handleDataToNumberTypeInt(numberInt) {
+    try {
+        if (typeof number == "number") {
+            return parseFloat(numberInt);
+        } else {
+            return parseFloat(numberInt.replace(/[^0-9]/g, ""));
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 export default {
-    checkValidEmpty, forMartDataToString, getCurrentDate, getCurrentFullYear, inputOnlyNumber,
+    checkValidEmpty, forMartDataToString, getCurrentDate, getCurrentFullYear, inputOnlyNumber, formartNumber, formartRate, formartRateToNumber,
+    handleDataToNumberTypeFloat, handleDataToNumberTypeInt,formartDate
 }

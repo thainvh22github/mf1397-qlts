@@ -97,6 +97,74 @@
         height: 18px;
     }
 
+    .info-user{
+        position: fixed;
+        width: 280px;
+        height: 380px;
+        background-color: #fff;
+        right: 24px;
+        top: 46px;
+        z-index: 10;
+        border-radius: 4px;
+        box-shadow: 2px 2px 4px 10px rgba(0, 0, 0, 0.046);
+
+        .info-user__title{
+            height: 50px;
+            width: 100%;
+            border-bottom: 1px solid #bbb;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span{
+                font-size: 16px;
+                font-weight: 700;
+            }
+        }
+
+        .info-user__header{
+            height: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            span{
+                margin-top: 20px;
+                color: #8c8c8c;
+                font-size: 14px;
+            }
+
+        }
+        .list-info{
+            height: 42px;
+            width: 100%;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .icon{
+                margin-left: 24px;
+            }
+            span{
+                margin-left: 16px;
+                color: #000;
+            }
+        }
+
+        .list-info:hover{
+            background-color: #dff2ff;
+        }
+        .line{
+            height: 1px;
+            width: 100%;
+            background-color: #bbb;
+        }
+
+        .list-access-QLTSV1{
+            margin-top: 8px;
+        }
+    }
+
 }
 
 .btn-dropdown {
@@ -115,3 +183,4 @@
         left: calc(50% - 3.5px);
     }
 }
+
