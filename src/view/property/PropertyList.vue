@@ -228,7 +228,6 @@
                 @blur="hideContextMenu()"
                 :class="[
                   { active: filterCheckbox(property.fixed_asset_id) },
-
                   { active: property.fixed_asset_id == tmpID },
                 ]"
                 v-for="(property, index) in propertys"
@@ -371,42 +370,15 @@
                     >&nbsp; {{ textRecord }}
                   </div>
 
-                  <div class="m-combobox" style="margin-left: 15px">
-                    <input
-                      type="text"
-                      class="combobox m-page"
-                      v-model="pageSize"
-                      readonly
-                    />
-                    <button
-                      class="btn_combobox"
-                      @click="showCBBClick()"
-                      @blur="hideContentCbbBlur"
+                  <el-select v-model="pageSize">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.pageSize"
+                      :value="item.pageSize"
+                      @click="pageSizeClick(pageSize)"
                     >
-                      <div class="m-icon-dropdown"></div>
-                    </button>
-                    <div
-                      class="m-combobox__content"
-                      style="
-                        bottom: 100%;
-                        height: 62px;
-                        font-size: 11px;
-                        margin-bottom: 2px;
-                      "
-                      v-show="isShowmComboboxPaging"
-                    >
-                      <div class="m-border">
-                        <span
-                          v-for="(pageSize, index) in listOptionPageSize"
-                          :key="index"
-                          class="m-option-cbb-paging"
-                          @mousedown="pageSizeClick(pageSize)"
-                        >
-                          {{ pageSize }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                    </el-option>
+                  </el-select>
 
                   <div class="m-table__bottom--pagenavi">
                     <el-tooltip
@@ -550,10 +522,6 @@
       />
 
       <ToastMessageDelete
-        :titleFormDelete="titleFormDelete"
-        :totalCountAsset="totalCountAsset"
-        :tmpPropertyCode="tmpPropertyCode"
-        :tmpPropertyName="tmpPropertyName"
         :checkboxList="checkboxList"
         :assetIDContextDelete="assetIDContextDelete"
         v-if="isDialogToastDelete"
@@ -743,6 +711,38 @@ export default {
             window.open(url);
             // lấy dữ liệu xong tắt trạng thái tải data
             this.isShowLoading = false;
+          })
+          .catch((response) => {
+            console.log("response: ", response.response.status);
+            me.handleException(
+              response.response.status,
+              response.response.data.moreInfo,
+              response.response.data.userMsg
+            );
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
+     * Hàm kiểm tra xem tài sản này thuộc chứng từ nào
+     * Author: NVHThai (03/11/2022)
+     */
+    checkActive(id, code) {
+      let me = this;
+      try {
+        // gọi api để lấy dữ liệu sử dụng axios
+        axios
+          .get(`https://localhost:44380/api/v1/Assets/check-active/${id}`)
+          .then((response) => {
+            me.$alert(
+              `<span class="text">Tài sản có mã <span style="font-weight: 700">${code}</span> đã phát sinh chứng từ ghi tăng có mã <span style="font-weight: 700">${response.data}</span></span>`,
+              {
+                confirmButtonText: "Đóng",
+                dangerouslyUseHTMLString: true,
+              }
+            );
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
@@ -960,26 +960,40 @@ export default {
         if (this.checkDataNotNull) {
           if (this.checkboxList.length == 1) {
             if (this.checkboxList[0].active == 1) {
-              this.isShowToastException = true;
-              this.code=this.checkboxList[0].fixed_asset_code;
-              this.text="đã phát sinh chứng từ";
-            } else {
-              this.totalCountAsset = 1;
-              this.isDialogToastDelete = true;
-              this.getNameProperty(
-                this.checkboxList[0].fixed_asset_code,
-                this.checkboxList[0].fixed_asset_name
+              this.checkActive(
+                this.checkboxList[0].fixed_asset_id,
+                this.checkboxList[0].fixed_asset_code
               );
-              this.titleFormDelete = Resource.TitleToast.titleFormDelete;
+            } else {
+              this.$alert(
+                `<span class="text">Bạn có muốn xóa tài sản <span style="font-weight: 700">${this.checkboxList[0].fixed_asset_code} - ${this.checkboxList[0].fixed_asset_name}?</span></span>`,
+                {
+                  confirmButtonText: "Xóa",
+                  showCancelButton: true,
+                  cancelButtonText: "Không",
+                  dangerouslyUseHTMLString: true,
+                }
+              ).then(() => {
+                this.isDialogToastDelete = true;
+              });
             }
           } else if (this.checkboxList.length == 0) {
-            this.totalCountAsset = 0;
-            this.isShowToastException = true;
-            this.titleFormException = Resource.TitleToast.DeleteException;
+            this.$alert("Vui lòng chọn tài sản để xóa", {
+              confirmButtonText: "Đóng",
+            });
           } else {
-            this.totalCountAsset = this.checkboxList.length;
-            this.isDialogToastDelete = true;
-            this.titleFormDelete = Resource.TitleToast.titleFormDeletes;
+            let count = this.checkboxList.length < 10 ? `0${this.checkboxList.length}` : this.checkboxList.length;
+            this.$alert(
+              `<span class="text"><span style="font-weight: 700">${count}</span> tài sản đã được chọn. Bạn có muốn xóa các tài sản này khỏi danh sách?</span>`,
+              {
+                confirmButtonText: "Xóa",
+                showCancelButton: true,
+                cancelButtonText: "Không",
+                dangerouslyUseHTMLString: true,
+              }
+            ).then(() => {
+              this.isDialogToastDelete = true;
+            });
           }
         }
       } catch (error) {
@@ -993,7 +1007,7 @@ export default {
      */
     deleteDataInCheckboxList() {
       try {
-        this.checkboxList.splice(0, 100);
+        this.checkboxList = [];
       } catch (error) {
         console.log(error);
       }
@@ -1113,7 +1127,7 @@ export default {
         this.checkboxList = [];
         if (this.selectAll) {
           for (let i in this.propertys) {
-            this.checkboxList.push(this.propertys[i].fixed_asset_id);
+            this.checkboxList.push(this.propertys[i]);
           }
         }
         this.selectAll = !this.selectAll;
@@ -1241,6 +1255,17 @@ export default {
   },
   data() {
     return {
+      options: [
+        {
+          pageSize: 10,
+        },
+        {
+          pageSize: 20,
+        },
+        {
+          pageSize: 50,
+        },
+      ],
       //kiểm tra xem context menu hay không
       checkContextMenu: false,
       //tổng số bản ghi đc chọn

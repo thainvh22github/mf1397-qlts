@@ -14,35 +14,6 @@
             Đăng nhập để làm việc với <span>MISA QLTS</span>
           </div>
 
-          <el-select
-            v-model="valueCity"
-            filterable
-            placeholder="Tỉnh/thành phố"
-            class="mt-24"
-          >
-            <el-option
-              v-for="item in optionValueCity"
-              :key="item.valueCity"
-              :label="item.label"
-              :value="item.valueCity"
-            >
-            </el-option>
-          </el-select>
-          <el-select
-            v-model="valuePosition"
-            filterable
-            placeholder="Đơn vị"
-            class="mt-16"
-          >
-            <el-option
-              v-for="item in optionValuePosition"
-              :key="item.valuePosition"
-              :label="item.label"
-              :value="item.valuePosition"
-            >
-            </el-option>
-          </el-select>
-
           <m-input
             v-model="userName"
             type="text"
@@ -89,6 +60,7 @@ export default {
   },
 
   updated() {
+    this.addEventListener();
     if (BaseMethod.checkValidEmpty(this.userName)) {
       this.bUserName = false;
     }
@@ -103,6 +75,23 @@ export default {
   },
 
   methods: {
+    /**
+     * Hàm lắng nghe sự kiện của bàn phím
+     * Author NVHThai(04/11/2022)
+     */
+     addEventListener() {
+      try {
+        let me = this;
+        document.addEventListener("keydown", function (event) {
+          if (event.code == "Enter") {
+            me.btnLogin();
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     changeShow() {
       if (BaseMethod.checkValidEmpty(this.passWord)) {
         this.typePassWord = "text";
@@ -173,21 +162,6 @@ export default {
       passWord: "",
       user: {},
       path: "/",
-      optionValueCity: [
-        {
-          valueCity: "Tỉnh demo",
-          label: "Tỉnh demo",
-        },
-      ],
-      valueCity: "",
-
-      optionValuePosition: [
-        {
-          valuePosition: "11 - Sở tài chính",
-          label: "11 - Sở tài chính",
-        },
-      ],
-      valuePosition: "",
       isShowErorr: false,
       bUserName: false,
       bPassWord: false,

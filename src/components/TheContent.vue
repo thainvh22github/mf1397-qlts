@@ -1,7 +1,5 @@
 <template>
   <div class="m-content-main">
-    <!-- <PropertyList /> -->
-    <!-- <WriteUpAssetList /> -->
     <router-view></router-view>
   </div>
 </template>

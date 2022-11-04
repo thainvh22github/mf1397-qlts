@@ -5,10 +5,13 @@
  * Author: NVHThai (10/10/2020)  
  */
 function checkValidEmpty(value) {
-    if (value == null) {
+    if(value == undefined){
         return false;
     }
-    else if(value.trim() == ""){
+    else if (value == null) {
+        return false;
+    }
+    else if(value == ""){
         return false;
     }
     else {

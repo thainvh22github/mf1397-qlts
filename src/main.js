@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import ElementPlus from 'element-plus';
 import vi from 'element-plus/es/locale/lang/vi'
-import { DatePicker } from 'ant-design-vue';
 import 'element-plus/dist/index.css';
 import 'ant-design-vue/dist/antd.css';
 import TheLogin from '../src/components/TheLogin.vue'
@@ -11,9 +10,9 @@ import WriteUpAsset from '../src/view/property/WriteUpAsset/WriteUpAssetList.vue
 import {createRouter, createWebHistory} from 'vue-router'
 import { VueSessionStorage } from 'vue-sessionstorage';
 
+import Antd from 'ant-design-vue';
 const app = createApp(App);
 
-app.use(DatePicker);
 app.use(ElementPlus, {
     locale: vi,
 })
@@ -29,7 +28,7 @@ const router = createRouter({
     routes
 })
   
-app.use(router).mount('#app');
+app.use(Antd).use(router).mount('#app');
 
 
 

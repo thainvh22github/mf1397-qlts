@@ -1,0 +1,110 @@
+.el-message-box {
+    width: 420px;
+    height: 180px;
+    position: relative;
+    color: #000;
+    .el-button{
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .16);
+        min-width: 100px;
+        height: 36px;
+        overflow: hidden;
+        padding: 0 13px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        margin: 0 5px 20px 0;
+        font-weight: 200 !important;
+        font-family: Roboto;
+        border: #B1B1B1 1px solid;
+
+    }
+    .el-button:hover {
+        border: #B1B1B1 1px solid;
+        background-color: #1AA4C8 !important;
+        color: #fff !important;
+    }
+
+    .el-button:focus {
+        border: #B1B1B1 1px solid;
+        background-color: #1AA4C8 !important;
+        color: #fff !important;
+    }
+
+    .el-button:active {
+        border: #B1B1B1 1px solid;
+        background-color: #1AA4C8 !important;
+        color: #fff;
+        outline: 3px solid #D1EDF4 !important;
+    }
+
+    .el-button--primary {
+        background-color: #1aa4c8;
+        border-radius: 3px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .16);
+        min-width: 100px;
+        height: 36px;
+        overflow: hidden;
+        padding: 0 13px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        margin: 0 5px 20px 0;
+        font-weight: 200 !important;
+        font-family: Roboto;
+    }
+
+    .el-button--primary:hover {
+        background-color: #0582A2;
+    }
+
+    .el-button--primary:active {
+        background-color: #1AA4C8;
+    }
+
+    .el-button--primary:focus {
+        background-color: #1aa4c8;
+        outline: #D1EDF4 3px solid;
+    }
+
+
+    .el-message-box__content {
+        margin-top: 20px;
+        background-image: url(../../assets/icon/icons8-error-48.png) !important;
+        background-size: 40px 40px;
+        background-repeat: no-repeat;
+        background-position: 20px center;
+    }
+
+    .el-message-box__message {}
+
+    .el-message-box__content p {
+        margin-left: 60px !important;
+    }
+
+    .el-message-box__btns {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .text{
+        color: #000;
+    }
+
+    p{
+        color: #000;
+
+    }
+}

@@ -55,17 +55,17 @@
             <span>{{ item[itemCode] }}</span>
           </el-tooltip>
         </div>
-
-        <div class="null" v-if="emptyList">
-          <div class="description">Không có dữ liệu</div>
-        </div>
       </div>
+    </div>
+    <div class="message">
+      <span v-show="checkDuplicate">Nguồn chi phí đã tồn tại!</span>
+      <span v-show="validateEmpty">Không được bỏ trống ô này!</span>
     </div>
   </div>
 </template>
   
   <script>
-  import axios from 'axios';
+import axios from "axios";
 export default {
   name: "MCombobox",
   props: [
@@ -80,20 +80,36 @@ export default {
     "css",
     "styleContent",
     "showValue",
-    "checkInputValidate",
+    "checkSaveCbb",
+    "tmpCheck",
+    "index",
+    "checkSaveValidate",
   ],
+  emits: ["onClose"],
 
-  created(){
+  created() {
     this.getDataCombobox();
   },
-  updated() {
-    /**
-     * Khi điền thông tin vào input thì sẽ hết border đỏ
-     * Author: NVHThai (21/09/2022)
-     */
-    // if (this.nameInputs) {
-    //   this.borderRed = false;
-    // }
+  watch: {
+    checkSaveCbb: function () {
+      this.$emit("changeTrue");
+      if (this.index > 0) {
+        for (let i = 0; i < this.index; i++) {
+          if (this.index != i) {
+            if (this.tmpCheck[this.index] == this.tmpCheck[i]) {
+              this.borderRed = true;
+              this.checkDuplicate = true;
+              this.$emit("changeFalse");
+            }
+          }
+        }
+      }
+      if (this.tmpCheck[this.index] == "") {
+        this.validateEmpty = true;
+        this.borderRed = true;
+      }
+      this.$parent.deleteArrTmpCheck();
+    },
   },
 
   methods: {
@@ -117,7 +133,6 @@ export default {
     //     this.nameInputs = this.nameInputs + " ";
     //   }
     // },
-
 
     // filterData(value) {
     //   this.keword = value;
@@ -154,7 +169,7 @@ export default {
       try {
         // gọi api để lấy dữ liệu sử dụng axios
         axios
-          .get("https://localhost:44380/api/v1/Fund")
+          .get("https://localhost:44380/api/v1/Budget")
           .then((response) => {
             me.items = response.data;
           })
@@ -188,12 +203,14 @@ export default {
       isShowmComboboxContent: false,
       nameInputs: null,
       nameInput: null,
-      borderRed: false,
       keword: "",
       focus: 0,
       tmpData: [],
       emptyList: false,
-      items:{}
+      items: {},
+      borderRed: false,
+      validateEmpty: false,
+      checkDuplicate:false
     };
   },
 };
@@ -222,12 +239,8 @@ export default {
   border: 1px solid #bbb;
 }
 
-.null {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.borderred {
+  border: red 1px solid;
 }
 </style>
   

@@ -149,7 +149,6 @@
               :itemName="ItemNameCategoryAsset"
               styleContent="height-150"
               :checkInputValidate="checkInputValidate"
-              
             >
             </m-combobox>
           </div>
@@ -254,7 +253,7 @@
               @input="changeValueLossYear()"
               maxlength="20"
               :class="{ input__disable: disable }"
-              :readonly="disable" 
+              :readonly="disable"
             ></m-input>
           </div>
         </div>
@@ -307,7 +306,6 @@
               v-model="property.tracked_year"
               readonly
               style="text-align: right"
-              
             >
             </m-input>
           </div>
@@ -332,7 +330,7 @@
                 @keydown.down="onclickStepLifeTime(1)"
                 @keydown="validateNumber($event)"
                 :class="{ input__disable: disable }"
-              :readonly="disable"
+                :readonly="disable"
               >
               </m-input>
               <div class="m-drop">
@@ -671,13 +669,13 @@ export default {
           .then((response) => {
             me.property = response.data;
 
-            if (me.property.active == 1) {
-              this.disable = true;
-            }
-
             // Lấy mã tài sản lớn nhất nếu là form nhân bản còn sửa thì không
             if (me.checkTitleForm == Enum.FormMode.Duplicate) {
               me.getApiPropertyMaxCode();
+              me.property.active = 0;
+            }
+            if (me.property.active == 1) {
+              this.disable = true;
             }
           })
           .catch((response) => {

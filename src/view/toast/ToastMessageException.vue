@@ -2,9 +2,6 @@
     <div class="m-toast-main">
         <div class="m-dialog-toast-attention-add">
             <div class="m-dialog-toast__attention-add">
-                <!-- <div v-if="" class="m-dialog-toast__attention--content m-icon-warning">
-                    <span>{{titleFormException}}</span>
-                </div> -->
                 <div class="m-dialog-toast__attention--content m-icon-warning">
                     <span>{{titleFormException}}</span>
                 </div>

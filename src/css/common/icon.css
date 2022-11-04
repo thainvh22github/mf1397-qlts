@@ -303,7 +303,12 @@
 	background-repeat: no-repeat;
 	background-position: center;
 }
-
+.m-icon-delete-red2{
+	background-image: url('../../assets/icon/img-delete-red.png');
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 .m-icon-3dot{
 	background-image: url('../../assets/icon/3cham.png');
 	background-size: 24px;

@@ -3,7 +3,7 @@
     <div class="select-form-detail">
       <div class="header">
         <span> Chọn tài sản ghi tăng </span>
-        <button class="m-icon-xdetail"></button>
+        <button class="m-icon-xdetail" @click="btnCloseForm"></button>
       </div>
       <div class="tool-bar">
         <input
@@ -11,9 +11,11 @@
           className="input input__icon m-icon-search-input input-serch-detail"
           v-model="keword"
           placeholder="Tìm kiếm theo mã, tên tài sản"
+          @keydown.enter="search()"
+          @keydown.delete="assetDefault()"
         />
       </div>
-      <div class="table">
+      <div class="table-select">
         <table>
           <thead>
             <tr>
@@ -30,26 +32,39 @@
                 </div>
 
                 <div class="ml-17">
-                  <span>STT</span>
+                  <el-tooltip
+                    :disabled="disabled"
+                    content="Số thứ tự"
+                    show-after="400"
+                    placement="top"
+                    effect="customized"
+                  >
+                    <span>STT</span>
+                  </el-tooltip>
                 </div>
               </th>
-
               <th style="width: 80px" class="text-left">Mã tài sản</th>
-
-              <th style="width: 120px" class="text-left">Tên tài sản</th>
-
-              <th style="width: 175px" class="text-left">Bộ phận sử dụng</th>
-
-              <th style="width: 140px" class="text-left">Nguyên giá</th>
-
-              <th style="width: 150px" class="text-rigth">Hao mòn năm</th>
-
-              <th style="width: 150px" class="text-rigth">Giá trị còn lại</th>
+              <th style="width: 400px" class="text-left">
+                <span class="ml-10">Tên tài sản</span>
+              </th>
+              <th style="width: 200px" class="text-left">
+                <span class="ml-10">Bộ phận sử dụng</span>
+              </th>
+              <th style="width: 130px" class="text-rigth">Nguyên giá</th>
+              <th style="width: 130px" class="text-rigth">Hao mòn năm</th>
+              <th style="width: 130px" class="text-rigth"><span class="pr-10">Giá trị còn lại</span></th>
             </tr>
           </thead>
-
           <tbody>
-            <tr v-for="(asset, index) in assetList" :key="asset.fixed_asset_id">
+            <tr
+              v-for="(asset, index) in assetList"
+              :key="asset.fixed_asset_id"
+              :class="[
+                { active: filterCheckbox(asset.fixed_asset_id) },
+                { active: asset.fixed_asset_id == tmpID },
+              ]"
+              @mousedown="selectedRow(asset.fixed_asset_id)"
+            >
               <td
                 style="width: 100px; height: 39px"
                 class="text-rigth m-boder-check"
@@ -65,18 +80,36 @@
                 <span class="ml-24 text-center">{{ index + 1 }}</span>
               </td>
               <td class="text-left">{{ asset.fixed_asset_code }}</td>
-              <td class="text-left">
-                <span>{{ asset.fixed_asset_name }}</span>
-              </td>
-              <td class="text-left">
-                <span>{{ asset.fixed_asset_category_name }}</span>
-              </td>
 
-              <td class="text-left">
-                <span>{{ asset.cost }}</span>
+              <td class="text-left ellipsis">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="asset.fixed_asset_name"
+                  show-after="400"
+                  placement="top"
+                  effect="customized"
+                >
+                  <span>{{ asset.fixed_asset_name }}</span>
+                </el-tooltip>
               </td>
-              <td class="text-rigth">{{ asset.loss_year }}</td>
-              <td class="text-rigth">{{ asset.cost - asset.loss_year }}</td>
+              <td class="text-left ellipsis">
+                <el-tooltip
+                  :disabled="disabled"
+                  :content="asset.department_name"
+                  show-after="400"
+                  placement="top"
+                  effect="customized"
+                >
+                  <span>{{ asset.department_name }}</span>
+                </el-tooltip>
+              </td>
+              <td class="text-rigth">
+                <span>{{ formartNumber(asset.cost) }}</span>
+              </td>
+              <td class="text-rigth">{{ formartNumber(asset.loss_year) }}</td>
+              <td class="text-rigth">
+                <span class="pr-10">{{ formartNumber(asset.cost - asset.loss_year) }}</span>
+              </td>
             </tr>
 
             <div></div>
@@ -151,7 +184,10 @@
                     <span>{{ endPageNumber }}</span>
                   </button>
 
-                  <button @click="pageNumberClick(pageNumber, textNext)" class="btn-pagenavi">
+                  <button
+                    @click="pageNumberClick(pageNumber, textNext)"
+                    class="btn-pagenavi"
+                  >
                     <div class="m-icon-next"></div>
                   </button>
                 </div>
@@ -164,6 +200,7 @@
             <td></td>
           </tfoot>
         </table>
+        
       </div>
       <div class="bottom">
         <button class="btn btn-close" @click="btnCloseForm">Hủy bỏ</button>
@@ -176,17 +213,25 @@
 <script>
 import axios from "axios";
 import Resource from "@/lib/resource";
+import BaseMethod from "@/lib/baseMethod";
 export default {
   name: "SelectUpAssetDetail",
-  props: ["assetListDetail"],
+  props: ["assetListDetail", "tmpAsset"],
   created() {
     this.getDataAsset();
   },
   watch: {
     assetListDetail: function (value) {
-      this.listAsset = value;
+      let me = this;
+      me.listAsset = value;
+      me.listAsset = me.listAsset.filter(function (element) {
+        return element != value;
+      });
     },
 
+    tmpAsset: function (value) {
+      this.assetList.unshift(value);
+    },
     /**
      * Hàm theo dõi pageNumber: nếu pageNumber thay đổi thì phải render lại dữ liệu trên table
      * Author: NVHTHai (19/09/2022)
@@ -249,11 +294,61 @@ export default {
   },
   methods: {
     /**
+     * Hàm dùng để click vào chek box tổng thì all check box đều checked
+     *  Author: NVHThai (09/09/2022)
+     */
+     selectAllOnClick() {
+      try {
+        this.listAsset = [];
+        if (this.selectAll) {
+          for (let i of this.assetList) {
+            this.listAsset.push(i);
+          }
+        }
+        this.selectAll = !this.selectAll;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
+     * Hàm khi xóa hết dữ liệu thanh tìm kiếm thì tải lại trang
+     * NVHThai (04/11/2022)
+     */
+    assetDefault(){
+      if(this.keword == ""){
+        this.getDataAsset();
+      }
+    },
+    /**
+     * Hàm tìm kiếm tài sản
+     * Author: NVHThai (04/11/2022)
+     */
+    search(){
+      this.getDataAsset();
+    },
+    /**
+     * Hàm formart số
+     * Author: NVHTHai (12/09/2022)
+     * @param {int} number
+     */
+    formartNumber(number) {
+      return BaseMethod.formartNumber(number);
+    },
+
+    /**
      * Hàm lưu asset đã chọn
      */
     btnSaveForm() {
-      this.$parent.btnHideAsset();
-      this.$parent.getAssetData(this.listAsset);
+      let me = this;
+      me.$parent.btnHideAsset();
+      me.$parent.getAssetData(this.listAsset);
+
+      for (let i = 0; i < me.listAsset.length; i++) {
+        me.assetList = me.assetList.filter(function (element) {
+          return element != me.listAsset[i];
+        });
+      }
     },
 
     /**
@@ -332,6 +427,26 @@ export default {
     },
 
     /**
+     * kiểm tra xem id vừa chọn có ở trong mảng không, id là id của tài sản sau đó tr có brc
+     * Nếu là false thì id không còn trong bảng
+     * Nếu là true thì id có trong bảng giống id vừa được chọn
+     * Author: NVHTHai (12/09/2022)
+     * @param {id} guid
+     */
+    filterCheckbox(id) {
+      try {
+        for (let idcheck of this.listAsset) {
+          if (idcheck.fixed_asset_id == id) {
+            return true;
+          }
+        }
+        return false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
      * Hàm nhập giá trị vào cbb paging để có số tài sản trong 1 trang
      * Author: NVHTHai (19/09/2022)
      *@param {int} pageSize
@@ -347,6 +462,15 @@ export default {
     },
     changePageSize(pageSize) {
       this.pageSize = pageSize;
+    },
+
+    /**
+     * Hàm khi click vào tr trong bảng thì tr có backgroud
+     * Author: NVHThai (24/09/2022)
+     * @param {guid} value : id của tài sản
+     */
+    selectedRow(value) {
+      this.tmpID = value;
     },
   },
 
@@ -379,7 +503,7 @@ export default {
       page: 2,
       textNext: Resource.TextVi.Tooltip.Next,
       textPrev: Resource.TextVi.Tooltip.Prev,
-
+      tmpID: null, selectAll:true
     };
   },
 };
