@@ -361,3 +361,12 @@
 	background-repeat: no-repeat;
 	background-position: center;
 }
+
+.m-hover-menu{
+	background: url('../../assets/icon/Icon-qlts.png') no-repeat -1081px -72px;
+	width: 15px;
+	height: 9px;
+	position: absolute;
+	left: 15%;
+	opacity: 0;
+}

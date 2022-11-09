@@ -228,10 +228,24 @@
               @keydown="validateNumber($event)"
               :checkInputValidate="checkInputValidate"
               maxlength="25"
-              :class="{ input__disable: disable }"
-              :readonly="disable"
+              :class="[
+                { input__disable: disable },
+                { input__disable: disableEdit },
+              ]"
+              :readonly="disable1"
             >
             </m-input>
+            <el-tooltip
+              content="Sửa nguồn hình thành nguyên giá"
+              placement="top"
+              effect="customized"
+            >
+              <div
+                class="m-icon-edit edit"
+                v-show="disableEdit"
+                @click="EditBudget"
+              ></div>
+            </el-tooltip>
           </div>
 
           <div
@@ -392,6 +406,12 @@
       v-show="isShowDialogToastException"
       :titleFormException="titleFormException"
     />
+    <EditUpdateAssetDetail
+      v-if="isShowEdit"
+      :assetDetailID="assetDetailID"
+      :assetValue="assetValue"
+      :checkProperty="checkProperty"
+    />
   </div>
 </template>
 
@@ -407,6 +427,7 @@ import MCombobox from "@/base/combobox/MCombobox.vue";
 import { ElNotification } from "element-plus";
 import ToastMessageValid from "../toast/ToastMessageValid.vue";
 import ToastMessageException from "../toast/ToastMessageException.vue";
+import EditUpdateAssetDetail from "./WriteUpAsset/EditUpdateAssetDetail.vue";
 export default {
   name: "PropertyDetail",
   components: {
@@ -416,6 +437,7 @@ export default {
     MCombobox,
     ToastMessageValid,
     ToastMessageException,
+    EditUpdateAssetDetail,
   },
 
   props: [
@@ -476,6 +498,35 @@ export default {
   },
 
   methods: {
+    /**
+     * Thay đổi giá trị nguyên giá và nguồn
+     * @param {decimal} valueCost: Giá trị nguyên giá
+     * @param {*} budget : Giá trị nguồn hình thành
+     * Author: NVHThai (09/11/2022)
+     */
+    changCost(valueCost, budget) {
+      this.property.cost = valueCost;
+      this.property.budget = budget;
+    },
+
+    /**
+     * Ẩn form sửa nguồn hình thành
+     * Author: NVHThai (09/11/2022)
+     */
+    btnHideEditAsset() {
+      this.isShowEdit = false;
+    },
+
+    /**
+     * Hiện form sửa nguồn hình thành
+     * Author: NVHThai (09/11/2022)
+     */
+    EditBudget() {
+      this.assetDetailID = this.propertyIDSelected;
+      this.isShowEdit = true;
+      this.checkProperty = true;
+    },
+
     /**
      * Hàm để khi hết trang thêm thì focus qoay lại
      * Author: NVHThai (03/10/2022)
@@ -668,7 +719,6 @@ export default {
           .get(`${Resource.Url.Asset}/${propertyID}`)
           .then((response) => {
             me.property = response.data;
-
             // Lấy mã tài sản lớn nhất nếu là form nhân bản còn sửa thì không
             if (me.checkTitleForm == Enum.FormMode.Duplicate) {
               me.getApiPropertyMaxCode();
@@ -676,6 +726,11 @@ export default {
             }
             if (me.property.active == 1) {
               this.disable = true;
+              this.disable1 = true;
+            }
+            if (me.checkTitleForm == Enum.FormMode.Edit) {
+              this.disableEdit = true;
+              this.disable1 = true;
             }
           })
           .catch((response) => {
@@ -1304,6 +1359,11 @@ export default {
       textDDone: Resource.TitleToast.TitleFormDone,
 
       disable: false,
+      disableEdit: false,
+      disable1: false,
+      assetDetailID: null,
+      isShowEdit: false,
+      checkProperty: null,
     };
   },
 };
@@ -1312,4 +1372,14 @@ export default {
 <style scoped>
 @import url(../../css/details/propertydetail.css);
 @import url(../../css/common/customdatepicker.css);
+
+.edit {
+  position: absolute;
+  bottom: 3px;
+  left: 15px;
+  cursor: pointer;
+}
+.m-cost {
+  position: relative;
+}
 </style>

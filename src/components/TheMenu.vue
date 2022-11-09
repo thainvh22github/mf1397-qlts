@@ -59,14 +59,16 @@
         </span>
       </router-link>
       <div v-show="isShowDetailAssetMenu" class="m-asset-menu-detail">
-        <router-link class="m-option-menu-detail" to="/up-asset-list"><span style="color: #fff;">Ghi tăng</span></router-link>
-        <div class="m-option-menu-detail"><span>Thay đổi thông tin</span></div>
-        <div class="m-option-menu-detail"><span>Đánh giá lại</span></div>
-        <div class="m-option-menu-detail"><span>Tính hao mòn</span></div>
-        <div class="m-option-menu-detail"><span>Điều chuyển tài sản</span></div>
-        <div class="m-option-menu-detail"><span>Ghi giảm</span></div>
-        <div class="m-option-menu-detail"><span>Kiểm kê</span></div>
-        <div class="m-option-menu-detail"><span>Khác</span></div>
+        <router-link class="m-option-menu-detail" to="/up-asset-list"><div class="m-hover-menu"></div><span style="color: #fff;">Ghi tăng</span></router-link>
+        <div class="m-option-menu-detail">
+          <div class="m-hover-menu"></div>
+          <span>Thay đổi thông tin</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Đánh giá lại</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Tính hao mòn</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Điều chuyển tài sản</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Ghi giảm</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Kiểm kê</span></div>
+        <div class="m-option-menu-detail"><div class="m-hover-menu"></div><span>Khác</span></div>
       </div>
 
       <div

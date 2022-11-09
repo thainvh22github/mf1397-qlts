@@ -1,5 +1,5 @@
 <template>
-  <div class="m-login m-image-background-login">
+  <div class="m-login m-image-background-login" @keydown.enter="btnLogin">
     <div class="form-login">
       <div class="message" v-show="isShowErorr">
         {{ text }}
@@ -15,7 +15,7 @@
           </div>
 
           <m-input
-            v-model="userName"
+            v-model="user.userName"
             type="text"
             className="mt-16 w-100 height-44 user-name"
             :placeholder="playhoderUserName"
@@ -23,11 +23,10 @@
           ></m-input>
           <div class="input-password">
             <m-input
-              v-model="passWord"
+              v-model="user.password"
               :type="typePassWord"
               className="mt-16 w-100 height-44 pass-word"
               :placeholder="playhoderPassWord"
-              @keydown.enter="checkUser"
               :class="{ borders: bPassWord }"
             ></m-input>
             <div
@@ -60,11 +59,10 @@ export default {
   },
 
   updated() {
-    this.addEventListener();
-    if (BaseMethod.checkValidEmpty(this.userName)) {
+    if (BaseMethod.checkValidEmpty(this.user.userName)) {
       this.bUserName = false;
     }
-    if (BaseMethod.checkValidEmpty(this.passWord)) {
+    if (BaseMethod.checkValidEmpty(this.user.password)) {
       this.bPassWord = false;
     }
     if (this.isShowErorr) {
@@ -75,25 +73,8 @@ export default {
   },
 
   methods: {
-    /**
-     * Hàm lắng nghe sự kiện của bàn phím
-     * Author NVHThai(04/11/2022)
-     */
-     addEventListener() {
-      try {
-        let me = this;
-        document.addEventListener("keydown", function (event) {
-          if (event.code == "Enter") {
-            me.btnLogin();
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     changeShow() {
-      if (BaseMethod.checkValidEmpty(this.passWord)) {
+      if (BaseMethod.checkValidEmpty(this.user.password)) {
         this.typePassWord = "text";
         this.checkType = false;
       }
@@ -109,17 +90,18 @@ export default {
      * Author: NVHThai (18/10/2022)
      */
     btnLogin() {
+      this.user.userId = "";
       if (
-        !BaseMethod.checkValidEmpty(this.userName) ||
-        !BaseMethod.checkValidEmpty(this.passWord)
+        !BaseMethod.checkValidEmpty(this.user.userName) ||
+        !BaseMethod.checkValidEmpty(this.user.password)
       ) {
         this.isShowErorr = true;
         this.text = "Vui lòng nhập đầy đủ thông tin đăng nhập";
 
-        if (!BaseMethod.checkValidEmpty(this.userName)) {
+        if (!BaseMethod.checkValidEmpty(this.user.userName)) {
           this.bUserName = true;
         }
-        if (!BaseMethod.checkValidEmpty(this.passWord)) {
+        if (!BaseMethod.checkValidEmpty(this.user.password)) {
           this.bPassWord = true;
         }
       } else {
@@ -133,23 +115,23 @@ export default {
      */
     checkUser() {
       let me = this;
-      me.user.userId = "";
-      me.user.userName = me.userName;
-      me.user.password = me.passWord;
       me.isShowLoading = true;
       try {
         axios
           .post("https://localhost:44380/api/User", me.user)
           .then((response) => {
             me.isShowLoading = false;
-            me.$router.push("/property-list");
-            sessionStorage.setItem("checkSesstion", response.data.userName);
+            console.log(response);
+            sessionStorage.setItem("session",me.user.password);
+            me.$router.push('property-list');
           })
           .catch(() => {
             this.isShowErorr = true;
+            me.isShowLoading = false;
             this.text = "Tên tài khoản hoặc mật khẩu không đúng";
           });
       } catch (error) {
+        me.isShowLoading = false;
         console.log(error);
       }
     },

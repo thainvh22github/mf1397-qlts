@@ -185,7 +185,6 @@ export default {
     onClickCbb(ID, code, name, depreciationRate, lifeTime) {
       this.isShowmComboboxContent = false;
       this.nameInputs = code;
-
       try {
         this.$emit(`update:${this.itemID}`, ID);
         this.$emit(`update:${this.itemCode}`, code);
@@ -199,6 +198,7 @@ export default {
         console.log(error);
       }
     },
+    
     /**
      * Hàm click vào thì nội dung cbx hiện ra
      *  Author: NVHThai (08/09/2022)

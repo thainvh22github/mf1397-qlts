@@ -3,7 +3,12 @@
     <div class="select-form-detail">
       <div class="header">
         <span> Chọn tài sản ghi tăng </span>
+        <el-tooltip
+          content="Đóng"
+          effect="customized"
+        >
         <button class="m-icon-xdetail" @click="btnCloseForm"></button>
+        </el-tooltip>
       </div>
       <div class="tool-bar">
         <input
@@ -417,6 +422,13 @@ export default {
             me.totalQuantity = response.data.quantity;
             // lấy dữ liệu xong tắt trạng thái tải data
             this.isShowLoading = false;
+
+            if(me.totalCount == 0){
+              me.emptyTable = true;
+            }
+            else{
+              me.emptyTable = false;
+            }
           })
           .catch((response) => {
             console.log("response: ", response.response.status);
@@ -503,7 +515,7 @@ export default {
       page: 2,
       textNext: Resource.TextVi.Tooltip.Next,
       textPrev: Resource.TextVi.Tooltip.Prev,
-      tmpID: null, selectAll:true
+      tmpID: null, selectAll:true,emptyTable:false,
     };
   },
 };

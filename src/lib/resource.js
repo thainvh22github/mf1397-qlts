@@ -46,8 +46,8 @@ export default {
     },
 
     Url:{
-        Department:"https://localhost:44380/api/v1/Department/FillterCodeOrName",
-        CategoryAsset:"https://localhost:44380/api/v1/AssetCategory/FillterCodeOrName",
+        Department:"https://localhost:44380/api/v1/Department/FillterDepartment",
+        CategoryAsset:"https://localhost:44380/api/v1/AssetCategory/FillterAssetCategoty",
         Asset:"https://localhost:44380/api/v1/Assets",
         NewCode:"https://localhost:44380/api/v1/Assets/new-code",
         Deletes:"https://localhost:44380/api/v1/Assets/batch-delete"

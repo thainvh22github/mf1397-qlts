@@ -3,7 +3,9 @@
     <div class="edit-form-detail">
       <div class="header">
         <span> Sửa tài sản {{ asset.fixed_asset_name }} </span>
-        <button class="m-icon-xdetail"></button>
+        <el-tooltip content="Đóng" effect="customized">
+          <button class="m-icon-xdetail"></button>
+        </el-tooltip>
       </div>
       <div class="content">
         <div class="content__header">
@@ -56,7 +58,6 @@
                     :checkSaveCbb="checkSaveCbb"
                   >
                   </v-input>
-                  
                 </div>
                 <div class="icon" @click="addBudget">
                   <div class="m-icon-plus"></div>
@@ -75,10 +76,11 @@
         <div class="content__bottom">
           <input
             type="text"
-            className="input mt-8 w-60"
+            className="input mt-8"
             maxlength="255"
             value="Tổng"
             readonly
+            style="width: 240px"
           />
           <v-input
             type="text"
@@ -87,6 +89,7 @@
             v-model="asset.cost"
             :value="formartNumber(asset.cost)"
             readonly
+            style="width: 140px; margin-right: 65px"
           />
         </div>
       </div>
@@ -111,7 +114,7 @@ import Resource from "@/lib/resource";
 import VCombobox from "@/base/combobox/VCombobox.vue";
 import VInput from "@/base/input/VInput.vue";
 import { ElNotification } from "element-plus";
-import BaseMethod from '@/lib/baseMethod';
+import BaseMethod from "@/lib/baseMethod";
 
 export default {
   name: "EditUpdateAssetDetail",
@@ -120,7 +123,7 @@ export default {
     VCombobox,
     VInput,
   },
-  props: ["assetDetailID", "assetValue"],
+  props: ["assetDetailID", "assetValue", "checkProperty"],
 
   mounted() {
     this.getApiPropertyByID(this.assetDetailID);
@@ -135,18 +138,20 @@ export default {
 
     let sum = 0;
     for (let i of this.assetFund) {
-      sum = sum + BaseMethod.handleDataToNumberTypeFloat(i.mount);
+      if (i.mount != "") {
+        sum = sum + BaseMethod.handleDataToNumberTypeFloat(i.mount);
+      }
     }
     this.asset.cost = sum;
   },
 
   methods: {
-     /**
+    /**
      * Hàm formart số
      * Author: NVHTHai (12/09/2022)
      * @param {int} number
      */
-     formartNumber(number) {
+    formartNumber(number) {
       return BaseMethod.formartNumber(number);
     },
 
@@ -156,11 +161,9 @@ export default {
      */
     validateEmply() {
       this.checkSaveCbb = !this.checkSaveCbb;
-
       for (let i of this.assetFund) {
         this.tmpCheck.push(i.budget_code);
       }
-
       if (this.fund.mount == "") {
         this.checkSave == false;
       }
@@ -205,7 +208,7 @@ export default {
         budget_id: "",
         budget_code: "",
         budget_name: "",
-        mount: "0",
+        mount: "",
       };
     },
     /**
@@ -218,6 +221,7 @@ export default {
         this.putApiProperty();
       }
     },
+
     /**
      * Hàm đóng form sửa nguồn tiền
      */
@@ -238,19 +242,25 @@ export default {
           .put(`${Resource.Url.Asset}/${me.assetDetailID}`, me.asset)
           .then((response) => {
             if (response.status == 200) {
-              this.$parent.btnHideEditAsset();
-              this.$parent.getDataLicenseDetailByID();
+              me.$parent.btnHideEditAsset();
+              if (this.checkProperty) {
+                this.$parent.changCost(me.asset.cost,me.asset.budget);
+              } else {
+                this.$parent.getDataLicenseDetailByID();
+                this.$parent.btnDeleteAssetOfList(me.assetValue);
+                this.$parent.addAssetForAssetListDetail(me.asset);
+              }
               // hiện thông báo thêm thành công
               ElNotification({
                 duration: 1500,
-                message: `${this.textDDone}`,
+                message: `${me.textDDone}`,
                 position: "bottom-right",
                 type: "success",
               });
             }
           })
           .catch((response) => {
-            console.log("response: ", response.response.status);
+            console.log("response: ", response);
           });
       } catch (error) {
         console.log(error);
@@ -314,7 +324,7 @@ export default {
         budget_id: "",
         budget_code: "",
         budget_name: "",
-        mount: "0",
+        mount: "",
       },
       isShowMinusBudget: true,
       borderRed: false,

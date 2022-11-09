@@ -154,7 +154,11 @@
 }
 
 .router-link-active {
-    background-color: #1aa4c8;
+    background-color: #48586c;
+    opacity: 1 !important;
+    
+}
+.router-link-active .m-hover-menu{
     opacity: 1 !important;
 }
 

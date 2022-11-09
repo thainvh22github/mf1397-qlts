@@ -9,7 +9,7 @@
           @click="showOptionLayout"
           @blur="hideOptionLayout"
         >
-          <div class="m-icon-asset-up ml-10" v-if="zoom"></div>
+          <div class="m-icon-asset-up ml-10" v-if="layout"></div>
           <div class="m-icon-asset-ngang ml-10" v-else></div>
           <div class="m-icon-asset-up-dropdown ml-10"></div>
         </button>
@@ -32,7 +32,6 @@
         placeholder="Tìm kiếm theo số chứng từ, nội dung"
         v-model="keword"
         @keydown.enter="searchLicense()"
-        @keydown.delete="loadDataLicense()"
       >
       </m-input>
 
@@ -52,28 +51,21 @@
         <button class="btn__toolbar m-icon-3dot"></button>
       </div>
     </div>
-
     <div class="table1" :style="sizeLicenseList" v-show="zoom">
       <div class="table-up-asset-list">
         <table>
           <thead>
             <tr>
-              <th
-                style="height: 37px; width: 85px"
-                class="text-rigth m-boder-check"
-              >
-                <div class="m-check">
-                  <input
-                    class="m-checkbox"
-                    type="checkbox"
-                    @click="selectAllOnClick()"
-                  />
-                </div>
-                <div class="ml-17">
-                  <el-tooltip content="Số thứ tự" effect="customized">
-                    <span>STT</span>
-                  </el-tooltip>
-                </div>
+              <th style="width: 30px" class="text-center">
+                <el-checkbox
+                  v-model="checked"
+                  @click.prevent="selectAllOnClick()"
+                ></el-checkbox>
+              </th>
+              <th style="width: 85px" class="text-center">
+                <el-tooltip content="Số thứ tự" effect="customized">
+                  <span>STT</span>
+                </el-tooltip>
               </th>
               <th style="width: 120px" class="text-left">Số chứng từ</th>
               <th style="width: 200px" class="text-center">Ngày chứng từ</th>
@@ -96,19 +88,16 @@
                 { active: license.licenseID == tmpID },
               ]"
             >
-              <td
-                style="width: 100px; height: 39px"
-                class="text-rigth m-boder-check"
-              >
-                <div class="m-check">
-                  <input
-                    class="m-checkbox"
-                    type="checkbox"
-                    :value="license.licenseID"
-                    v-model="licenseListID"
-                  />
-                </div>
-                <span class="ml-24 text-center">{{ index + 1 }}</span>
+              <td class="text-center">
+                <input
+                  class="m-checkbox"
+                  type="checkbox"
+                  :value="license.licenseID"
+                  v-model="licenseListID"
+                />
+              </td>
+              <td class="text-center">
+                {{ index + 1 }}
               </td>
               <td class="text-left">
                 <span
@@ -148,8 +137,13 @@
             </tr>
             <div></div>
           </tbody>
+          <tbody v-if="emptyTable">
+            <tr>
+              <td colspan="10" class="text-center">Không có dữ liệu</td>
+            </tr>
+          </tbody>
           <tfoot>
-            <td colspan="5" class="text-rigth">{{ formartNumber(sumCost) }}</td>
+            <td colspan="6" class="text-rigth">{{ formartNumber(sumCost) }}</td>
             <td></td>
             <td></td>
           </tfoot>
@@ -178,10 +172,8 @@
         </div>
       </div>
     </div>
-
     <div class="change-size" id="change" @mousedown="changSize()"></div>
-
-    <div class="table-up-asset-detail" :style="sizeLicenseDetail">
+    <div class="table-up-asset-detail" :style="sizeLicenseDetail" v-show="layout">
       <div class="header-detail">
         <span>Thông tin tài sản</span>
 
@@ -209,15 +201,10 @@
                   <span>STT</span>
                 </el-tooltip>
               </th>
-
               <th style="width: 120px" class="text-left">Mã tài sản</th>
-
               <th style="width: 400px" class="text-left">Tên tài sản</th>
-
               <th style="width: 200px" class="text-left">Bộ phận sử dụng</th>
-
               <th style="width: 140px" class="text-rigth">Nguyên giá</th>
-
               <th style="width: 175px" class="text-rigth">Hao mòn năm</th>
               <th style="width: 175px; padding-right: 25px" class="text-rigth">
                 Giá trị còn lại
@@ -311,7 +298,7 @@ export default {
   },
 
   created() {
-    if (sessionStorage.getItem("checkSesstion") == null) {
+    if (!sessionStorage.getItem("session")) {
       this.$router.push("/");
     }
   },
@@ -327,6 +314,7 @@ export default {
       } else {
         this.isShowDeleteMutil = false;
       }
+      
     },
 
     current1: function (value) {
@@ -346,13 +334,16 @@ export default {
      */
     selectAllOnClick() {
       try {
-        this.licenseListID = [];
-        if (this.selectAll) {
+        if (this.checked == false) {
+          this.licenseListID = [];
           for (let i of this.licenseList) {
             this.licenseListID.push(i.licenseID);
           }
         }
-        this.selectAll = !this.selectAll;
+        else{
+          this.licenseListID = [];
+        }
+        this.checked = !this.checked;
       } catch (error) {
         console.log(error);
       }
@@ -396,8 +387,9 @@ export default {
      * Hàm thay đổi bố cục trang thành ngang
      */
     layoutFirst() {
-      this.zoom = false;
-      this.sizeLicenseDetail = `height: calc(100% - 80px)`;
+      this.layout = false;
+      this.zoom = true;
+      this.sizeLicenseList = `height: calc(100% - 150px);`;
       this.ishowOptionLayout = false;
     },
 
@@ -405,8 +397,8 @@ export default {
      * Hàm thay đổi bố cục trang thành dọc
      */
     layoutSecond() {
-      this.zoom = true;
-      this.sizeLicenseDetail = `height: calc(100% - 400px)`;
+      this.layout = true;
+      this.sizeLicenseList = `height: 250px`;
       this.ishowOptionLayout = false;
     },
 
@@ -432,7 +424,7 @@ export default {
       if (this.zoom == false) {
         this.sizeLicenseDetail = `height: calc(100% - 80px)`;
       } else {
-        this.sizeLicenseDetail = `calc(100% - 400px)`;
+        this.sizeLicenseDetail = `height: calc(100% - 400px)`;
       }
     },
 
@@ -451,14 +443,6 @@ export default {
       function mouseup() {
         window.removeEventListener("mousemove", mousemove);
         window.removeEventListener("mouseup", mouseup);
-      }
-    },
-    /**
-     * Hàm tải lại trang khi keword tìm kiếm trống
-     */
-    loadDataLicense() {
-      if (this.keword == "") {
-        this.getDataLicense();
       }
     },
 
@@ -566,8 +550,15 @@ export default {
             me.totalCount = response.data.totalCount;
             me.sumCost = response.data.cost;
 
-            me.licenseID = me.licenseList[0].licenseID;
-            me.getDataLicenseDetailByID();
+            if (me.licenseList.length > 0) {
+              me.licenseID = me.licenseList[0].licenseID;
+              me.getDataLicenseDetailByID();
+              me.tmpID = me.licenseList[0].licenseID;
+              me.emptyTable = false;
+            } else {
+              me.emptyTable = true;
+              me.licenseDetailList = {};
+            }
 
             if (me.totalCount % me.limit == 0) {
               me.total = Math.floor(me.totalCount / me.limit) * 10;
@@ -591,19 +582,12 @@ export default {
      */
     getDataLicenseDetailByID() {
       let me = this;
-      me.isShowLoading = true;
-
       try {
         // gọi api để lấy dữ liệu sử dụng axios
         axios
           .get(`https://localhost:44380/api/License/list-asset/${me.licenseID}`)
           .then((response) => {
             me.licenseDetailList = response.data;
-
-            //tắt trạng thái chờ
-            setTimeout(() => {
-              me.isShowLoading = false;
-            }, 200);
           })
           .catch((response) => {
             console.log("erorr: ", response);
@@ -621,6 +605,8 @@ export default {
     selectedRow(value) {
       this.tmpID = value;
     },
+
+    
 
     /**
      * Hàm định dạng ngày tháng
@@ -656,6 +642,7 @@ export default {
       sizeLicenseList: "height: 250px",
       sizeLicenseDetail: "height: calc(100% - 400px)",
       zoom: true,
+      layout:true,
       ishowOptionLayout: false,
       licenseListID: [],
       isShowDeleteMutil: false,
@@ -665,6 +652,8 @@ export default {
       pageSize: 1,
       total: null,
       selectAll: true,
+      emptyTable: false,
+      checked: false,
     };
   },
 };

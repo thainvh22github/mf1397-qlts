@@ -25,7 +25,6 @@
           :itemCode="ItemNameCategoryAsset"
         >
         </m-combobox>
-
         <m-combobox
           css="ml-11"
           type="text"
@@ -41,7 +40,6 @@
 
       <div class="m-toolbar__btn">
         <el-tooltip
-          :disabled="disabled"
           :content="textTolltipBtnAdd"
           placement="top"
           show-after="400"
@@ -567,8 +565,8 @@ export default {
   },
 
   created() {
-    if (sessionStorage.getItem("checkSesstion") == null) {
-      this.$router.push("/");
+    if(!sessionStorage.getItem("session")){
+      this.$router.push('/');
     }
   },
   mounted() {
@@ -982,7 +980,10 @@ export default {
               confirmButtonText: "Đóng",
             });
           } else {
-            let count = this.checkboxList.length < 10 ? `0${this.checkboxList.length}` : this.checkboxList.length;
+            let count =
+              this.checkboxList.length < 10
+                ? `0${this.checkboxList.length}`
+                : this.checkboxList.length;
             this.$alert(
               `<span class="text"><span style="font-weight: 700">${count}</span> tài sản đã được chọn. Bạn có muốn xóa các tài sản này khỏi danh sách?</span>`,
               {
@@ -1039,8 +1040,8 @@ export default {
             me.propertys = response.data.data;
             me.totalCount = response.data.totalCount;
             me.totalCost = response.data.cost;
-            me.totalLoss = response.data.loss;
-            me.totalQuantity = response.data.quantity;
+            me.totalLoss = Math.floor(response.data.loss);
+            me.totalQuantity = Math.floor(response.data.quantity);
 
             if (me.totalCount == 0) {
               this.disableBtn = true;

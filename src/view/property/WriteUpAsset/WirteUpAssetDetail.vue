@@ -3,7 +3,12 @@
     <div class="m-detail-wirte-up">
       <div class="m-text">
         <span> Thêm chứng từ ghi tăng </span>
+        <el-tooltip
+          content="Đóng"
+          effect="customized"
+        >
         <button class="m-icon-xdetail" @click="hideFormLisenceDetail" ref="xdetail" tabindex="100"></button>
+        </el-tooltip>
       </div>
       <div class="m-title">
         <span>Thêm thông tin chứng từ</span>
@@ -96,17 +101,12 @@
                   <span>STT</span>
                 </el-tooltip>
               </th>
-
               <th style="width: 150px" class="text-left">Mã tài sản</th>
-
               <th style="width: 250px" class="text-left">
                 <span class="ml-10">Tên tài sản</span>
               </th>
-
               <th style="width: 250px" class="text-left">Bộ phận sử dụng</th>
-
               <th style="width: 200px" class="text-rigth">Nguyên giá</th>
-
               <th style="width: 200px" class="text-rigth">Hao mòn năm</th>
               <th style="width: 200px" class="text-rigth">Giá trị còn lại</th>
             </tr>
@@ -310,7 +310,7 @@ export default {
         return element !== asset;
       });
     },
-
+    
     /**
      * Lưu chứng từ
      */
@@ -332,6 +332,13 @@ export default {
           }
         }
       }
+    },
+
+    /**
+     * Thêm phần từ mới sửa vào đầu danh sách
+     */
+    addAssetForAssetListDetail(value){
+      this.assetListDetail.unshift(value);
     },
 
     /**

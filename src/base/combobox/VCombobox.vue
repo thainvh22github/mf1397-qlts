@@ -17,7 +17,6 @@
         :tabindex="tabindex"
         @click="btnOpenShowCombobox"
         @blur="hideContentCbbBlur()"
-        @keydown="addValueNameInput($event)"
         @keydown.enter="btnOpenShowCombobox"
         @input="filterData(nameInputs)"
         @keydown.down="nextEleMove()"
@@ -85,7 +84,7 @@ export default {
     "index",
     "checkSaveValidate",
   ],
-  emits: ["onClose"],
+  emits: ["changeFalse","changeTrue"],
 
   created() {
     this.getDataCombobox();
@@ -93,7 +92,12 @@ export default {
   watch: {
     checkSaveCbb: function () {
       this.$emit("changeTrue");
-      if (this.index > 0) {
+      if (this.tmpCheck[this.index] == "") {
+        this.validateEmpty = true;
+        this.borderRed = true;
+        this.$emit("changeFalse");
+      }
+      else if (this.index > 0) {
         for (let i = 0; i < this.index; i++) {
           if (this.index != i) {
             if (this.tmpCheck[this.index] == this.tmpCheck[i]) {
@@ -103,10 +107,6 @@ export default {
             }
           }
         }
-      }
-      if (this.tmpCheck[this.index] == "") {
-        this.validateEmpty = true;
-        this.borderRed = true;
       }
       this.$parent.deleteArrTmpCheck();
     },
